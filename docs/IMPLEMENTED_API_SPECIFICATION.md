@@ -29,7 +29,9 @@ The application provides a stateless JSON REST API for:
 - current and full-day planetary Hora calculations;
 - Tithi, Nakshatra, Pada, Nitya Yoga, Karana, Vara, and Rashi;
 - Panchanga transition times;
-- Rahu Kalam, Gulika Kalam, Yamaganda, and Abhijit Muhurta; and
+- Rahu Kalam, Gulika Kalam, Yamaganda, and Abhijit Muhurta;
+- current transit Kundali with sidereal ascendant, whole-sign houses,
+  classical visible planets, Rahu, and Ketu; and
 - an aggregate response for mobile, web, and Scriptable clients.
 
 All runtime calculations are local. No network request, database, session
@@ -41,9 +43,9 @@ Version 1 does not provide:
 
 - a universal good/bad muhurta recommendation;
 - activity-specific muhurta selection;
-- natal chart interpretation;
+- natal chart interpretation or birth-chart workflows;
 - reverse geocoding or a city-name database;
-- Vimshottari Dasha, Gochara, Choghadiya, festivals, or birth charts;
+- Vimshottari Dasha, Gochara, Choghadiya, or festivals;
 - authentication, rate limiting, or CORS policy; or
 - regional Panchanga profiles beyond the selectable ayanamsas and declared
   calculation conventions.
@@ -71,7 +73,10 @@ Flask application
   |- Astrology
   |  |- Hora
   |  |- Panchanga
-  |  `- Muhurta
+  |  |- Muhurta
+  |  `- Kundali
+  |- Render
+  |  `- Kundali chart PNG/SVG renderers
   `- Utilities
      |- ISO-8601 and IANA timezone handling
      |- offline coordinate-to-timezone lookup
@@ -189,8 +194,9 @@ response field; the individual conventions are exposed in meta.
 
 ### 6.1 Methods and media type
 
-All application resources are read-only GET endpoints. Successful and error
-responses are JSON.
+All application resources are read-only GET endpoints. Successful API data
+responses and all error responses are JSON. The Kundali chart endpoints return
+image/png or image/svg+xml directly without a JSON wrapper.
 
 ### 6.2 Common query parameters
 
@@ -205,6 +211,9 @@ Every endpoint under /api/v1 accepts:
 | ayanamsa | No | Supported sidereal mode; defaults to lahiri |
 
 The alias ayanamsha is also accepted.
+
+Kundali chart endpoints also accept optional chart_style. Supported values are
+south, north, and east; the default is south.
 
 In a URL query string, a positive UTC offset must encode the plus sign as
 %2B.
@@ -228,7 +237,7 @@ changes.
 
 ### 6.4 Base response fields
 
-All /api/v1 responses include:
+Most /api/v1 JSON responses include:
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -244,6 +253,11 @@ All /api/v1 responses include:
 Before sunrise, local_date and vedic_day_date can differ. No city name is
 returned because the service intentionally has no reverse geocoder.
 
+The compact Kundali JSON response is intentionally additive and does not use
+the solar-day base envelope, because transit Kundali is an instant chart rather
+than a Vedic-day resource. It includes date, datetime, timezone, lagna, houses,
+planets, and ayanamsa.
+
 ### 6.5 Timestamp and numeric formatting
 
 - Authoritative timestamps are offset-aware ISO-8601 strings with microseconds.
@@ -251,6 +265,7 @@ returned because the service intentionally has no reverse geocoder.
 - Durations are reported in elapsed seconds and rounded to three decimals.
 - Longitudes, Julian day, ayanamsa, and progress values are rounded to eight
   decimals.
+- Kundali longitudes and degrees within rashi are rounded to four decimals.
 - Limb progress is a fraction in the half-open range [0, 1).
 
 ## 7. Endpoint contracts
@@ -357,8 +372,43 @@ Returns the mobile/widget aggregate:
 - meta.
 
 It intentionally excludes the full 24-Hora list and the calendar timeline.
+It also intentionally excludes Kundali fields for backward compatibility.
 
-### 7.11 Meta object
+### 7.11 GET /api/v1/kundali
+
+Returns current transit Kundali JSON for the requested instant and location.
+It uses the common lat, lon, datetime, timezone, and ayanamsa parameters.
+
+The lagna object contains rasi, one-based number, absolute sidereal longitude,
+and degree_in_rasi.
+
+The houses array contains 12 whole-sign houses. Each item contains house,
+rasi, and planets. House 1 is the lagna sign, and subsequent houses advance
+one rashi at a time.
+
+The planets array contains Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn,
+Rahu, and Ketu. Each item contains planet, symbol, longitude, degree_in_rasi,
+rasi, house, and retrograde. Rahu uses the Swiss mean lunar node. Ketu is
+returned as the exact opposite point from Rahu and inherits the node's
+retrograde flag.
+
+### 7.12 GET /api/v1/kundali/chart
+
+Returns a rendered Kundali chart as image/png. The default chart_style is
+south. The renderer uses the same Kundali model as the JSON endpoint and does
+not perform astrology calculations.
+
+The canvas is 512 by 512 pixels with a white background, black borders, and
+dark text. The South Indian chart uses a static-rashi outer layout. The four
+middle cells are merged into one empty information panel containing the title
+"Transit Kundali", local date, local time, and the latitude/longitude label.
+
+### 7.13 GET /api/v1/kundali/svg
+
+Returns the same rendered Kundali chart model as image/svg+xml. The SVG uses a
+512 by 512 viewBox and the same chart_style values as the PNG endpoint.
+
+### 7.14 Meta object
 
 | Field | Meaning |
 |---|---|
@@ -485,6 +535,26 @@ end   = sunrise + (8 / 15) * daylight
 The interval is still returned on Wednesday with
 traditionally_auspicious=false and a traditional caveat.
 
+### 8.10 Transit Kundali
+
+The Kundali endpoint calculates an instant transit chart, not a natal chart.
+Ascendant is calculated through Swiss Ephemeris houses_ex with the selected
+sidereal mode. It is not derived from sunrise or manually calculated local
+sidereal time.
+
+Whole Sign is the implemented house system. The lagna rashi is house 1, and
+each following rashi is the next house. Planetary positions are selected
+sidereal longitudes from Swiss Ephemeris with speed flags so retrograde status
+can be reported. Rashi is floor(sidereal_longitude / 30) + 1. House is:
+
+~~~text
+house = ((planet_rashi - lagna_rashi) mod 12) + 1
+~~~
+
+Returned planet labels are Su, Mo, Ma, Me, Ju, Ve, Sa, Ra, and Ke. Rendered
+charts append (R) for retrograde planets and include As in the lagna rashi or
+first house.
+
 ## 9. Error contract
 
 ~~~json
@@ -505,9 +575,11 @@ ambiguous_local_datetime, and invalid_ayanamsa.
 
 ### 9.2 HTTP 422
 
-Codes are datetime_out_of_range and solar_event_unavailable. Solar-event
-unavailability includes polar day/night, an event missing from the requested
-local date, or an unordered daily solar cycle.
+Codes are datetime_out_of_range, solar_event_unavailable, and
+kundali_unavailable. Solar-event unavailability includes polar day/night, an
+event missing from the requested local date, or an unordered daily solar cycle.
+Kundali unavailability means Swiss Ephemeris could not return the ascendant
+for the requested instant and location.
 
 ### 9.3 HTTP 503
 
@@ -570,13 +642,14 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 44 passing tests;
-- 96 percent statement coverage;
+- 50 passing tests;
+- 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;
 - Gunicorn startup verified;
 - GET /health returned HTTP 200 with ephemeris_ready=true; and
-- GET /api/v1/all returned HTTP 200 for the Bengaluru reference request.
+- GET /api/v1/all and GET /api/v1/kundali returned HTTP 200 for the Bengaluru
+  reference request.
 
 Run:
 
@@ -605,6 +678,9 @@ The suite covers:
 - concurrent ayanamsa isolation;
 - process-global ephemeris-path restoration;
 - chronological calendar events; and
+- Kundali schema, sidereal ascendant, whole-sign house placement, Rahu/Ketu,
+  retrograde status, PNG/SVG rendering, merged chart information panel, and
+  chart_style validation; and
 - representative calculation with network access disabled.
 
 ## 13. Compatibility notes
@@ -619,6 +695,8 @@ The suite covers:
 - /api/v1/all returns the preceding Vedic day's daylight-derived periods
   before sunrise. Clients asking for the upcoming civil day's timeline should
   query an instant on that civil day after sunrise or use /api/v1/calendar.
+- /api/v1/all does not include Kundali fields. Clients needing chart data must
+  call /api/v1/kundali, /api/v1/kundali/chart, or /api/v1/kundali/svg.
 - Different ayanamsas, sunrise conventions, regional spellings, or ritual
   rules can legitimately produce different almanac values.
 - Solar-dependent resources can be unavailable at polar locations.
@@ -640,5 +718,5 @@ See [EPHEMERIS_DATA.md](../EPHEMERIS_DATA.md) for provenance and checksums.
 
 Potential later versions may add authentication, rate limiting,
 activity-specific muhurta rules, regional profiles, reverse geocoding,
-Choghadiya, festival calendars, Vimshottari Dasha, Gochara, birth charts,
-divisional charts, and an OpenAPI schema.
+Choghadiya, festival calendars, Vimshottari Dasha, Gochara, natal chart
+workflows, divisional charts, additional house systems, and an OpenAPI schema.

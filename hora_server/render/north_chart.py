@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from hora_server.astrology.kundali import Kundali
 
-from .chart_symbols import ChartCell, labels_by_house, render_grid_png, render_grid_svg
+from .chart_symbols import (
+    ChartCell,
+    ChartInfo,
+    labels_by_house,
+    render_grid_png,
+    render_grid_svg,
+)
 
 
 NORTH_HOUSE_CELLS = {
@@ -36,9 +42,9 @@ def _cells(kundali: Kundali) -> tuple[ChartCell, ...]:
     )
 
 
-def render_svg(kundali: Kundali) -> str:
-    return render_grid_svg(_cells(kundali))
+def render_svg(kundali: Kundali, chart_info: ChartInfo | None = None) -> str:
+    return render_grid_svg(_cells(kundali), chart_info)
 
 
-def render_png(kundali: Kundali) -> bytes:
-    return render_grid_png(_cells(kundali))
+def render_png(kundali: Kundali, chart_info: ChartInfo | None = None) -> bytes:
+    return render_grid_png(_cells(kundali), chart_info)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import struct
+import zlib
 
 import pytest
 
@@ -11,6 +12,27 @@ def _planet(data, name):
 
 def _house(data, number):
     return next(house for house in data["houses"] if house["house"] == number)
+
+
+def _png_pixel(data, x, y):
+    offset = 8
+    idat = bytearray()
+    width, height = struct.unpack(">II", data[16:24])
+    while offset < len(data):
+        length = struct.unpack(">I", data[offset : offset + 4])[0]
+        kind = data[offset + 4 : offset + 8]
+        payload = data[offset + 8 : offset + 8 + length]
+        if kind == b"IDAT":
+            idat.extend(payload)
+        offset += 12 + length
+
+    rows = zlib.decompress(bytes(idat))
+    stride = width * 3 + 1
+    row = rows[y * stride : (y + 1) * stride]
+    assert row[0] == 0
+    start = 1 + x * 3
+    assert height == 512
+    return tuple(row[start : start + 3])
 
 
 def test_kundali_reference_schema_and_positions(client, bengaluru_query):
@@ -103,6 +125,23 @@ def test_kundali_chart_png_and_svg_render(client, bengaluru_query):
     assert b"<svg" in svg.data
     assert b"As" in svg.data
     assert b"Ra(R)" in svg.data
+    assert b"Transit Kundali" in svg.data
+    assert b"2026-07-08" in svg.data
+    assert b"12:00:00 +0530" in svg.data
+    assert b"Lat 12.971600, Lon 77.594600" in svg.data
+
+
+def test_kundali_chart_center_is_a_single_information_panel(
+    client, bengaluru_query
+):
+    png = client.get("/api/v1/kundali/chart", query_string=bengaluru_query)
+    assert _png_pixel(png.data, 256, 150) == (255, 255, 255)
+    assert _png_pixel(png.data, 150, 256) == (255, 255, 255)
+
+    svg = client.get("/api/v1/kundali/svg", query_string=bengaluru_query)
+    text = svg.data.decode()
+    assert 'x1="256" y1="128" x2="256" y2="384"' not in text
+    assert 'x1="128" y1="256" x2="384" y2="256"' not in text
 
 
 def test_all_declared_chart_styles_are_accepted(client, bengaluru_query):

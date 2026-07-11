@@ -26,6 +26,14 @@ class ChartCell:
     labels: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class ChartInfo:
+    title: str
+    date: str
+    time: str
+    location: str
+
+
 def resolve_chart_style(value: str | None) -> str:
     style = (value or "south").strip().lower()
     if style not in CHART_STYLES:
@@ -63,18 +71,44 @@ def labels_by_house(kundali: Kundali) -> dict[int, tuple[str, ...]]:
     return {number: tuple(values) for number, values in labels.items()}
 
 
-def render_grid_svg(cells: tuple[ChartCell, ...]) -> str:
+def _center_lines() -> tuple[tuple[int, int, int, int], ...]:
+    return (
+        (CELL_SIZE, CELL_SIZE, CELL_SIZE * 3, CELL_SIZE),
+        (CELL_SIZE * 3, CELL_SIZE, CELL_SIZE * 3, CELL_SIZE * 3),
+        (CELL_SIZE * 3, CELL_SIZE * 3, CELL_SIZE, CELL_SIZE * 3),
+        (CELL_SIZE, CELL_SIZE * 3, CELL_SIZE, CELL_SIZE),
+    )
+
+
+def _grid_lines() -> tuple[tuple[int, int, int, int], ...]:
+    lines: list[tuple[int, int, int, int]] = []
+    for index in range(GRID_SIZE + 1):
+        offset = index * CELL_SIZE
+        if index == 2:
+            lines.extend(
+                (
+                    (offset, 0, offset, CELL_SIZE),
+                    (offset, CELL_SIZE * 3, offset, CHART_SIZE),
+                    (0, offset, CELL_SIZE, offset),
+                    (CELL_SIZE * 3, offset, CHART_SIZE, offset),
+                )
+            )
+        else:
+            lines.append((offset, 0, offset, CHART_SIZE))
+            lines.append((0, offset, CHART_SIZE, offset))
+    lines.extend(_center_lines())
+    return tuple(lines)
+
+
+def render_grid_svg(
+    cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
+) -> str:
     elements = [
         f'<rect x="0" y="0" width="{CHART_SIZE}" height="{CHART_SIZE}" fill="white"/>'
     ]
-    for index in range(GRID_SIZE + 1):
-        offset = index * CELL_SIZE
+    for x1, y1, x2, y2 in _grid_lines():
         elements.append(
-            f'<line x1="{offset}" y1="0" x2="{offset}" y2="{CHART_SIZE}" '
-            'stroke="#111" stroke-width="2"/>'
-        )
-        elements.append(
-            f'<line x1="0" y1="{offset}" x2="{CHART_SIZE}" y2="{offset}" '
+            f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
             'stroke="#111" stroke-width="2"/>'
         )
 
@@ -97,6 +131,21 @@ def render_grid_svg(cells: tuple[ChartCell, ...]) -> str:
                 f"{escape(label)}</text>"
             )
 
+    if chart_info:
+        center_x = CHART_SIZE / 2
+        text_lines = (
+            (chart_info.title, 220, 20, "#111"),
+            (chart_info.date, 252, 15, "#333"),
+            (chart_info.time, 278, 15, "#333"),
+            (chart_info.location, 304, 14, "#333"),
+        )
+        for text, y, size, color in text_lines:
+            elements.append(
+                f'<text x="{center_x}" y="{y}" font-family="Arial, sans-serif" '
+                f'font-size="{size}" fill="{color}" text-anchor="middle" '
+                f'dominant-baseline="middle">{escape(text)}</text>'
+            )
+
     body = "".join(elements)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{CHART_SIZE}" '
@@ -109,6 +158,11 @@ _FONT: dict[str, tuple[str, ...]] = {
     " ": ("00000", "00000", "00000", "00000", "00000", "00000", "00000"),
     "(": ("00110", "01100", "01000", "01000", "01000", "01100", "00110"),
     ")": ("01100", "00110", "00010", "00010", "00010", "00110", "01100"),
+    "+": ("00000", "00100", "00100", "11111", "00100", "00100", "00000"),
+    ",": ("00000", "00000", "00000", "00000", "00110", "00100", "01000"),
+    "-": ("00000", "00000", "00000", "11111", "00000", "00000", "00000"),
+    ".": ("00000", "00000", "00000", "00000", "00000", "01100", "01100"),
+    ":": ("00000", "01100", "01100", "00000", "01100", "01100", "00000"),
     "0": ("01110", "10001", "10011", "10101", "11001", "10001", "01110"),
     "1": ("00100", "01100", "00100", "00100", "00100", "00100", "01110"),
     "2": ("01110", "10001", "00001", "00010", "00100", "01000", "11111"),
@@ -120,13 +174,18 @@ _FONT: dict[str, tuple[str, ...]] = {
     "8": ("01110", "10001", "10001", "01110", "10001", "10001", "01110"),
     "9": ("01110", "10001", "10001", "01111", "00001", "00010", "11100"),
     "A": ("01110", "10001", "10001", "11111", "10001", "10001", "10001"),
+    "D": ("11110", "10001", "10001", "10001", "10001", "10001", "11110"),
     "E": ("11111", "10000", "10000", "11110", "10000", "10000", "11111"),
+    "I": ("11111", "00100", "00100", "00100", "00100", "00100", "11111"),
     "J": ("00111", "00010", "00010", "00010", "10010", "10010", "01100"),
     "K": ("10001", "10010", "10100", "11000", "10100", "10010", "10001"),
+    "L": ("10000", "10000", "10000", "10000", "10000", "10000", "11111"),
     "M": ("10001", "11011", "10101", "10101", "10001", "10001", "10001"),
+    "N": ("10001", "11001", "10101", "10011", "10001", "10001", "10001"),
     "O": ("01110", "10001", "10001", "10001", "10001", "10001", "01110"),
     "R": ("11110", "10001", "10001", "11110", "10100", "10010", "10001"),
     "S": ("01111", "10000", "10000", "01110", "00001", "00001", "11110"),
+    "T": ("11111", "00100", "00100", "00100", "00100", "00100", "00100"),
     "U": ("10001", "10001", "10001", "10001", "10001", "10001", "01110"),
     "V": ("10001", "10001", "10001", "10001", "10001", "01010", "00100"),
 }
@@ -232,12 +291,24 @@ class SimpleCanvas:
         )
 
 
-def render_grid_png(cells: tuple[ChartCell, ...]) -> bytes:
+def _center_text(canvas: SimpleCanvas, chart_info: ChartInfo) -> None:
+    lines = (
+        (chart_info.title, 190, 2),
+        (chart_info.date, 230, 2),
+        (chart_info.time, 260, 2),
+        (chart_info.location, 290, 1),
+    )
+    for text, y, scale in lines:
+        text_width, _ = canvas.text_size(text, scale=scale)
+        canvas.text(text, (CHART_SIZE - text_width) // 2, y, scale=scale)
+
+
+def render_grid_png(
+    cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
+) -> bytes:
     canvas = SimpleCanvas()
-    for index in range(GRID_SIZE + 1):
-        offset = index * CELL_SIZE
-        canvas.line(offset, 0, offset, CHART_SIZE - 1)
-        canvas.line(0, offset, CHART_SIZE - 1, offset)
+    for x1, y1, x2, y2 in _grid_lines():
+        canvas.line(x1, y1, x2, y2)
 
     for cell in cells:
         x = cell.column * CELL_SIZE
@@ -257,4 +328,6 @@ def render_grid_png(cells: tuple[ChartCell, ...]) -> bytes:
                 start_y + index * line_height,
                 scale=scale,
             )
+    if chart_info:
+        _center_text(canvas, chart_info)
     return canvas.to_png()
