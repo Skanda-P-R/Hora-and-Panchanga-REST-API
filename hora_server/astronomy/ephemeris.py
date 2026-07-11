@@ -50,6 +50,13 @@ class Positions:
     ephemeris: str
 
 
+@dataclass(frozen=True)
+class BodyPosition:
+    longitude: float
+    speed_longitude: float
+    ephemeris: str
+
+
 class EphemerisEngine:
     """Serializes process-global Swiss configuration around each calculation."""
 
@@ -170,6 +177,73 @@ class EphemerisEngine:
             ayanamsa_degrees=ayanamsa_degrees,
             ephemeris=backend,
         )
+
+    def sidereal_body_positions(
+        self, value: datetime, ayanamsa: Ayanamsa, bodies: tuple[tuple[str, int], ...]
+    ) -> dict[str, BodyPosition]:
+        julian_day = self.julian_day(value)
+        flags = swe.FLG_SWIEPH | swe.FLG_SPEED | swe.FLG_SIDEREAL
+        calculated: dict[str, tuple[tuple[float, ...], int]] = {}
+
+        with self._lock:
+            if self.ephemeris_path:
+                swe.set_ephe_path(self.ephemeris_path)
+            swe.set_sid_mode(ayanamsa.swiss_mode, 0, 0)
+            for name, body in bodies:
+                coordinates, returned_flags = swe.calc_ut(julian_day, body, flags)
+                calculated[name] = (coordinates, returned_flags)
+
+        backends = {
+            self._backend_name(returned_flags)
+            for _, returned_flags in calculated.values()
+        }
+        backend = backends.pop() if len(backends) == 1 else "+".join(sorted(backends))
+        if self.strict_swiss and backend != "swiss":
+            raise ApiError(
+                "Swiss Ephemeris data files are unavailable and fallback is disabled",
+                code="ephemeris_unavailable",
+                status_code=503,
+                details={
+                    "backend": backend,
+                    "hint": "Set SE_EPHEMERIS_PATH to a directory containing Swiss .se1 files",
+                },
+            )
+
+        return {
+            name: BodyPosition(
+                longitude=coordinates[0] % 360,
+                speed_longitude=coordinates[3],
+                ephemeris=backend,
+            )
+            for name, (coordinates, _) in calculated.items()
+        }
+
+    def sidereal_ascendant(
+        self,
+        value: datetime,
+        ayanamsa: Ayanamsa,
+        latitude: float,
+        longitude: float,
+        house_system: bytes = b"W",
+    ) -> float:
+        julian_day = self.julian_day(value)
+        flags = swe.FLG_SWIEPH | swe.FLG_SIDEREAL
+        try:
+            with self._lock:
+                if self.ephemeris_path:
+                    swe.set_ephe_path(self.ephemeris_path)
+                swe.set_sid_mode(ayanamsa.swiss_mode, 0, 0)
+                _, ascmc = swe.houses_ex(
+                    julian_day, latitude, longitude, house_system, flags
+                )
+        except swe.Error as exc:
+            raise ApiError(
+                "Ascendant could not be calculated for this date and location",
+                code="kundali_unavailable",
+                status_code=422,
+                details={"reason": str(exc)},
+            ) from exc
+        return ascmc[swe.ASC] % 360
 
     def rise_or_set(
         self,

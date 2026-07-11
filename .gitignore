@@ -9,3 +9,5 @@ dist/
 *.egg-info/
 .env
 .DS_Store
+.agents
+.codex

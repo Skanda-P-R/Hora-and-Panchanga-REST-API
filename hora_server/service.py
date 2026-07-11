@@ -27,6 +27,13 @@ from hora_server.astrology.hora import (
     planetary_hours,
     remaining_seconds,
 )
+from hora_server.astrology.kundali import (
+    Kundali,
+    KundaliHouse,
+    KundaliLagna,
+    KundaliPlanet,
+    calculate_kundali,
+)
 from hora_server.astrology.muhurta import MuhurtaInterval, calculate_muhurta
 from hora_server.astrology.panchanga import (
     Limb,
@@ -280,6 +287,35 @@ class PanchangaService:
             "transition_tolerance_seconds": 1,
         }
 
+    @staticmethod
+    def _kundali_lagna_payload(lagna: KundaliLagna) -> dict[str, Any]:
+        return {
+            "rasi": lagna.rasi,
+            "number": lagna.number,
+            "longitude": round(lagna.longitude, 4),
+            "degree_in_rasi": round(lagna.degree_in_rasi, 4),
+        }
+
+    @staticmethod
+    def _kundali_house_payload(house: KundaliHouse) -> dict[str, Any]:
+        return {
+            "house": house.house,
+            "rasi": house.rasi,
+            "planets": list(house.planets),
+        }
+
+    @staticmethod
+    def _kundali_planet_payload(planet: KundaliPlanet) -> dict[str, Any]:
+        return {
+            "planet": planet.planet,
+            "symbol": planet.symbol,
+            "longitude": round(planet.longitude, 4),
+            "degree_in_rasi": round(planet.degree_in_rasi, 4),
+            "rasi": planet.rasi,
+            "house": planet.house,
+            "retrograde": planet.retrograde,
+        }
+
     def _panchanga(
         self,
         context: RequestContext,
@@ -293,6 +329,32 @@ class PanchangaService:
             context.ayanamsa,
             include_transitions=include_transitions,
         )
+
+    def kundali_model(self, context: RequestContext) -> Kundali:
+        return calculate_kundali(
+            context.instant,
+            context.latitude,
+            context.longitude,
+            self.engine,
+            context.ayanamsa,
+        )
+
+    def kundali(self, context: RequestContext) -> dict[str, Any]:
+        kundali = self.kundali_model(context)
+        return {
+            "date": context.instant.date().isoformat(),
+            "datetime": isoformat(context.instant),
+            "timezone": context.timezone.key,
+            "lagna": self._kundali_lagna_payload(kundali.lagna),
+            "houses": [
+                self._kundali_house_payload(house) for house in kundali.houses
+            ],
+            "planets": [
+                self._kundali_planet_payload(planet)
+                for planet in kundali.planets
+            ],
+            "ayanamsa": context.ayanamsa.display_name,
+        }
 
     def all(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
