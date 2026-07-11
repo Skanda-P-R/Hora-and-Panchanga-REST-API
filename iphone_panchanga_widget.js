@@ -8,7 +8,7 @@ const BASE_URL = "http://192.168.31.71:8000";
 Location.setAccuracyToThreeKilometers();
 
 let widget = new ListWidget();
-widget.setPadding(14, 14, 14, 14);
+widget.setPadding(12, 14, 12, 14);
 
 try {
 
@@ -17,8 +17,8 @@ try {
   //---------------------------------------
   const loc = await Location.current();
 
-  const lat = loc.latitude;
-  const lon = loc.longitude;
+  const lat = loc.latitude.toFixed(5);
+  const lon = loc.longitude.toFixed(5);
 
   //---------------------------------------
   // API
@@ -55,7 +55,7 @@ try {
   // Ends / Next
   //---------------------------------------
 
-  widget.addSpacer(4);
+  widget.addSpacer(2);
 
   let line = widget.addText(
     `Ends ${data.hora.ends}   •   Next ${data.hora.next}`
@@ -64,7 +64,7 @@ try {
   line.font = Font.systemFont(11);
   line.textColor = Color.lightGray();
 
-  widget.addSpacer(10);
+  widget.addSpacer(6);
 
   //---------------------------------------
   // Two Columns
@@ -88,7 +88,7 @@ try {
   t2.font = Font.systemFont(13);
   t2.textColor = Color.white();
 
-  left.addSpacer(8);
+  left.addSpacer(5);
 
   let r1 = left.addText("RAHU");
   r1.font = Font.boldSystemFont(10);
@@ -98,7 +98,7 @@ try {
   r2.font = Font.systemFont(12);
   r2.textColor = Color.white();
 
-  left.addSpacer(6);
+  left.addSpacer(4);
 
   let y1 = left.addText("YAMAGANDA");
   y1.font = Font.boldSystemFont(10);
@@ -127,7 +127,7 @@ try {
   n2.font = Font.systemFont(13);
   n2.textColor = Color.white();
 
-  right.addSpacer(8);
+  right.addSpacer(5);
 
   let a1 = right.addText("ABHIJIT");
   a1.font = Font.boldSystemFont(10);
@@ -137,7 +137,7 @@ try {
   a2.font = Font.systemFont(12);
   a2.textColor = Color.white();
 
-  right.addSpacer(6);
+  right.addSpacer(4);
 
   let s1 = right.addText("SUN");
   s1.font = Font.boldSystemFont(10);
@@ -160,7 +160,7 @@ try {
   let moon = footer.addText(
     "🌙 " + data.moon.rasi
   );
-  moon.font = Font.systemFont(11);
+  moon.font = Font.systemFont(10);
   moon.textColor = Color.lightGray();
 
   footer.addSpacer();
@@ -168,7 +168,7 @@ try {
   let sun = footer.addText(
     "☀️ " + data.sun.rasi
   );
-  sun.font = Font.systemFont(11);
+  sun.font = Font.systemFont(10);
   sun.textColor = Color.lightGray();
 
 } catch (e) {
