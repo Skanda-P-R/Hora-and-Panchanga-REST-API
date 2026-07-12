@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import binascii
+import math
 import struct
 import zlib
 from dataclasses import dataclass
@@ -53,9 +54,20 @@ def planet_label(symbol: str, retrograde: bool) -> str:
     return f"{symbol}(R)" if retrograde else symbol
 
 
+def degree_minute_text(degree: float) -> str:
+    whole_degrees = math.floor(degree)
+    minutes = int((degree - whole_degrees) * 60)
+    
+    return f"{whole_degrees}\N{DEGREE SIGN}{minutes:02d}'"
+
+
+def ascendant_label(kundali: Kundali) -> str:
+    return f"AS\n{degree_minute_text(kundali.lagna.degree_in_rasi)}"
+
+
 def labels_by_rasi(kundali: Kundali) -> dict[int, tuple[str, ...]]:
     labels: dict[int, list[str]] = {number: [] for number in range(1, 13)}
-    labels[kundali.lagna.number].append("As")
+    labels[kundali.lagna.number].append(ascendant_label(kundali))
     for planet in kundali.planets:
         labels[planet.rasi_number].append(
             planet_label(planet.symbol, planet.retrograde)
@@ -65,10 +77,19 @@ def labels_by_rasi(kundali: Kundali) -> dict[int, tuple[str, ...]]:
 
 def labels_by_house(kundali: Kundali) -> dict[int, tuple[str, ...]]:
     labels: dict[int, list[str]] = {number: [] for number in range(1, 13)}
-    labels[1].append("As")
+    labels[1].append(ascendant_label(kundali))
     for planet in kundali.planets:
         labels[planet.house].append(planet_label(planet.symbol, planet.retrograde))
     return {number: tuple(values) for number, values in labels.items()}
+
+
+def _display_lines(labels: tuple[str, ...]) -> tuple[str, ...]:
+    lines: list[str] = []
+    for label in labels:
+        if lines:
+            lines.append("")
+        lines.extend(label.splitlines())
+    return tuple(lines)
 
 
 def _center_lines() -> tuple[tuple[int, int, int, int], ...]:
@@ -117,18 +138,21 @@ def render_grid_svg(
         y = cell.row * CELL_SIZE
         elements.append(
             f'<text x="{x + 8}" y="{y + 20}" font-family="Arial, sans-serif" '
-            f'font-size="16" fill="#222">{escape(cell.top_label)}</text>'
+            f'font-size="16" fill="#222">{escape(cell.top_label, quote=False)}</text>'
         )
         if not cell.labels:
             continue
-        line_height = 20
-        start_y = y + (CELL_SIZE - (len(cell.labels) - 1) * line_height) / 2
-        for index, label in enumerate(cell.labels):
+        display_lines = _display_lines(cell.labels)
+        line_height = 19
+        start_y = y + (CELL_SIZE - (len(display_lines) - 1) * line_height) / 2
+        for index, label in enumerate(display_lines):
+            if not label:
+                continue
             elements.append(
                 f'<text x="{x + CELL_SIZE / 2}" y="{start_y + index * line_height}" '
                 'font-family="Arial, sans-serif" font-size="18" fill="#111" '
                 'text-anchor="middle" dominant-baseline="middle">'
-                f"{escape(label)}</text>"
+                f"{escape(label, quote=False)}</text>"
             )
 
     if chart_info:
@@ -143,7 +167,7 @@ def render_grid_svg(
             elements.append(
                 f'<text x="{center_x}" y="{y}" font-family="Arial, sans-serif" '
                 f'font-size="{size}" fill="{color}" text-anchor="middle" '
-                f'dominant-baseline="middle">{escape(text)}</text>'
+                f'dominant-baseline="middle">{escape(text, quote=False)}</text>'
             )
 
     body = "".join(elements)
@@ -156,6 +180,7 @@ def render_grid_svg(
 
 _FONT: dict[str, tuple[str, ...]] = {
     " ": ("00000", "00000", "00000", "00000", "00000", "00000", "00000"),
+    "'": ("01100", "01100", "00100", "01000", "00000", "00000", "00000"),
     "(": ("00110", "01100", "01000", "01000", "01000", "01100", "00110"),
     ")": ("01100", "00110", "00010", "00010", "00010", "00110", "01100"),
     "+": ("00000", "00100", "00100", "11111", "00100", "00100", "00000"),
@@ -163,6 +188,15 @@ _FONT: dict[str, tuple[str, ...]] = {
     "-": ("00000", "00000", "00000", "11111", "00000", "00000", "00000"),
     ".": ("00000", "00000", "00000", "00000", "00000", "01100", "01100"),
     ":": ("00000", "01100", "01100", "00000", "01100", "01100", "00000"),
+    "\N{DEGREE SIGN}": (
+        "01100",
+        "10010",
+        "10010",
+        "01100",
+        "00000",
+        "00000",
+        "00000",
+    ),
     "0": ("01110", "10001", "10011", "10101", "11001", "10001", "01110"),
     "1": ("00100", "01100", "00100", "00100", "00100", "00100", "01110"),
     "2": ("01110", "10001", "00001", "00010", "00100", "01000", "11111"),
@@ -316,11 +350,14 @@ def render_grid_png(
         canvas.text(cell.top_label, x + 8, y + 8, scale=2, color=(34, 34, 34))
         if not cell.labels:
             continue
-        scale = 3 if len(cell.labels) <= 4 else 2
+        display_lines = _display_lines(cell.labels)
+        scale = 3 if len(display_lines) <= 4 else 2
         line_height = 8 * scale + 4
-        total_height = len(cell.labels) * line_height
+        total_height = len(display_lines) * line_height
         start_y = y + max(32, (CELL_SIZE - total_height) // 2 + 8)
-        for index, label in enumerate(cell.labels):
+        for index, label in enumerate(display_lines):
+            if not label:
+                continue
             text_width, _ = canvas.text_size(label, scale=scale)
             canvas.text(
                 label,

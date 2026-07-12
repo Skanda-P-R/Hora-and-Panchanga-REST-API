@@ -5,6 +5,8 @@ import zlib
 
 import pytest
 
+from hora_server.render.chart_symbols import SimpleCanvas, degree_minute_text
+
 
 def _planet(data, name):
     return next(planet for planet in data["planets"] if planet["planet"] == name)
@@ -33,6 +35,17 @@ def _png_pixel(data, x, y):
     start = 1 + x * 3
     assert height == 512
     return tuple(row[start : start + 3])
+
+
+def test_degree_minute_text_includes_minute_mark():
+    assert degree_minute_text(1.3567) == "1\N{DEGREE SIGN}21'"
+
+
+def test_png_font_draws_minute_mark():
+    canvas = SimpleCanvas(width=24, height=24)
+    canvas.text("'", 2, 2, scale=2)
+
+    assert any(value != 255 for value in canvas.pixels)
 
 
 def test_kundali_reference_schema_and_positions(client, bengaluru_query):
@@ -123,7 +136,7 @@ def test_kundali_chart_png_and_svg_render(client, bengaluru_query):
     assert svg.status_code == 200
     assert svg.content_type.startswith("image/svg+xml")
     assert b"<svg" in svg.data
-    assert b"As" in svg.data
+    assert b"AS" in svg.data
     assert b"Ra(R)" in svg.data
     assert b"Transit Kundali" in svg.data
     assert b"2026-07-08" in svg.data

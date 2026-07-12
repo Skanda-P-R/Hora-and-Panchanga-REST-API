@@ -552,7 +552,8 @@ house = ((planet_rashi - lagna_rashi) mod 12) + 1
 ~~~
 
 Returned planet labels are Su, Mo, Ma, Me, Ju, Ve, Sa, Ra, and Ke. Rendered
-charts append (R) for retrograde planets and include As in the lagna rashi or
+charts append (R) for retrograde planets and include AS plus the ascendant
+degree/minute within the rashi, formatted like 16°59', in the lagna rashi or
 first house.
 
 ## 9. Error contract
