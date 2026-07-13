@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py gunicorn.conf.py ./
 COPY hora_server ./hora_server
+COPY fonts ./fonts
 
 RUN useradd --create-home --uid 10001 appuser && chown -R appuser:appuser /app
 USER appuser

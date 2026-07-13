@@ -8,8 +8,8 @@ from .chart_symbols import (
     ChartCell,
     ChartInfo,
     labels_by_house,
-    render_grid_png,
     render_grid_svg,
+    render_grid_png,
 )
 
 
@@ -29,8 +29,8 @@ NORTH_HOUSE_CELLS = {
 }
 
 
-def _cells(kundali: Kundali) -> tuple[ChartCell, ...]:
-    labels = labels_by_house(kundali)
+def _cells(kundali: Kundali, language: str = "en") -> tuple[ChartCell, ...]:
+    labels = labels_by_house(kundali, language)
     return tuple(
         ChartCell(
             row=row,
@@ -42,9 +42,17 @@ def _cells(kundali: Kundali) -> tuple[ChartCell, ...]:
     )
 
 
-def render_svg(kundali: Kundali, chart_info: ChartInfo | None = None) -> str:
-    return render_grid_svg(_cells(kundali), chart_info)
+def render_svg(
+    kundali: Kundali,
+    chart_info: ChartInfo | None = None,
+    language: str = "en",
+) -> str:
+    return render_grid_svg(_cells(kundali, language), chart_info)
 
 
-def render_png(kundali: Kundali, chart_info: ChartInfo | None = None) -> bytes:
-    return render_grid_png(_cells(kundali), chart_info)
+def render_png(
+    kundali: Kundali,
+    chart_info: ChartInfo | None = None,
+    language: str = "en",
+) -> bytes:
+    return render_grid_png(_cells(kundali, language), chart_info, language)

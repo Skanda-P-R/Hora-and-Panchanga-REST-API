@@ -8,6 +8,7 @@ from hora_server.render import (
     ChartInfo,
     render_kundali_png,
     render_kundali_svg,
+    resolve_chart_language,
     resolve_chart_style,
 )
 from hora_server.service import RequestContext
@@ -18,10 +19,10 @@ from .common import context, service
 blueprint = Blueprint("kundali", __name__)
 
 
-def chart_info(context: RequestContext) -> ChartInfo:
+def chart_info(context: RequestContext, language: str = "en") -> ChartInfo:
     instant = context.instant
     return ChartInfo(
-        title="Transit Kundali",
+        title="ಗೋಚಾರ ಕುಂಡಲಿ" if language == "kan" else "Transit Kundali",
         date=instant.date().isoformat(),
         time=instant.strftime("%H:%M:%S %z"),
         location=f"Lat {context.latitude:.6f}, Lon {context.longitude:.6f}",
@@ -38,10 +39,16 @@ def get_kundali():
 @blueprint.get("/kundali/chart")
 def get_kundali_chart():
     chart_style = resolve_chart_style(request.args.get("chart_style"))
+    language = resolve_chart_language(request.args.get("lang"))
     request_context = context()
     kundali = service().kundali_model(request_context)
     return Response(
-        render_kundali_png(kundali, chart_style, chart_info(request_context)),
+        render_kundali_png(
+            kundali,
+            chart_style,
+            chart_info(request_context, language),
+            language,
+        ),
         mimetype="image/png",
     )
 
@@ -49,9 +56,15 @@ def get_kundali_chart():
 @blueprint.get("/kundali/svg")
 def get_kundali_svg():
     chart_style = resolve_chart_style(request.args.get("chart_style"))
+    language = resolve_chart_language(request.args.get("lang"))
     request_context = context()
     kundali = service().kundali_model(request_context)
     return Response(
-        render_kundali_svg(kundali, chart_style, chart_info(request_context)),
+        render_kundali_svg(
+            kundali,
+            chart_style,
+            chart_info(request_context, language),
+            language,
+        ),
         mimetype="image/svg+xml",
     )

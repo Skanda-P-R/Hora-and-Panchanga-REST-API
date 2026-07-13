@@ -100,10 +100,14 @@ The direct dependencies are pinned:
 | timezonefinder | 8.2.4 | Offline coordinate-to-IANA-zone lookup |
 | tzdata | 2026.2 | Reproducible IANA timezone data fallback |
 | gunicorn | 26.0.0 | Production WSGI server |
+| Pillow | 12.3.0 | Unicode-capable PNG chart rendering |
+| uharfbuzz | 0.55.0 | Kannada text shaping for PNG charts |
+| freetype-py | 2.5.1 | Glyph rasterization for shaped PNG text |
 
 The supported runtime is Python 3.11. Later Python versions can require a C
 compiler for PySwissEph and are not claimed as supported without additional
 CI validation.
+
 
 ## 5. Accuracy and astronomy profile
 
@@ -212,8 +216,11 @@ Every endpoint under /api/v1 accepts:
 
 The alias ayanamsha is also accepted.
 
-Kundali chart endpoints also accept optional chart_style. Supported values are
-south, north, and east; the default is south.
+Kundali chart endpoints also accept optional chart_style and lang.
+chart_style supports south, north, and east; the default is south. lang
+supports en and kan; the default is en. lang affects rendered chart labels and
+the center title only. It does not change date, time, latitude, longitude, or
+JSON response fields.
 
 In a URL query string, a positive UTC offset must encode the plus sign as
 %2B.
@@ -395,18 +402,21 @@ retrograde flag.
 ### 7.12 GET /api/v1/kundali/chart
 
 Returns a rendered Kundali chart as image/png. The default chart_style is
-south. The renderer uses the same Kundali model as the JSON endpoint and does
-not perform astrology calculations.
+south, and the default lang is en. The renderer uses the same Kundali model as
+the JSON endpoint and does not perform astrology calculations.
 
 The canvas is 512 by 512 pixels with a white background, black borders, and
 dark text. The South Indian chart uses a static-rashi outer layout. The four
-middle cells are merged into one empty information panel containing the title
-"Transit Kundali", local date, local time, and the latitude/longitude label.
+middle cells are merged into one empty information panel containing the title,
+local date, local time, and the latitude/longitude label. In English the title
+is "Transit Kundali". With lang=kan, the title is "ಗೋಚಾರ ಕುಂಡಲಿ", and planet
+labels use Kannada names.
 
 ### 7.13 GET /api/v1/kundali/svg
 
 Returns the same rendered Kundali chart model as image/svg+xml. The SVG uses a
-512 by 512 viewBox and the same chart_style values as the PNG endpoint.
+512 by 512 viewBox and the same chart_style and lang values as the PNG
+endpoint.
 
 ### 7.14 Meta object
 
@@ -556,6 +566,21 @@ charts append (R) for retrograde planets and include AS plus the ascendant
 degree/minute within the rashi, formatted like 16°59', in the lagna rashi or
 first house.
 
+For lang=kan, rendered symbols are localized as:
+
+| English symbol | Kannada label |
+|---|---|
+| Su | ಸೂರ್ಯ |
+| Mo | ಚಂದ್ರ |
+| Ma | ಕುಜ |
+| Me | ಬುಧ |
+| Ju | ಗುರು |
+| Ve | ಶುಕ್ರ |
+| Sa | ಶನಿ |
+| Ra | ರಾಹು |
+| Ke | ಕೇತು |
+| AS | ಲಗ್ನ |
+
 ## 9. Error contract
 
 ~~~json
@@ -643,10 +668,11 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 50 passing tests;
+- 55 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;
+- all kannada fonts used for PNG rendering is present;
 - Gunicorn startup verified;
 - GET /health returned HTTP 200 with ephemeris_ready=true; and
 - GET /api/v1/all and GET /api/v1/kundali returned HTTP 200 for the Bengaluru
@@ -680,8 +706,8 @@ The suite covers:
 - process-global ephemeris-path restoration;
 - chronological calendar events; and
 - Kundali schema, sidereal ascendant, whole-sign house placement, Rahu/Ketu,
-  retrograde status, PNG/SVG rendering, merged chart information panel, and
-  chart_style validation; and
+  retrograde status, PNG/SVG rendering, merged chart information panel,
+  chart_style validation, and lang=en/lang=kan rendering; and
 - representative calculation with network access disabled.
 
 ## 13. Compatibility notes

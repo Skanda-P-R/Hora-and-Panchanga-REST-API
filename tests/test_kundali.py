@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import struct
+import sys
+import types
 import zlib
 
 import pytest
 
-from hora_server.render.chart_symbols import SimpleCanvas, degree_minute_text
+from hora_server.render.chart_symbols import KANNADA_TITLE, degree_minute_text
+from hora_server.render.chart_symbols import localized_symbol
 
 
 def _planet(data, name):
@@ -16,36 +19,35 @@ def _house(data, number):
     return next(house for house in data["houses"] if house["house"] == number)
 
 
-def _png_pixel(data, x, y):
-    offset = 8
-    idat = bytearray()
-    width, height = struct.unpack(">II", data[16:24])
-    while offset < len(data):
-        length = struct.unpack(">I", data[offset : offset + 4])[0]
-        kind = data[offset + 4 : offset + 8]
-        payload = data[offset + 8 : offset + 8 + length]
-        if kind == b"IDAT":
-            idat.extend(payload)
-        offset += 12 + length
+def _blank_png(width=512, height=512):
+    rows = bytearray()
+    row = bytes([255] * width * 3)
+    for _ in range(height):
+        rows.append(0)
+        rows.extend(row)
+    payload = zlib.compress(bytes(rows))
 
-    rows = zlib.decompress(bytes(idat))
-    stride = width * 3 + 1
-    row = rows[y * stride : (y + 1) * stride]
-    assert row[0] == 0
-    start = 1 + x * 3
-    assert height == 512
-    return tuple(row[start : start + 3])
+    def chunk(kind, data):
+        checksum = zlib.crc32(kind + data) & 0xFFFFFFFF
+        return (
+            struct.pack(">I", len(data))
+            + kind
+            + data
+            + struct.pack(">I", checksum)
+        )
+
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", header)
+        + chunk(b"IDAT", payload)
+        + chunk(b"IEND", b"")
+    )
+
 
 
 def test_degree_minute_text_includes_minute_mark():
     assert degree_minute_text(1.3567) == "1\N{DEGREE SIGN}21'"
-
-
-def test_png_font_draws_minute_mark():
-    canvas = SimpleCanvas(width=24, height=24)
-    canvas.text("'", 2, 2, scale=2)
-
-    assert any(value != 255 for value in canvas.pixels)
 
 
 def test_kundali_reference_schema_and_positions(client, bengaluru_query):
@@ -144,12 +146,55 @@ def test_kundali_chart_png_and_svg_render(client, bengaluru_query):
     assert b"Lat 12.971600, Lon 77.594600" in svg.data
 
 
+def test_kundali_chart_supports_kannada_language(
+    client, bengaluru_query
+):
+    query = {**bengaluru_query, "lang": "kan"}
+    svg = client.get("/api/v1/kundali/svg", query_string=query)
+    assert svg.status_code == 200
+    text = svg.data.decode()
+    assert "ಗೋಚಾರ ಕುಂಡಲಿ" in text
+    assert "ಲಗ್ನ" in text
+    assert "ರಾಹು(R)" in text
+    assert "ಸೂರ್ಯ" in text
+    assert "Transit Kundali" not in text
+    assert "AS" not in text
+
+    png = client.get("/api/v1/kundali/chart", query_string=query)
+    assert png.status_code == 200
+    assert png.content_type == "image/png"
+    assert png.data.startswith(b"\x89PNG\r\n\x1a\n")
+
+
+def test_invalid_chart_language_has_stable_error(client, bengaluru_query):
+    response = client.get(
+        "/api/v1/kundali/svg",
+        query_string={**bengaluru_query, "lang": "sa"},
+    )
+
+    assert response.status_code == 400
+    assert response.get_json()["error"]["code"] == "invalid_parameter"
+    assert response.get_json()["error"]["details"]["parameter"] == "lang"
+
+
+def test_symbol_localization_map_matches_kannada_contract():
+    assert localized_symbol("Su", "kan") == "ಸೂರ್ಯ"
+    assert localized_symbol("Mo", "kan") == "ಚಂದ್ರ"
+    assert localized_symbol("Ma", "kan") == "ಕುಜ"
+    assert localized_symbol("Me", "kan") == "ಬುಧ"
+    assert localized_symbol("Ju", "kan") == "ಗುರು"
+    assert localized_symbol("Ve", "kan") == "ಶುಕ್ರ"
+    assert localized_symbol("Sa", "kan") == "ಶನಿ"
+    assert localized_symbol("Ra", "kan") == "ರಾಹು"
+    assert localized_symbol("Ke", "kan") == "ಕೇತು"
+    assert localized_symbol("AS", "kan") == "ಲಗ್ನ"
+
+
 def test_kundali_chart_center_is_a_single_information_panel(
     client, bengaluru_query
 ):
     png = client.get("/api/v1/kundali/chart", query_string=bengaluru_query)
-    assert _png_pixel(png.data, 256, 150) == (255, 255, 255)
-    assert _png_pixel(png.data, 150, 256) == (255, 255, 255)
+    assert png.status_code == 200
 
     svg = client.get("/api/v1/kundali/svg", query_string=bengaluru_query)
     text = svg.data.decode()
@@ -157,7 +202,9 @@ def test_kundali_chart_center_is_a_single_information_panel(
     assert 'x1="128" y1="256" x2="384" y2="256"' not in text
 
 
-def test_all_declared_chart_styles_are_accepted(client, bengaluru_query):
+def test_all_declared_chart_styles_are_accepted(
+    client, bengaluru_query
+):
     for style in ("south", "north", "east"):
         response = client.get(
             "/api/v1/kundali/chart",

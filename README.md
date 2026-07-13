@@ -119,8 +119,8 @@ civil date before sunrise.
 | `GET /api/v1/rahu` | Rahu Kalam display plus exact `rahu_kalam_details`, Gulika, and Yamaganda intervals |
 | `GET /api/v1/all` | Compact aggregate intended for Scriptable/mobile clients |
 | `GET /api/v1/kundali` | Current transit Kundali JSON with sidereal lagna, whole-sign houses, planets, Rahu, and Ketu |
-| `GET /api/v1/kundali/chart` | Rendered Kundali chart PNG; optional `chart_style=south|north|east` |
-| `GET /api/v1/kundali/svg` | Rendered Kundali chart SVG; optional `chart_style=south|north|east` |
+| `GET /api/v1/kundali/chart` | Rendered Kundali chart PNG; optional `chart_style=south|north|east` and `lang=en|kan` |
+| `GET /api/v1/kundali/svg` | Rendered Kundali chart SVG; optional `chart_style=south|north|east` and `lang=en|kan` |
 | `GET /health` | Process health and Swiss Ephemeris version |
 
 `/muhurta` returns calculated named intervals, not a universal good/bad
