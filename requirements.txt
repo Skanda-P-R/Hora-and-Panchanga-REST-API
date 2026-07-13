@@ -4,3 +4,5 @@ timezonefinder==8.2.4
 tzdata==2026.2
 gunicorn==26.0.0
 Pillow==12.3.0
+uharfbuzz==0.55.0
+freetype-py==2.5.1
