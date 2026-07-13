@@ -3,7 +3,7 @@
 // Small Widget
 //====================================================
 
-const BASE_URL = "http://192.168.31.71:8000";
+const BASE_URL = "GIVE_YOUR_API_URL";
 
 Location.setAccuracyToThreeKilometers();
 
@@ -26,7 +26,7 @@ try {
   //---------------------------------------
 
   const req = new Request(
-    `${BASE_URL}/api/v1/kundali/chart?lat=${lat}&lon=${lon}`
+    `${BASE_URL}/api/v1/kundali/chart?lat=${lat}&lon=${lon}&lang=en`
   );
 
   req.timeoutInterval = 20;
