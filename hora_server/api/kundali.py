@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from flask import Blueprint, Response, jsonify, request
 
+from hora_server.extensions import cache, limiter
 from hora_server.render import (
     ChartInfo,
     render_kundali_png,
@@ -30,6 +31,8 @@ def chart_info(context: RequestContext, language: str = "en") -> ChartInfo:
 
 
 @blueprint.get("/kundali")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
 def get_kundali():
     if "chart_style" in request.args:
         resolve_chart_style(request.args.get("chart_style"))
@@ -37,6 +40,8 @@ def get_kundali():
 
 
 @blueprint.get("/kundali/chart")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
 def get_kundali_chart():
     chart_style = resolve_chart_style(request.args.get("chart_style"))
     language = resolve_chart_language(request.args.get("lang"))
@@ -54,6 +59,8 @@ def get_kundali_chart():
 
 
 @blueprint.get("/kundali/svg")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
 def get_kundali_svg():
     chart_style = resolve_chart_style(request.args.get("chart_style"))
     language = resolve_chart_language(request.args.get("lang"))

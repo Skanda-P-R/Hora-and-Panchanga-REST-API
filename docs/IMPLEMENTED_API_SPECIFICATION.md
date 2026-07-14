@@ -45,8 +45,8 @@ Version 1 does not provide:
 - activity-specific muhurta selection;
 - natal chart interpretation or birth-chart workflows;
 - reverse geocoding or a city-name database;
-- Vimshottari Dasha, Gochara, Choghadiya, or festivals;
-- authentication, rate limiting, or CORS policy; or
+- Vimshottari Dasha, Choghadiya, or festivals;
+- authentication or CORS policy; or
 - regional Panchanga profiles beyond the selectable ayanamsas and declared
   calculation conventions.
 
@@ -66,6 +66,8 @@ Gunicorn sync workers
   v
 Flask application
   |- API blueprints
+  |- Flask-Caching SimpleCache
+  |- Flask-Limiter per-IP limits
   |- PanchangaService
   |- Astronomy
   |  |- EphemerisEngine
@@ -96,6 +98,8 @@ The direct dependencies are pinned:
 | Dependency | Version | Purpose |
 |---|---:|---|
 | Flask | 3.1.3 | HTTP application and JSON API |
+| Flask-Caching | 2.4.1 | 60-second in-process response caching |
+| Flask-Limiter | 4.1.1 | Per-IP request limiting |
 | pyswisseph | 2.10.3.2 | Swiss Ephemeris Python binding |
 | timezonefinder | 8.2.4 | Offline coordinate-to-IANA-zone lookup |
 | tzdata | 2026.2 | Reproducible IANA timezone data fallback |
@@ -107,6 +111,9 @@ The direct dependencies are pinned:
 The supported runtime is Python 3.11. Later Python versions can require a C
 compiler for PySwissEph and are not claimed as supported without additional
 CI validation.
+
+Flask-Caching uses SimpleCache with CACHE_DEFAULT_TIMEOUT=60. Flask-Limiter
+uses get_remote_address and in-memory storage by default.
 
 
 ## 5. Accuracy and astronomy profile
@@ -225,7 +232,41 @@ JSON response fields.
 In a URL query string, a positive UTC offset must encode the plus sign as
 %2B.
 
-### 6.3 Datetime rules
+Latitude and longitude are validated at their documented ranges and then
+rounded to four decimals before timezone resolution or calculation. This keeps
+near-identical coordinate requests on the same calculation inputs without
+changing the public parameter names.
+
+### 6.3 Caching and rate limiting
+
+All /api/v1 calculation endpoints are cached for 60 seconds with
+Flask-Caching SimpleCache, using the complete query string as part of the
+cache key:
+
+- GET /api/v1/hora
+- GET /api/v1/planetary-hours
+- GET /api/v1/panchanga
+- GET /api/v1/day
+- GET /api/v1/calendar
+- GET /api/v1/muhurta
+- GET /api/v1/rahu
+- GET /api/v1/all
+- GET /api/v1/kundali
+- GET /api/v1/kundali/chart
+- GET /api/v1/kundali/svg
+
+The same endpoints are limited with Flask-Limiter to 60 requests per minute
+per client IP address. Requests above that limit return HTTP 429 using the
+standard JSON error envelope. Root discovery and /health are not cached or
+rate limited.
+
+Successful and error responses for those endpoints include:
+
+~~~http
+Cache-Control: public, max-age=60
+~~~
+
+### 6.4 Datetime rules
 
 - An offset-aware timestamp defines an absolute instant.
 - timezone controls local presentation, civil date, and ritual-day selection.
@@ -242,7 +283,7 @@ Elapsed durations and interval boundaries are calculated in UTC and then
 converted to the selected timezone. This preserves correctness across DST
 changes.
 
-### 6.4 Base response fields
+### 6.5 Base response fields
 
 Most /api/v1 JSON responses include:
 
@@ -265,7 +306,7 @@ the solar-day base envelope, because transit Kundali is an instant chart rather
 than a Vedic-day resource. It includes date, datetime, timezone, lagna, houses,
 planets, and ayanamsa.
 
-### 6.5 Timestamp and numeric formatting
+### 6.6 Timestamp and numeric formatting
 
 - Authoritative timestamps are offset-aware ISO-8601 strings with microseconds.
 - Short HH:MM or HH:MM-HH:MM strings are display-only compatibility fields.
@@ -627,6 +668,9 @@ exposing internals.
 | OBSERVER_ELEVATION_METERS | 0 | Observer height |
 | ATMOSPHERIC_PRESSURE_HPA | 0 | Retained; Hindu rising ignores refraction |
 | ATMOSPHERIC_TEMPERATURE_C | 15 | Retained; Hindu rising ignores refraction |
+| CACHE_TYPE | SimpleCache | Flask-Caching backend |
+| CACHE_DEFAULT_TIMEOUT | 60 | Default cache lifetime in seconds |
+| RATELIMIT_STORAGE_URI | memory:// | Flask-Limiter storage backend |
 | BIND | 0.0.0.0:8000 | Gunicorn bind |
 | WEB_CONCURRENCY | 2 | Synchronous worker count |
 | GUNICORN_TIMEOUT | 30 | Worker timeout in seconds |
@@ -668,11 +712,11 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 55 passing tests;
+- 72 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;
-- all kannada fonts used for PNG rendering is present;
+- all Kannada fonts used for PNG rendering are present;
 - Gunicorn startup verified;
 - GET /health returned HTTP 200 with ephemeris_ready=true; and
 - GET /api/v1/all and GET /api/v1/kundali returned HTTP 200 for the Bengaluru
@@ -707,7 +751,10 @@ The suite covers:
 - chronological calendar events; and
 - Kundali schema, sidereal ascendant, whole-sign house placement, Rahu/Ketu,
   retrograde status, PNG/SVG rendering, merged chart information panel,
-  chart_style validation, and lang=en/lang=kan rendering; and
+  chart_style validation, and lang=en/lang=kan rendering;
+- 60-second caching, cache expiry, query-string cache separation,
+  four-decimal coordinate normalization, Cache-Control headers, and
+  60/minute/IP rate limiting; and
 - representative calculation with network access disabled.
 
 ## 13. Compatibility notes
@@ -743,7 +790,7 @@ See [EPHEMERIS_DATA.md](../EPHEMERIS_DATA.md) for provenance and checksums.
 
 ## 15. Future work
 
-Potential later versions may add authentication, rate limiting,
-activity-specific muhurta rules, regional profiles, reverse geocoding,
+Potential later versions may add authentication, activity-specific muhurta
+rules, regional profiles, reverse geocoding,
 Choghadiya, festival calendars, Vimshottari Dasha, Gochara, natal chart
 workflows, divisional charts, additional house systems, and an OpenAPI schema.

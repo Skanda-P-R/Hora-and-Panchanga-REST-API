@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import time
 from datetime import UTC, datetime
 from typing import Any
 
-from flask import Flask, jsonify
+from flask import Flask, g, jsonify, request
 
 from hora_server.api import register_api
 from hora_server.astronomy import EphemerisEngine, SolarCalculator
 from hora_server.config import Config
+from hora_server.extensions import cache, limiter
 from hora_server.service import PanchangaService
 from hora_server.utils.errors import register_error_handlers
 from hora_server.utils.timezone import TimezoneResolver
@@ -21,6 +23,8 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     if config:
         app.config.update(config)
     app.json.sort_keys = False
+    cache.init_app(app)
+    limiter.init_app(app)
 
     engine = EphemerisEngine(
         ephemeris_path=app.config.get("EPHEMERIS_PATH"),
@@ -42,6 +46,41 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
 
     register_error_handlers(app)
     register_api(app)
+
+    @app.before_request
+    def start_request_timer() -> None:
+        g.request_started_at = time.perf_counter()
+
+    @app.after_request
+    def add_operational_headers(response):
+        cacheable_endpoints = {
+            "all.get_all",
+            "calendar.get_calendar",
+            "calendar.get_day",
+            "hora.get_hora",
+            "hora.get_planetary_hours",
+            "kundali.get_kundali",
+            "kundali.get_kundali_chart",
+            "kundali.get_kundali_svg",
+            "muhurta.get_muhurta",
+            "muhurta.get_rahu",
+            "panchanga.get_panchanga",
+        }
+        if request.endpoint in cacheable_endpoints:
+            response.headers["Cache-Control"] = "public, max-age=60"
+        duration = None
+        started_at = getattr(g, "request_started_at", None)
+        if started_at is not None:
+            duration = round((time.perf_counter() - started_at) * 1000, 3)
+        app.logger.info(
+            "request_complete",
+            extra={
+                "endpoint": request.endpoint,
+                "duration_ms": duration,
+                "status": response.status_code,
+            },
+        )
+        return response
 
     @app.get("/health")
     def health():

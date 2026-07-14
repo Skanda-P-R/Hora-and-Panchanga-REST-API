@@ -106,8 +106,8 @@ class PanchangaService:
         return value
 
     def request_context(self, query: Mapping[str, str]) -> RequestContext:
-        latitude = self._number(query, "lat", -90, 90)
-        longitude = self._number(query, "lon", -180, 180)
+        latitude = round(self._number(query, "lat", -90, 90), 4)
+        longitude = round(self._number(query, "lon", -180, 180), 4)
         timezone = self.timezone_resolver.resolve(
             latitude, longitude, query.get("timezone")
         )

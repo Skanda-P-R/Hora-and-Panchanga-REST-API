@@ -40,6 +40,14 @@ not a golden calculation. Its stated Sun, Moon, tithi, horas, and fixed-length
 Kalam blocks are mutually inconsistent. Tests instead use Swiss Ephemeris
 positions and a published Bengaluru reference day.
 
+## Performance controls
+
+All `/api/v1` calculation endpoints use a 60-second in-process `SimpleCache`
+keyed by the full query string. They also return
+`Cache-Control: public, max-age=60` and are limited to `60/minute` per client
+IP address. Latitude and longitude are normalized to four decimals before
+calculation.
+
 ## Run locally
 
 Python 3.11 is the supported runtime. The pinned PySwissEph release provides a
@@ -50,7 +58,7 @@ as supported without additional CI coverage.
 python3.11 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest
+python -m pytest
 python app.py
 ```
 
