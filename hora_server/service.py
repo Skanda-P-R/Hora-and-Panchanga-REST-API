@@ -54,6 +54,7 @@ from hora_server.utils.datetime import (
 )
 from hora_server.utils.errors import ApiError
 from hora_server.utils.timezone import TimezoneResolver
+from hora_server.utils.translation import localize_payload
 
 
 @dataclass(frozen=True)
@@ -63,6 +64,7 @@ class RequestContext:
     timezone: ZoneInfo
     instant: datetime
     ayanamsa: Ayanamsa
+    lang: str = "en"
 
 
 class PanchangaService:
@@ -126,7 +128,10 @@ class PanchangaService:
         ayanamsa = self.engine.resolve_ayanamsa(
             requested_ayanamsa, self.default_ayanamsa
         )
-        return RequestContext(latitude, longitude, timezone, instant, ayanamsa)
+        lang = (query.get("lang") or "en").strip().lower()
+        if lang not in ("en", "kan"):
+            lang = "en"
+        return RequestContext(latitude, longitude, timezone, instant, ayanamsa, lang)
 
     def solar_day(self, context: RequestContext) -> SolarDay:
         return self.solar.containing_vedic_day(
@@ -346,7 +351,7 @@ class PanchangaService:
 
     def kundali(self, context: RequestContext) -> dict[str, Any]:
         kundali = self.kundali_model(context)
-        return {
+        return localize_payload({
             "date": context.instant.date().isoformat(),
             "datetime": isoformat(context.instant),
             "timezone": context.timezone.key,
@@ -359,7 +364,7 @@ class PanchangaService:
                 for planet in kundali.planets
             ],
             "ayanamsa": context.ayanamsa.display_name,
-        }
+        }, context.lang)
 
     def all(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -383,7 +388,7 @@ class PanchangaService:
             key: self._interval_payload(value) for key, value in intervals.items()
         }
         payload["meta"] = self._meta(panchanga.positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     def hora(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -396,7 +401,7 @@ class PanchangaService:
             context.instant, current, next_planet
         )
         payload["meta"] = self._meta(positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     def planetary_hours(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -408,7 +413,7 @@ class PanchangaService:
             self._planetary_hour_item(hour, context.instant) for hour in hours
         ]
         payload["meta"] = self._meta(positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     def panchanga(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -416,7 +421,7 @@ class PanchangaService:
         payload = self._base(context, solar_day)
         payload.update(self._panchanga_payload(panchanga))
         payload["meta"] = self._meta(panchanga.positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     def day(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -431,7 +436,7 @@ class PanchangaService:
                 "meta": self._meta(positions),
             }
         )
-        return payload
+        return localize_payload(payload, context.lang)
 
     def muhurta(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -443,7 +448,7 @@ class PanchangaService:
             key: self._interval_payload(value) for key, value in intervals.items()
         }
         payload["meta"] = self._meta(positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     def rahu(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)
@@ -462,7 +467,7 @@ class PanchangaService:
             for key in ("gulika", "yamaganda")
         }
         payload["meta"] = self._meta(positions)
-        return payload
+        return localize_payload(payload, context.lang)
 
     @staticmethod
     def _limb_name(kind: str, index: int) -> str:
@@ -533,4 +538,4 @@ class PanchangaService:
         ]
         payload["events"] = events
         payload["meta"] = self._meta(snapshot.positions)
-        return payload
+        return localize_payload(payload, context.lang)

@@ -220,14 +220,13 @@ Every endpoint under /api/v1 accepts:
 | datetime | No | ISO-8601 date or timestamp; defaults to current time |
 | timezone | No | IANA timezone name; inferred offline when absent |
 | ayanamsa | No | Supported sidereal mode; defaults to lahiri |
+| lang | No | Language translation for returned values; supports en and kan (default is en) |
 
 The alias ayanamsha is also accepted.
 
-Kundali chart endpoints also accept optional chart_style and lang.
-chart_style supports south, north, and east; the default is south. lang
-supports en and kan; the default is en. lang affects rendered chart labels and
-the center title only. It does not change date, time, latitude, longitude, or
-JSON response fields.
+All endpoints support the optional lang parameter. For JSON endpoints, lang=kan translates string values in the payload (such as tithi, nakshatra, yoga, karana, vara, samvatsara, ayana, rutu, masa, paksha, planet names, and rasis) into Kannada while preserving the keys.
+Kundali chart endpoints also accept optional chart_style.
+chart_style supports south, north, and east; the default is south. For charts, lang=kan localizes rendered labels, planet abbreviations, and the title.
 
 In a URL query string, a positive UTC offset must encode the plus sign as
 %2B.

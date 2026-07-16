@@ -67,87 +67,126 @@ try {
   widget.addSpacer(6);
 
   //---------------------------------------
-  // Two Columns
+  // Three Columns
   //---------------------------------------
 
   let row = widget.addStack();
   row.layoutHorizontally();
 
   //------------------------------------------------
-  // LEFT
+  // COLUMN 1: ayana, rutu, masa
   //------------------------------------------------
 
-  let left = row.addStack();
-  left.layoutVertically();
+  let col1 = row.addStack();
+  col1.layoutVertically();
 
-  let t1 = left.addText("TITHI");
+  let ay1 = col1.addText("AYANA");
+  ay1.font = Font.boldSystemFont(10);
+  ay1.textColor = Color.gray();
+
+  let ay2 = col1.addText(data.panchanga.ayana);
+  ay2.font = Font.systemFont(12);
+  ay2.textColor = Color.white();
+
+  col1.addSpacer(5);
+
+  let ru1 = col1.addText("RUTU");
+  ru1.font = Font.boldSystemFont(10);
+  ru1.textColor = Color.gray();
+
+  let ru2 = col1.addText(data.panchanga.rutu);
+  ru2.font = Font.systemFont(12);
+  ru2.textColor = Color.white();
+
+  col1.addSpacer(4);
+
+  let ma1 = col1.addText("MASA");
+  ma1.font = Font.boldSystemFont(10);
+  ma1.textColor = Color.gray();
+
+  let ma2 = col1.addText(data.panchanga.masa);
+  ma2.font = Font.systemFont(12);
+  ma2.textColor = Color.white();
+
+  //----------------------------------------
+
+  row.addSpacer(16);
+
+  //----------------------------------------
+  // COLUMN 2: tithi, nakshatra, sunrise
+  //----------------------------------------
+
+  let col2 = row.addStack();
+  col2.layoutVertically();
+
+  let t1 = col2.addText("TITHI");
   t1.font = Font.boldSystemFont(10);
   t1.textColor = Color.gray();
 
-  let t2 = left.addText(data.panchanga.tithi);
-  t2.font = Font.systemFont(13);
+  let t2 = col2.addText(data.panchanga.tithi);
+  t2.font = Font.systemFont(12);
   t2.textColor = Color.white();
 
-  left.addSpacer(5);
+  col2.addSpacer(5);
 
-  let r1 = left.addText("RAHU");
-  r1.font = Font.boldSystemFont(10);
-  r1.textColor = Color.gray();
-
-  let r2 = left.addText(data.rahu_kalam);
-  r2.font = Font.systemFont(12);
-  r2.textColor = Color.white();
-
-  left.addSpacer(4);
-
-  let y1 = left.addText("YAMAGANDA");
-  y1.font = Font.boldSystemFont(10);
-  y1.textColor = Color.gray();
-
-  let y2 = left.addText(data.yamaganda);
-  y2.font = Font.systemFont(12);
-  y2.textColor = Color.white();
-
-  //----------------------------------------
-
-  row.addSpacer(24);
-
-  //----------------------------------------
-  // RIGHT
-  //----------------------------------------
-
-  let right = row.addStack();
-  right.layoutVertically();
-
-  let n1 = right.addText("NAKSHATRA");
+  let n1 = col2.addText("NAKSHATRA");
   n1.font = Font.boldSystemFont(10);
   n1.textColor = Color.gray();
 
-  let n2 = right.addText(data.panchanga.nakshatra);
-  n2.font = Font.systemFont(13);
+  let n2 = col2.addText(data.panchanga.nakshatra);
+  n2.font = Font.systemFont(12);
   n2.textColor = Color.white();
 
-  right.addSpacer(5);
+  col2.addSpacer(4);
 
-  let a1 = right.addText("ABHIJIT");
-  a1.font = Font.boldSystemFont(10);
-  a1.textColor = Color.gray();
-
-  let a2 = right.addText(data.abhijit);
-  a2.font = Font.systemFont(12);
-  a2.textColor = Color.white();
-
-  right.addSpacer(4);
-
-  let s1 = right.addText("SUN");
+  let s1 = col2.addText("SUNRISE");
   s1.font = Font.boldSystemFont(10);
   s1.textColor = Color.gray();
 
-  let s2 = right.addText(
+  let s2 = col2.addText(
     `${data.sunrise} - ${data.sunset}`
   );
   s2.font = Font.systemFont(12);
   s2.textColor = Color.white();
+
+  //----------------------------------------
+
+  row.addSpacer(16);
+
+  //----------------------------------------
+  // COLUMN 3: rahu, yamaganda, abhijit
+  //----------------------------------------
+
+  let col3 = row.addStack();
+  col3.layoutVertically();
+
+  let r1 = col3.addText("RAHU");
+  r1.font = Font.boldSystemFont(10);
+  r1.textColor = Color.gray();
+
+  let r2 = col3.addText(data.rahu_kalam);
+  r2.font = Font.systemFont(12);
+  r2.textColor = Color.white();
+
+  col3.addSpacer(5);
+
+  let y1 = col3.addText("YAMAGANDA");
+  y1.font = Font.boldSystemFont(10);
+  y1.textColor = Color.gray();
+
+  let y2 = col3.addText(data.yamaganda);
+  y2.font = Font.systemFont(12);
+  y2.textColor = Color.white();
+
+  col3.addSpacer(4);
+
+  let a1 = col3.addText("ABHIJIT");
+  a1.font = Font.boldSystemFont(10);
+  a1.textColor = Color.gray();
+
+  let a2 = col3.addText(data.abhijit);
+  a2.font = Font.systemFont(12);
+  a2.textColor = Color.white();
 
   //---------------------------------------
   // Footer

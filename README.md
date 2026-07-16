@@ -92,6 +92,7 @@ Every `/api/v1/*` endpoint accepts the same query parameters.
 | `datetime` | no | ISO-8601 instant; defaults to now. A date-only value means local noon. |
 | `timezone` | no | IANA zone. If absent, it is resolved offline from the coordinates. |
 | `ayanamsa` | no | `lahiri` (default), `raman`, `krishnamurti`, or `fagan_bradley` |
+| `lang` | no | `en` (default) or `kan` (translates returned values to Kannada) |
 
 An offset-aware `datetime` defines the instant; `timezone` defines local
 presentation and the ritual date. Naive timestamps are interpreted in the

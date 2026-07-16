@@ -260,3 +260,28 @@ def test_representative_request_is_fully_offline(
     monkeypatch.setattr(socket, "create_connection", reject_network)
     response = client.get("/api/v1/all", query_string=bengaluru_query)
     assert response.status_code == 200
+
+
+def test_kannada_language_localization(client, bengaluru_query):
+    query = bengaluru_query.copy()
+    query["lang"] = "kan"
+    response = client.get("/api/v1/all", query_string=query)
+    assert response.status_code == 200
+    data = response.get_json()
+
+    assert data["panchanga"]["tithi"] == "ಕೃಷ್ಣ ಅಷ್ಟಮಿ"
+    assert data["panchanga"]["nakshatra"] == "ರೇವತಿ"
+    assert data["panchanga"]["vara"] == "ಬುಧವಾರ"
+    assert data["panchanga"]["karana"] == "ಕೌಲವ"
+    assert data["panchanga"]["yoga"] == "ಅತಿಗಂಡ"
+    assert data["panchanga"]["samvatsara"] == "ಪರಾಭವ"
+    assert data["panchanga"]["ayana"] == "ಉತ್ತರಾಯಣ"
+    assert data["panchanga"]["rutu"] == "ಗ್ರೀಷ್ಮ"
+    assert data["panchanga"]["masa"] == "ಜ್ಯೇಷ್ಠ"
+    assert data["panchanga"]["paksha"] == "ಕೃಷ್ಣ"
+    assert data["moon"]["rasi"] == "ಮೀನ"
+    assert data["sun"]["rasi"] == "ಮಿಥುನ"
+    assert data["muhurta"]["rahu_kalam"]["name"] == "ರಾಹುಕಾಲ"
+    assert data["muhurta"]["gulika"]["name"] == "ಗುಳಿಕ ಕಾಲ"
+    assert data["muhurta"]["yamaganda"]["name"] == "ಯಮಗಂಡ"
+    assert data["muhurta"]["abhijit"]["name"] == "ಅಭಿಜಿತ್ ಮುಹೂರ್ತ"
