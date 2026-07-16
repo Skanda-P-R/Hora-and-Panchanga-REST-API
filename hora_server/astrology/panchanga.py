@@ -17,6 +17,9 @@ from .constants import (
     VARA_NAMES,
     WEEKDAY_NAMES,
     YOGAS,
+    MASAS,
+    RUTUS,
+    SAMVATSARAS,
 )
 
 
@@ -47,6 +50,11 @@ class Panchanga:
     moon_rasi: str
     moon_pada: int
     positions: Positions
+    samvatsara: str
+    ayana: str
+    rutu: str
+    masa: str
+    paksha: str
 
 
 def tithi_name(index: int) -> tuple[str, str]:
@@ -148,6 +156,34 @@ def calculate_panchanga(
     else:
         transition = lambda kind: None
 
+    # Solve conjunctions to find containing Amanta month
+    NM_prev = engine.conjunction(instant, -1)
+    NM_next = engine.conjunction(instant, 1)
+
+    pos_prev = engine.positions(NM_prev, ayanamsa)
+    pos_next = engine.positions(NM_next, ayanamsa)
+
+    R_prev = int(pos_prev.sun_sidereal // 30)
+    R_next = int(pos_next.sun_sidereal // 30)
+
+    is_adhika = R_prev == R_next
+    month_index = (R_prev + 1) % 12 if is_adhika else R_next
+
+    masa = f"Adhika {MASAS[month_index]}" if is_adhika else MASAS[month_index]
+    rutu = RUTUS[month_index // 2]
+
+    sun_sid = positions.sun_sidereal
+    ayana = "Dakshinayana" if 90 <= sun_sid < 270 else "Uttarayana"
+
+    year = instant.year
+    if month_index in (10, 11) and instant.month <= 4:
+        shaka_year = year - 79
+    else:
+        shaka_year = year - 78
+
+    samvatsara_index = (shaka_year + 11) % 60
+    samvatsara = SAMVATSARAS[samvatsara_index]
+
     return Panchanga(
         tithi=Limb(
             tithi_index,
@@ -195,4 +231,9 @@ def calculate_panchanga(
         moon_rasi=RASHIS[_index(positions.moon_sidereal, 30, 12)],
         moon_pada=pada,
         positions=positions,
+        samvatsara=samvatsara,
+        ayana=ayana,
+        rutu=rutu,
+        masa=masa,
+        paksha=paksha,
     )

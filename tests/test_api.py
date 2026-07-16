@@ -41,6 +41,11 @@ def test_bengaluru_reference_case(client, bengaluru_query):
     assert data["panchanga"]["vara"] == "Wednesday"
     assert data["panchanga"]["karana"] == "Kaulava"
     assert data["panchanga"]["yoga"] == "Atiganda"
+    assert data["panchanga"]["samvatsara"] == "Parabhava"
+    assert data["panchanga"]["ayana"] == "Uttarayana"
+    assert data["panchanga"]["rutu"] == "Grishma"
+    assert data["panchanga"]["masa"] == "Jyeshtha"
+    assert data["panchanga"]["paksha"] == "Krishna"
     assert data["moon"]["rasi"] == "Meena"
     assert data["moon"]["pada"] == 4
     assert data["sun"]["rasi"] == "Mithuna"

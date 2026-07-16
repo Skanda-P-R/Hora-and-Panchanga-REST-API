@@ -190,6 +190,11 @@ class PanchangaService:
                 "karana": panchanga.karana.name,
                 "vara": panchanga.vara,
                 "vara_sanskrit": panchanga.vara_sanskrit,
+                "samvatsara": panchanga.samvatsara,
+                "ayana": panchanga.ayana,
+                "rutu": panchanga.rutu,
+                "masa": panchanga.masa,
+                "paksha": panchanga.paksha,
             },
             "panchanga_details": {
                 "tithi": self._limb_payload(panchanga.tithi),

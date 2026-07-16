@@ -120,7 +120,7 @@ civil date before sunrise.
 |---|---|
 | `GET /api/v1/hora` | Current unequal planetary hour, remaining time, and next ruler |
 | `GET /api/v1/planetary-hours` | All 12 day and 12 night horas for the containing Vedic day |
-| `GET /api/v1/panchanga` | Tithi, nakshatra/pada, nitya yoga, karana, vara, Sun/Moon rashi, transitions |
+| `GET /api/v1/panchanga` | Tithi, nakshatra/pada, nitya yoga, karana, vara, Sun/Moon rashi, samvatsara, ayana, rutu, masa, paksha, transitions |
 | `GET /api/v1/day` | Sunrise, sunset, next sunrise, solar noon, and elapsed durations |
 | `GET /api/v1/calendar` | Chronological solar and Panchanga transition timeline for one local civil date |
 | `GET /api/v1/muhurta` | Rahu Kalam, Gulika, Yamaganda, and Abhijit intervals |
@@ -147,6 +147,10 @@ For tropical Sun/Moon longitudes `S` and `M`, and Lahiri sidereal longitudes
 - Pada: `floor((Ms mod (360 / 27)) / (360 / 108)) + 1`
 - Nitya yoga: `floor(((Ss + Ms) mod 360) / (360 / 27))`
 - Rashi: `floor(sidereal_longitude / 30)`
+- Masa: Named after the sidereal zodiac sign the Sun enters during the Amanta month (New Moon to New Moon). An intercalary month with no solar transit is prefixed with `Adhika`.
+- Rutu (Season): `floor(masa_index / 2)` (Vasanta, Grishma, Varsha, Sharad, Hemanta, Shishira).
+- Ayana: `Dakshinayana` when Sun sidereal longitude is in `[90, 270)`, otherwise `Uttarayana`.
+- Samvatsara (60-year cycle): `(Shaka_Year + 11) % 60`. Shaka Year increments at Ugadi.
 
 Rahu, Gulika, and Yamaganda use weekday-specific eighths of the actual
 sunrise-to-sunset duration. Abhijit is the eighth of 15 equal daylight

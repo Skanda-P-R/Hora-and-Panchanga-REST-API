@@ -286,6 +286,55 @@ class EphemerisEngine:
             )
         return self.datetime_from_julian_day(returned_jd[0])
 
+    def conjunction(self, instant: datetime, direction: int) -> datetime:
+        """Find the exact conjunction (new moon) in the given direction (-1 or 1)."""
+        t = instant.astimezone(UTC)
+        jd = self.julian_day(t)
+        with self._lock:
+            if self.ephemeris_path:
+                swe.set_ephe_path(self.ephemeris_path)
+            sun_data, _ = swe.calc_ut(jd, swe.SUN, swe.FLG_SWIEPH)
+            moon_data, _ = swe.calc_ut(jd, swe.MOON, swe.FLG_SWIEPH)
+
+        elongation = (moon_data[0] - sun_data[0]) % 360
+
+        if direction < 0:
+            days_offset = elongation / 12.2
+            if days_offset < 0.2:
+                days_offset = 29.53
+        else:
+            days_offset = (360 - elongation) / 12.2
+            if days_offset < 0.2:
+                days_offset = 29.53
+
+        curr_utc = t + timedelta(days=direction * days_offset)
+
+        for _ in range(6):
+            jd_curr = self.julian_day(curr_utc)
+            with self._lock:
+                if self.ephemeris_path:
+                    swe.set_ephe_path(self.ephemeris_path)
+                sun_data, _ = swe.calc_ut(jd_curr, swe.SUN, swe.FLG_SWIEPH | swe.FLG_SPEED)
+                moon_data, _ = swe.calc_ut(jd_curr, swe.MOON, swe.FLG_SWIEPH | swe.FLG_SPEED)
+
+            sun_lon = sun_data[0]
+            moon_lon = moon_data[0]
+            sun_speed = sun_data[3]
+            moon_speed = moon_data[3]
+
+            diff = (moon_lon - sun_lon) % 360
+            if diff > 180:
+                diff -= 360
+
+            speed = moon_speed - sun_speed
+            delta_jd = -diff / speed
+
+            curr_utc = self.datetime_from_julian_day(jd_curr + delta_jd)
+            if abs(delta_jd) * 86400 < 0.05:
+                break
+
+        return curr_utc.astimezone(instant.tzinfo)
+
     @property
     def version(self) -> str:
         return str(swe.version)

@@ -361,7 +361,7 @@ tile sunset to next sunrise.
 
 Returns base fields, panchanga summary, panchanga_details, moon, sun, and meta.
 
-The summary contains tithi, nakshatra, yoga, karana, vara, and vara_sanskrit.
+The summary contains tithi, nakshatra, yoga, karana, vara, vara_sanskrit, samvatsara, ayana, rutu, masa, and paksha.
 Every limb detail contains name, one-based number, progress,
 longitude_degrees, and ends_at. Tithi also contains paksha,
 lunar_day_number (1–30), and paksha_day_number (1–15). Nakshatra also contains
