@@ -205,9 +205,31 @@ response field; the individual conventions are exposed in meta.
 
 ### 6.1 Methods and media type
 
-All application resources are read-only GET endpoints. Successful API data
-responses and all error responses are JSON. The Kundali chart endpoints return
-image/png or image/svg+xml directly without a JSON wrapper.
+Calculation endpoints are read-only GET resources. Registry management (locations/favorites) endpoints use POST and DELETE methods. Authentication uses a POST method. Successful API data responses and all error responses are JSON. The Kundali chart endpoints return image/png or image/svg+xml directly without a JSON wrapper.
+
+### 6.1.1 Authentication & Security
+
+All calculation and registry endpoints require session-based authentication.
+
+- **Login Endpoint**: `POST /api/v1/auth/login`
+  - Request Payload:
+    ```json
+    {
+      "username": "username-string",
+      "device_uuid": "device-uuid-string"
+    }
+    ```
+  - Response (Success):
+    ```json
+    {
+      "token": "session-token-string"
+    }
+    ```
+    *Note: The first login with a pre-registered username binds it to that device's UUID. Subsequent logins from a different UUID are rejected with a 403 Forbidden error.*
+- **Header Authentication**: Authenticated requests must supply the session token in the authorization header:
+  ```http
+  Authorization: Bearer <token>
+  ```
 
 ### 6.2 Common query parameters
 
@@ -762,7 +784,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 78 passing tests;
+- 82 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;

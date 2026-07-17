@@ -5,6 +5,7 @@ from __future__ import annotations
 from flask import Flask
 
 from .all import blueprint as all_blueprint
+from .auth import blueprint as auth_blueprint
 from .calendar import blueprint as calendar_blueprint
 from .hora import blueprint as hora_blueprint
 from .kundali import blueprint as kundali_blueprint
@@ -23,5 +24,6 @@ def register_api(app: Flask) -> None:
         all_blueprint,
         kundali_blueprint,
         locations_blueprint,
+        auth_blueprint,
     ):
         app.register_blueprint(blueprint, url_prefix=prefix)

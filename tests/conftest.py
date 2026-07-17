@@ -15,6 +15,7 @@ def app():
             "TESTING": True,
             "EPHEMERIS_PATH": str(project_root / "hora_server" / "ephe"),
             "STRICT_SWISS_EPHEMERIS": True,
+            "DISABLE_AUTH_FOR_TESTS": True,
         }
     )
 

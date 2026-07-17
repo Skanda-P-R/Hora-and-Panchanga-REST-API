@@ -7,10 +7,12 @@ import time
 from datetime import UTC, datetime
 from typing import Any
 
+import click
 from flask import Flask, g, jsonify, request
 
 from hora_server.api import register_api
 from hora_server.astronomy import EphemerisEngine, SolarCalculator
+from hora_server.auth import init_auth_store, add_user, reset_device, remove_user
 from hora_server.config import Config
 from hora_server.extensions import cache, limiter
 from hora_server.registry import LocationRegistry
@@ -42,6 +44,10 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     locations_path = os.getenv("LOCATIONS_FILE_PATH") or os.path.join(app.instance_path, default_filename)
     registry = LocationRegistry(locations_path)
     app.extensions["location_registry"] = registry
+
+    default_users_filename = "test_users.json" if app.config.get("TESTING") else "users.json"
+    users_path = os.getenv("USERS_FILE_PATH") or os.path.join(app.instance_path, default_users_filename)
+    init_auth_store(users_path)
 
     service = PanchangaService(
         engine,
@@ -114,5 +120,35 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
                 "endpoint_prefix": "/api/v1",
             }
         )
+
+    @app.cli.command("add-user")
+    @click.argument("username")
+    def add_user_command(username):
+        """Pre-register a new username for passwordless login."""
+        success = add_user(username)
+        if success:
+            click.echo(f"User '{username}' pre-registered successfully.")
+        else:
+            click.echo(f"Error: User '{username}' already exists.")
+
+    @app.cli.command("reset-device")
+    @click.argument("username")
+    def reset_device_command(username):
+        """Reset the bound device UUID for a username."""
+        success = reset_device(username)
+        if success:
+            click.echo(f"Device binding for user '{username}' reset successfully.")
+        else:
+            click.echo(f"Error: User '{username}' not found.")
+
+    @app.cli.command("remove-user")
+    @click.argument("username")
+    def remove_user_command(username):
+        """Remove a username from pre-registration and invalidate their session."""
+        success = remove_user(username)
+        if success:
+            click.echo(f"User '{username}' removed successfully.")
+        else:
+            click.echo(f"Error: User '{username}' not found.")
 
     return app

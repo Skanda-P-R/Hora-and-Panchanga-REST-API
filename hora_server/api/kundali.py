@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from flask import Blueprint, Response, jsonify, request
 
+from hora_server.auth import require_session
 from hora_server.extensions import cache, limiter
 from hora_server.render import (
     ChartInfo,
@@ -49,6 +50,7 @@ def birth_chart_info(context: RequestContext, language: str = "en", name: str | 
 
 
 @blueprint.get("/kundali")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali():
@@ -58,6 +60,7 @@ def get_kundali():
 
 
 @blueprint.get("/kundali/chart")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali_chart():
@@ -77,6 +80,7 @@ def get_kundali_chart():
 
 
 @blueprint.get("/kundali/svg")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali_svg():
@@ -96,6 +100,7 @@ def get_kundali_svg():
 
 
 @blueprint.get("/kundali/birth")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali_birth():
@@ -109,6 +114,7 @@ def get_kundali_birth():
 
 
 @blueprint.get("/kundali/birth/chart")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali_birth_chart():
@@ -129,6 +135,7 @@ def get_kundali_birth_chart():
 
 
 @blueprint.get("/kundali/birth/svg")
+@require_session
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
 def get_kundali_birth_svg():

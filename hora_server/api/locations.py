@@ -4,10 +4,12 @@ from __future__ import annotations
 
 from flask import Blueprint, current_app, jsonify, request
 
+from hora_server.auth import require_session
 from hora_server.extensions import limiter
 from hora_server.registry import LocationRegistry
 from hora_server.utils.errors import ApiError
 from hora_server.utils.timezone import TimezoneResolver
+from typing import Any
 
 
 blueprint = Blueprint("locations", __name__)
@@ -55,6 +57,7 @@ def validate_coordinates(lat_val: Any, lon_val: Any) -> tuple[float, float]:
 
 
 @blueprint.get("/locations")
+@require_session
 @limiter.limit("60 per minute")
 def get_locations():
     """Retrieve all saved locations."""
@@ -62,6 +65,7 @@ def get_locations():
 
 
 @blueprint.post("/locations")
+@require_session
 @limiter.limit("30 per minute")
 def save_location():
     """Create or update a saved location."""
@@ -91,6 +95,7 @@ def save_location():
 
 
 @blueprint.delete("/locations/<name>")
+@require_session
 @limiter.limit("30 per minute")
 def delete_location(name: str):
     """Delete a saved location."""
@@ -106,6 +111,7 @@ def delete_location(name: str):
 
 
 @blueprint.get("/favorites")
+@require_session
 @limiter.limit("60 per minute")
 def get_favorites():
     """Retrieve all favorite cities."""
@@ -113,6 +119,7 @@ def get_favorites():
 
 
 @blueprint.post("/favorites")
+@require_session
 @limiter.limit("30 per minute")
 def save_favorite():
     """Create or update a favorite city."""
@@ -142,6 +149,7 @@ def save_favorite():
 
 
 @blueprint.delete("/favorites/<name>")
+@require_session
 @limiter.limit("30 per minute")
 def delete_favorite(name: str):
     """Delete a favorite city."""

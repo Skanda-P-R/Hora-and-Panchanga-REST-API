@@ -9,6 +9,8 @@ calculations. All calculations run locally; clients only consume JSON.
   the authoritative contract for version 1.
 - [Birth Chart and Location specification](docs/BIRTH_CHART_AND_LOCATION_SPECIFICATION.md)
   documents the additive birth chart, any-date Panchanga, and location registry features.
+- [Session Security specification](docs/SESSION_SECURITY_SPECIFICATION.md)
+  documents the passwordless device-bound session security architecture.
 - [Kundali extension specification](docs/KUNDALI_EXTENTION_SPECIFICATION.md)
   documents the additive current-transit Kundali endpoints.
 - [Original project requirements](docs/ORIGINAL_PROJECT_REQUIREMENTS.md)
@@ -82,6 +84,56 @@ Gunicorn serves plain HTTP and should sit behind TLS termination in production.
 [`deploy/nginx.conf.example`](deploy/nginx.conf.example) provides the HTTPS
 reverse-proxy shape from the specification; replace its hostname and
 certificate paths for the deployment environment.
+
+## User administration
+
+When session security is enabled, you must pre-register usernames before they can connect. Usernames and device bindings are stored in `instance/users.json`.
+
+### Pre-register a user
+Pre-register a new username so they can log in and bind their device UUID on first access:
+```bash
+flask add-user <username>
+```
+
+### Reset a user's bound device
+If a user changes their phone or gets locked out, reset their bound device UUID and active token:
+```bash
+flask reset-device <username>
+```
+
+### Remove a user
+To delete a user entirely and revoke their session:
+```bash
+flask remove-user <username>
+```
+
+
+## Authentication
+
+Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/login`) requires session authentication.
+
+### Login
+- **Endpoint**: `POST /api/v1/auth/login`
+- **Request Payload**:
+  ```json
+  {
+    "username": "your-username",
+    "device_uuid": "your-device-uuid"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "token": "session-token-string"
+  }
+  ```
+  *Note: The first time a username is used to log in, it binds to the provided `device_uuid`. Subsequent logins from a different `device_uuid` will be rejected.*
+
+### Authenticating Requests
+Pass the session token in the `Authorization` header of all subsequent API calls:
+```http
+Authorization: Bearer <token>
+```
 
 ## Request parameters
 
