@@ -30,6 +30,24 @@ def chart_info(context: RequestContext, language: str = "en") -> ChartInfo:
     )
 
 
+def birth_chart_info(context: RequestContext, language: str = "en", name: str | None = None) -> ChartInfo:
+    instant = context.instant
+    if language == "kan":
+        title = "ಜನನ ಕುಂಡಲಿ"
+        if name:
+            title = f"{name} - {title}"
+    else:
+        title = "Janma Kundali"
+        if name:
+            title = f"{name} - {title}"
+    return ChartInfo(
+        title=title,
+        date=instant.date().isoformat(),
+        time=instant.strftime("%H:%M:%S %z"),
+        location=f"Lat {context.latitude:.6f}, Lon {context.longitude:.6f}",
+    )
+
+
 @blueprint.get("/kundali")
 @limiter.limit("60 per minute")
 @cache.cached(timeout=60, query_string=True)
@@ -71,6 +89,59 @@ def get_kundali_svg():
             kundali,
             chart_style,
             chart_info(request_context, language),
+            language,
+        ),
+        mimetype="image/svg+xml",
+    )
+
+
+@blueprint.get("/kundali/birth")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
+def get_kundali_birth():
+    if "chart_style" in request.args:
+        resolve_chart_style(request.args.get("chart_style"))
+    result = service().kundali(context())
+    name = request.args.get("name")
+    if name:
+        result["name"] = name.strip()
+    return jsonify(result)
+
+
+@blueprint.get("/kundali/birth/chart")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
+def get_kundali_birth_chart():
+    chart_style = resolve_chart_style(request.args.get("chart_style"))
+    language = resolve_chart_language(request.args.get("lang"))
+    name = request.args.get("name")
+    request_context = context()
+    kundali = service().kundali_model(request_context)
+    return Response(
+        render_kundali_png(
+            kundali,
+            chart_style,
+            birth_chart_info(request_context, language, name),
+            language,
+        ),
+        mimetype="image/png",
+    )
+
+
+@blueprint.get("/kundali/birth/svg")
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
+def get_kundali_birth_svg():
+    chart_style = resolve_chart_style(request.args.get("chart_style"))
+    language = resolve_chart_language(request.args.get("lang"))
+    name = request.args.get("name")
+    request_context = context()
+    kundali = service().kundali_model(request_context)
+    return Response(
+        render_kundali_svg(
+            kundali,
+            chart_style,
+            birth_chart_info(request_context, language, name),
             language,
         ),
         mimetype="image/svg+xml",

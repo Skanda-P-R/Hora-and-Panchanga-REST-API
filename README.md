@@ -7,6 +7,8 @@ calculations. All calculations run locally; clients only consume JSON.
 
 - [Implemented API specification](docs/IMPLEMENTED_API_SPECIFICATION.md) is
   the authoritative contract for version 1.
+- [Birth Chart and Location specification](docs/BIRTH_CHART_AND_LOCATION_SPECIFICATION.md)
+  documents the additive birth chart, any-date Panchanga, and location registry features.
 - [Kundali extension specification](docs/KUNDALI_EXTENTION_SPECIFICATION.md)
   documents the additive current-transit Kundali endpoints.
 - [Original project requirements](docs/ORIGINAL_PROJECT_REQUIREMENTS.md)
@@ -83,18 +85,21 @@ certificate paths for the deployment environment.
 
 ## Request parameters
 
-Every `/api/v1/*` endpoint accepts the same query parameters.
+Every `/api/v1/*` endpoint accepts the same query parameters. Alternatively, coordinates can be resolved using a saved `location` parameter name.
 
 | Parameter | Required | Meaning |
 |---|---:|---|
-| `lat` | yes | WGS84 latitude, `-90..90` |
-| `lon` | yes | WGS84 longitude, `-180..180` |
-| `datetime` | no | ISO-8601 instant; defaults to now. A date-only value means local noon. |
-| `timezone` | no | IANA zone. If absent, it is resolved offline from the coordinates. |
+| `lat` | yes | WGS84 latitude, `-90..90` (required only if `location` is absent) |
+| `lon` | yes | WGS84 longitude, `-180..180` (required only if `location` is absent) |
+| `location` | no | Case-insensitive name of a saved location or favorite city from `locations.json`. Resolves coordinates & timezone automatically. |
+| `datetime` | no | ISO-8601 instant; defaults to now. |
+| `date` | no | Alias for `datetime`. Combined with `time` if both are specified; otherwise defaults to local noon of that date (e.g. `date=2026-07-20`). |
+| `time` | no | 24-hour time format (e.g. `13:46` or `13:46:00`). Combined with `date` if both are specified. |
+| `timezone` | no | IANA zone. If absent, resolved offline or from saved location registry. |
 | `ayanamsa` | no | `lahiri` (default), `raman`, `krishnamurti`, or `fagan_bradley` |
 | `lang` | no | `en` (default) or `kan` (translates returned values to Kannada) |
 
-An offset-aware `datetime` defines the instant; `timezone` defines local
+An offset-aware `datetime`/`date` defines the instant; `timezone` defines local
 presentation and the ritual date. Naive timestamps are interpreted in the
 resolved zone. Nonexistent DST times are rejected, and ambiguous repeated
 times require an explicit offset.
@@ -128,8 +133,17 @@ civil date before sunrise.
 | `GET /api/v1/rahu` | Rahu Kalam display plus exact `rahu_kalam_details`, Gulika, and Yamaganda intervals |
 | `GET /api/v1/all` | Compact aggregate intended for Scriptable/mobile clients |
 | `GET /api/v1/kundali` | Current transit Kundali JSON with sidereal lagna, whole-sign houses, planets, Rahu, and Ketu |
-| `GET /api/v1/kundali/chart` | Rendered Kundali chart PNG; optional `chart_style=south|north|east` and `lang=en|kan` |
-| `GET /api/v1/kundali/svg` | Rendered Kundali chart SVG; optional `chart_style=south|north|east` and `lang=en|kan` |
+| `GET /api/v1/kundali/chart` | Rendered Transit Kundali chart PNG; optional `chart_style=south|north|east` and `lang=en|kan` |
+| `GET /api/v1/kundali/svg` | Rendered Transit Kundali chart SVG; optional `chart_style=south|north|east` and `lang=en|kan` |
+| `GET /api/v1/kundali/birth` | Birth Chart (Janma Kundali) JSON; optional `name` parameter |
+| `GET /api/v1/kundali/birth/chart` | Rendered Birth Chart PNG with optional `name` drawn in the center |
+| `GET /api/v1/kundali/birth/svg` | Rendered Birth Chart SVG with optional `name` drawn in the center |
+| `GET /api/v1/locations` | List all saved locations |
+| `POST /api/v1/locations` | Save or update a custom location (payload: JSON with `name`, `latitude`, `longitude`, optional `timezone`, `description`) |
+| `DELETE /api/v1/locations/<name>` | Delete a saved location |
+| `GET /api/v1/favorites` | List all favorite cities |
+| `POST /api/v1/favorites` | Save or update a favorite city (payload: JSON with `name`, `latitude`, `longitude`, optional `timezone`, `country`) |
+| `DELETE /api/v1/favorites/<name>` | Delete a favorite city |
 | `GET /health` | Process health and Swiss Ephemeris version |
 
 `/muhurta` returns calculated named intervals, not a universal good/bad

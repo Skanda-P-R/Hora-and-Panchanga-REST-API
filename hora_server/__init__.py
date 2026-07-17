@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 from datetime import UTC, datetime
 from typing import Any
@@ -12,6 +13,7 @@ from hora_server.api import register_api
 from hora_server.astronomy import EphemerisEngine, SolarCalculator
 from hora_server.config import Config
 from hora_server.extensions import cache, limiter
+from hora_server.registry import LocationRegistry
 from hora_server.service import PanchangaService
 from hora_server.utils.errors import register_error_handlers
 from hora_server.utils.timezone import TimezoneResolver
@@ -36,11 +38,17 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
         pressure_hpa=float(app.config["ATMOSPHERIC_PRESSURE_HPA"]),
         temperature_c=float(app.config["ATMOSPHERIC_TEMPERATURE_C"]),
     )
+    default_filename = "test_locations.json" if app.config.get("TESTING") else "locations.json"
+    locations_path = os.getenv("LOCATIONS_FILE_PATH") or os.path.join(app.instance_path, default_filename)
+    registry = LocationRegistry(locations_path)
+    app.extensions["location_registry"] = registry
+
     service = PanchangaService(
         engine,
         solar,
         TimezoneResolver(),
         default_ayanamsa=app.config["DEFAULT_AYANAMSA"],
+        registry=registry,
     )
     app.extensions["panchanga_service"] = service
 

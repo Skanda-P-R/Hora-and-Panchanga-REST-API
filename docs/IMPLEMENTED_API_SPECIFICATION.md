@@ -215,10 +215,13 @@ Every endpoint under /api/v1 accepts:
 
 | Parameter | Required | Contract |
 |---|---:|---|
-| lat | Yes | Finite WGS84 latitude from -90 through 90 |
-| lon | Yes | Finite WGS84 longitude from -180 through 180 |
+| lat | Yes | Finite WGS84 latitude from -90 through 90 (required only if `location` is absent) |
+| lon | Yes | Finite WGS84 longitude from -180 through 180 (required only if `location` is absent) |
+| location | No | Case-insensitive name of a saved location or favorite city from `locations.json` |
 | datetime | No | ISO-8601 date or timestamp; defaults to current time |
-| timezone | No | IANA timezone name; inferred offline when absent |
+| date | No | Alias for `datetime`. Combined with `time` if both are specified; otherwise defaults to local noon of that date (e.g. `date=2026-07-20`) |
+| time | No | 24-hour time format (e.g. `13:46` or `13:46:00`). Combined with `date` if both are specified. |
+| timezone | No | IANA timezone name; inferred offline or loaded from location registry when absent |
 | ayanamsa | No | Supported sidereal mode; defaults to lahiri |
 | lang | No | Language translation for returned values; supports en and kan (default is en) |
 
@@ -458,7 +461,55 @@ Returns the same rendered Kundali chart model as image/svg+xml. The SVG uses a
 512 by 512 viewBox and the same chart_style and lang values as the PNG
 endpoint.
 
-### 7.14 Meta object
+### 7.14 GET /api/v1/kundali/birth
+
+Returns Birth Chart (Janma Kundali) JSON. It accepts the same query parameters as the standard `/api/v1/kundali` endpoint, with an optional `name` parameter to label the chart. The JSON response is identical to `/api/v1/kundali` but includes a top-level `"name"` key if the name was supplied.
+
+### 7.15 GET /api/v1/kundali/birth/chart
+
+Returns a rendered Birth Chart as image/png. It accepts `chart_style`, `lang`, and `name`. If `name` is supplied (e.g. `?name=Rama`), the center panel is updated to display `[Name] - Birth Chart` (or translated `[Name] - ಜನನ ಕುಂಡಲಿ` in Kannada) instead of the default "Transit Kundali" title.
+
+### 7.16 GET /api/v1/kundali/birth/svg
+
+Returns the rendered Birth Chart as image/svg+xml, accepting the same parameters as the PNG birth chart endpoint.
+
+### 7.17 Saved Locations API
+
+Allows creating, listing, and deleting custom saved locations stored in `instance/locations.json`.
+
+- **GET /api/v1/locations**: Returns a JSON dictionary of all saved locations.
+- **POST /api/v1/locations**: Saves or updates a location. Expects a JSON payload:
+  ```json
+  {
+    "name": "Home",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "timezone": "Asia/Kolkata",
+    "description": "Sweet Home"
+  }
+  ```
+  Returns `{"status": "saved", "name": "Home"}` with HTTP 201.
+- **DELETE /api/v1/locations/<name>**: Deletes the specified saved location. Returns `{"status": "deleted", "name": "<name>"}`.
+
+### 7.18 Favorite Cities API
+
+Allows creating, listing, and deleting favorite cities stored in `instance/locations.json`.
+
+- **GET /api/v1/favorites**: Returns a JSON dictionary of all favorite cities.
+- **POST /api/v1/favorites**: Saves or updates a city. Expects a JSON payload:
+  ```json
+  {
+    "name": "Bengaluru",
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "timezone": "Asia/Kolkata",
+    "country": "India"
+  }
+  ```
+  Returns `{"status": "saved", "name": "Bengaluru"}` with HTTP 201.
+- **DELETE /api/v1/favorites/<name>**: Deletes the specified favorite city. Returns `{"status": "deleted", "name": "<name>"}`.
+
+### 7.19 Meta object
 
 | Field | Meaning |
 |---|---|
@@ -711,7 +762,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 72 passing tests;
+- 78 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;

@@ -52,6 +52,7 @@ from hora_server.utils.datetime import (
     remaining_text,
     time_text,
 )
+from hora_server.registry import LocationRegistry
 from hora_server.utils.errors import ApiError
 from hora_server.utils.timezone import TimezoneResolver
 from hora_server.utils.translation import localize_payload
@@ -74,11 +75,13 @@ class PanchangaService:
         solar: SolarCalculator,
         timezone_resolver: TimezoneResolver,
         default_ayanamsa: str = "lahiri",
+        registry: LocationRegistry | None = None,
     ) -> None:
         self.engine = engine
         self.solar = solar
         self.timezone_resolver = timezone_resolver
         self.default_ayanamsa = default_ayanamsa
+        self.registry = registry
 
     @staticmethod
     def _number(
@@ -108,19 +111,68 @@ class PanchangaService:
         return value
 
     def request_context(self, query: Mapping[str, str]) -> RequestContext:
-        latitude = round(self._number(query, "lat", -90, 90), 4)
-        longitude = round(self._number(query, "lon", -180, 180), 4)
+        location_resolved = False
+        latitude = None
+        longitude = None
+        timezone_str = None
+
+        location_name = query.get("location")
+        if location_name:
+            if self.registry:
+                resolved_data = self.registry.resolve(location_name)
+                if resolved_data:
+                    latitude = resolved_data["latitude"]
+                    longitude = resolved_data["longitude"]
+                    timezone_str = resolved_data["timezone"]
+                    location_resolved = True
+                else:
+                    raise ApiError(
+                        f"Location '{location_name}' not found in registry",
+                        code="location_not_found",
+                        status_code=404,
+                        details={"location": location_name},
+                    )
+            else:
+                raise ApiError(
+                    "Location registry is not configured",
+                    code="registry_not_configured",
+                    status_code=500,
+                )
+
+        if not location_resolved:
+            latitude = round(self._number(query, "lat", -90, 90), 4)
+            longitude = round(self._number(query, "lon", -180, 180), 4)
+            timezone_str = query.get("timezone")
+
         timezone = self.timezone_resolver.resolve(
-            latitude, longitude, query.get("timezone")
+            latitude, longitude, timezone_str
         )
-        instant = parse_iso_datetime(query.get("datetime"), timezone)
+        
+        datetime_val = query.get("datetime")
+        if not datetime_val:
+            date_param = query.get("date")
+            time_param = query.get("time")
+            if date_param and time_param:
+                datetime_val = f"{date_param.strip()}T{time_param.strip()}"
+            else:
+                datetime_val = date_param
+
+        instant = parse_iso_datetime(datetime_val, timezone)
         if not 1800 <= instant.year <= 2399:
+            if "datetime" in query:
+                parameter_name = "datetime"
+            elif "date" in query and "time" in query:
+                parameter_name = "date/time"
+            elif "date" in query:
+                parameter_name = "date"
+            else:
+                parameter_name = "datetime"
             raise ApiError(
-                "datetime must fall within the supported range 1800-2399",
+                f"{parameter_name} must fall within the supported range 1800-2399",
                 code="datetime_out_of_range",
                 status_code=422,
                 details={
-                    "parameter": "datetime",
+                    "parameter": parameter_name,
                     "date": instant.date().isoformat(),
                 },
             )
