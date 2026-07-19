@@ -196,3 +196,46 @@ SAMVATSARAS: Final[tuple[str, ...]] = (
     "Pingala", "Kalayukta", "Siddharthi", "Raudri", "Durmati",
     "Dundubhi", "Rudhirodgari", "Raktakshi", "Krodhana", "Akshaya"
 )
+
+
+ENGLISH_RASIS: Final[tuple[str, ...]] = (
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces",
+)
+
+
+DASHA_LORDS: Final[tuple[str, ...]] = (
+    "Ketu",
+    "Venus",
+    "Sun",
+    "Moon",
+    "Mars",
+    "Rahu",
+    "Jupiter",
+    "Saturn",
+    "Mercury",
+)
+
+
+DASHA_YEARS: Final[dict[str, int]] = {
+    "Ketu": 7,
+    "Venus": 20,
+    "Sun": 6,
+    "Moon": 10,
+    "Mars": 7,
+    "Rahu": 18,
+    "Jupiter": 16,
+    "Saturn": 19,
+    "Mercury": 17,
+}
+

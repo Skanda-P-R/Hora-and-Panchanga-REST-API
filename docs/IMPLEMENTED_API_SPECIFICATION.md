@@ -31,7 +31,8 @@ The application provides a stateless JSON REST API for:
 - Panchanga transition times;
 - Rahu Kalam, Gulika Kalam, Yamaganda, and Abhijit Muhurta;
 - current transit Kundali with sidereal ascendant, whole-sign houses,
-  classical visible planets, Rahu, and Ketu; and
+  classical visible planets, Rahu, and Ketu;
+- Vimshottari Dasha calculation cycles and timelines; and
 - an aggregate response for mobile, web, and Scriptable clients.
 
 All runtime calculations are local. No network request, database, session
@@ -45,7 +46,7 @@ Version 1 does not provide:
 - activity-specific muhurta selection;
 - natal chart interpretation or birth-chart workflows;
 - reverse geocoding or a city-name database;
-- Vimshottari Dasha, Choghadiya, or festivals;
+- Choghadiya or festivals;
 - authentication or CORS policy; or
 - regional Panchanga profiles beyond the selectable ayanamsas and declared
   calculation conventions.
@@ -76,7 +77,8 @@ Flask application
   |  |- Hora
   |  |- Panchanga
   |  |- Muhurta
-  |  `- Kundali
+  |  |- Kundali
+  |  `- Dasha
   |- Render
   |  `- Kundali chart PNG/SVG renderers
   `- Utilities
@@ -278,6 +280,7 @@ cache key:
 - GET /api/v1/kundali
 - GET /api/v1/kundali/chart
 - GET /api/v1/kundali/svg
+- GET /api/v1/dasha
 
 The same endpoints are limited with Flask-Limiter to 60 requests per minute
 per client IP address. Requests above that limit return HTTP 429 using the
@@ -495,7 +498,24 @@ Returns a rendered Birth Chart as image/png. It accepts `chart_style`, `lang`, a
 
 Returns the rendered Birth Chart as image/svg+xml, accepting the same parameters as the PNG birth chart endpoint.
 
-### 7.17 Saved Locations API
+### 7.17 GET /api/v1/dasha
+
+Returns the Vimshottari Dasha cycles and timelines starting from the Moon's longitude. It accepts standard location and datetime query parameters:
+- `lat` (Float, optional/required if `location` not specified)
+- `lon` (Float, optional/required if `location` not specified)
+- `location` (String, optional)
+- `datetime` (String, optional)
+- `date` (String, optional)
+- `time` (String, optional)
+- `timezone` (String, optional)
+- `ayanamsa` (String, optional, default is `lahiri`)
+- `lang` (String, optional, default is `en`)
+- `depth` (Integer, optional, default is `2`): detailing levels `1` (Mahadashas), `2` (Mahadashas + Antardashas), or `3` (Mahadashas + Antardashas + Pratyantardashas).
+- `year_type` (String, optional, default is `365.25`): dasha year duration in days: `365.25` (solar year) or `360` (Savana year).
+
+When `lang=kan` is requested, the Moon's Nakshatra, Rasi, Nakshatra Lord, and the dasha lords in the timeline are automatically localized to Kannada.
+
+### 7.18 Saved Locations API
 
 Allows creating, listing, and deleting custom saved locations stored in `instance/locations.json`.
 
@@ -513,7 +533,7 @@ Allows creating, listing, and deleting custom saved locations stored in `instanc
   Returns `{"status": "saved", "name": "Home"}` with HTTP 201.
 - **DELETE /api/v1/locations/<name>**: Deletes the specified saved location. Returns `{"status": "deleted", "name": "<name>"}`.
 
-### 7.18 Favorite Cities API
+### 7.19 Favorite Cities API
 
 Allows creating, listing, and deleting favorite cities stored in `instance/locations.json`.
 
@@ -531,7 +551,7 @@ Allows creating, listing, and deleting favorite cities stored in `instance/locat
   Returns `{"status": "saved", "name": "Bengaluru"}` with HTTP 201.
 - **DELETE /api/v1/favorites/<name>**: Deletes the specified favorite city. Returns `{"status": "deleted", "name": "<name>"}`.
 
-### 7.19 Meta object
+### 7.20 Meta object
 
 | Field | Meaning |
 |---|---|
@@ -784,7 +804,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 82 passing tests;
+- 88 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;
@@ -864,5 +884,5 @@ See [EPHEMERIS_DATA.md](../EPHEMERIS_DATA.md) for provenance and checksums.
 
 Potential later versions may add authentication, activity-specific muhurta
 rules, regional profiles, reverse geocoding,
-Choghadiya, festival calendars, Vimshottari Dasha, Gochara, natal chart
+Choghadiya, festival calendars, natal chart
 workflows, divisional charts, additional house systems, and an OpenAPI schema.

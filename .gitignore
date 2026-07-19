@@ -11,4 +11,6 @@ dist/
 .DS_Store
 .agents
 .codex
-instance/
+instance/users.json
+instance/test_locations.json
+instance/test_users.json

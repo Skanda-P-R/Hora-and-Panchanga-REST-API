@@ -190,6 +190,7 @@ civil date before sunrise.
 | `GET /api/v1/kundali/birth` | Birth Chart (Janma Kundali) JSON; optional `name` parameter |
 | `GET /api/v1/kundali/birth/chart` | Rendered Birth Chart PNG with optional `name` drawn in the center |
 | `GET /api/v1/kundali/birth/svg` | Rendered Birth Chart SVG with optional `name` drawn in the center |
+| `GET /api/v1/dasha` | Vimshottari Dasha cycles and timelines (Mahadashas, Antardashas, Pratyantardashas) starting from Moon's longitude; optional `depth=1|2|3` and `year_type=365.25|360` |
 | `GET /api/v1/locations` | List all saved locations |
 | `POST /api/v1/locations` | Save or update a custom location (payload: JSON with `name`, `latitude`, `longitude`, optional `timezone`, `description`) |
 | `DELETE /api/v1/locations/<name>` | Delete a saved location |
@@ -218,6 +219,7 @@ For tropical Sun/Moon longitudes `S` and `M`, and Lahiri sidereal longitudes
 - Rutu (Season): `floor(masa_index / 2)` (Vasanta, Grishma, Varsha, Sharad, Hemanta, Shishira).
 - Ayana: `Dakshinayana` when Sun sidereal longitude is in `[90, 270)`, otherwise `Uttarayana`.
 - Samvatsara (60-year cycle): `(Shaka_Year + 11) % 60`. Shaka Year increments at Ugadi.
+- Vimshottari Dasha: starting dasha lord determined by the Moon's Nakshatra index mod 9 in sequence (Ketu, Venus, Sun, Moon, Mars, Rahu, Jupiter, Saturn, Mercury). Total dasha cycle duration is 120 years. Sub-period durations are calculated proportionally to each planet's cycle years.
 
 Rahu, Gulika, and Yamaganda use weekday-specific eighths of the actual
 sunrise-to-sunset duration. Abhijit is the eighth of 15 equal daylight

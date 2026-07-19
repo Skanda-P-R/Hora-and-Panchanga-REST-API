@@ -35,6 +35,7 @@ from hora_server.astrology.kundali import (
     calculate_kundali,
 )
 from hora_server.astrology.muhurta import MuhurtaInterval, calculate_muhurta
+from hora_server.astrology.dasha import calculate_dasha
 from hora_server.astrology.panchanga import (
     Limb,
     Panchanga,
@@ -417,6 +418,88 @@ class PanchangaService:
             ],
             "ayanamsa": context.ayanamsa.display_name,
         }, context.lang)
+
+    def _dasha_period_payload(self, period: Any) -> dict[str, Any]:
+        return {
+            "level": period.level,
+            "lord": period.lord,
+            "start": isoformat(period.start),
+            "end": isoformat(period.end),
+            "duration_years": period.duration_years,
+            "sub_periods": [
+                self._dasha_period_payload(sub) for sub in period.sub_periods
+            ],
+        }
+
+    def _dasha_moon_payload(self, moon: Any) -> dict[str, Any]:
+        return {
+            "longitude": round(moon.longitude, 4),
+            "degree_in_rasi": round(moon.degree_in_rasi, 4),
+            "rasi": moon.rasi,
+            "rasi_number": moon.rasi_number,
+            "nakshatra": moon.nakshatra,
+            "nakshatra_number": moon.nakshatra_number,
+            "nakshatra_lord": moon.nakshatra_lord,
+        }
+
+    def _dasha_balance_payload(self, balance: Any) -> dict[str, Any]:
+        return {
+            "lord": balance.lord,
+            "total_years": balance.total_years,
+            "elapsed_years": balance.elapsed_years,
+            "remaining_years": balance.remaining_years,
+            "elapsed_fraction": balance.elapsed_fraction,
+            "remaining_fraction": balance.remaining_fraction,
+        }
+
+    def _dasha_active_payload(self, active: Any) -> dict[str, Any]:
+        payload = {
+            "mahadasha": active.mahadasha,
+            "antardasha": active.antardasha,
+        }
+        if active.pratyantardasha is not None:
+            payload["pratyantardasha"] = active.pratyantardasha
+        return payload
+
+    def dasha(
+        self,
+        context: RequestContext,
+        depth: int = 2,
+        year_type: str = "365.25",
+    ) -> dict[str, Any]:
+        try:
+            year_days = float(year_type)
+        except ValueError:
+            year_days = 365.25
+
+        if year_days not in (365.25, 360.0):
+            year_days = 365.25
+
+        pos = self.engine.positions(context.instant, context.ayanamsa)
+        moon_longitude = pos.moon_sidereal
+
+        moon_details, balance, timeline, active = calculate_dasha(
+            moon_longitude,
+            context.instant,
+            year_days=year_days,
+            depth=depth,
+        )
+
+        payload = {
+            "date": context.instant.date().isoformat(),
+            "datetime": isoformat(context.instant),
+            "timezone": context.timezone.key,
+            "ayanamsa": context.ayanamsa.display_name,
+            "year_type": str(year_days),
+            "moon": self._dasha_moon_payload(moon_details),
+            "dasha_balance": self._dasha_balance_payload(balance),
+            "active_dasha": self._dasha_active_payload(active),
+            "timeline": [
+                self._dasha_period_payload(period) for period in timeline
+            ],
+        }
+
+        return localize_payload(payload, context.lang)
 
     def all(self, context: RequestContext) -> dict[str, Any]:
         solar_day = self.solar_day(context)

@@ -9,22 +9,10 @@ from typing import Final
 import swisseph as swe
 
 from hora_server.astronomy.ephemeris import Ayanamsa, EphemerisEngine
+from hora_server.astrology.constants import ENGLISH_RASIS
 
 
-RASI_NAMES: Final[tuple[str, ...]] = (
-    "Aries",
-    "Taurus",
-    "Gemini",
-    "Cancer",
-    "Leo",
-    "Virgo",
-    "Libra",
-    "Scorpio",
-    "Sagittarius",
-    "Capricorn",
-    "Aquarius",
-    "Pisces",
-)
+RASI_NAMES: Final[tuple[str, ...]] = ENGLISH_RASIS
 
 PLANET_BODIES: Final[tuple[tuple[str, str, int], ...]] = (
     ("Sun", "Su", swe.SUN),

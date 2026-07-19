@@ -153,3 +153,22 @@ def get_kundali_birth_svg():
         ),
         mimetype="image/svg+xml",
     )
+
+
+@blueprint.get("/dasha")
+@require_session
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
+def get_dasha():
+    depth_str = request.args.get("depth", "2")
+    try:
+        depth = int(depth_str)
+        if depth not in (1, 2, 3):
+            depth = 2
+    except ValueError:
+        depth = 2
+
+    year_type = request.args.get("year_type", "365.25")
+
+    return jsonify(service().dasha(context(), depth=depth, year_type=year_type))
+
