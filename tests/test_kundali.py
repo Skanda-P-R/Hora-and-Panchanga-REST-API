@@ -5,6 +5,9 @@ import sys
 import types
 import zlib
 
+import io
+
+from PIL import Image
 import pytest
 
 from hora_server.render.chart_symbols import KANNADA_TITLE, degree_minute_text
@@ -28,18 +31,14 @@ def _blank_png(width=512, height=512):
     payload = zlib.compress(bytes(rows))
 
     def chunk(kind, data):
-        checksum = zlib.crc32(kind + data) & 0xFFFFFFFF
-        return (
-            struct.pack(">I", len(data))
-            + kind
-            + data
-            + struct.pack(">I", checksum)
-        )
+        length = struct.pack(">I", len(data))
+        crc = struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+        return length + kind + data + crc
 
-    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
     return (
         b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", header)
+        + chunk(b"IHDR", ihdr)
         + chunk(b"IDAT", payload)
         + chunk(b"IEND", b"")
     )
@@ -133,6 +132,12 @@ def test_kundali_chart_png_and_svg_render(client, bengaluru_query):
     assert png.data.startswith(b"\x89PNG\r\n\x1a\n")
     width, height = struct.unpack(">II", png.data[16:24])
     assert (width, height) == (512, 512)
+
+    image = Image.open(io.BytesIO(png.data))
+    assert sum(1 for x in range(512) if image.getpixel((x, 0)) != (255, 255, 255)) == 512
+    assert sum(1 for y in range(512) if image.getpixel((0, y)) != (255, 255, 255)) == 512
+    assert sum(1 for y in range(512) if image.getpixel((511, y)) != (255, 255, 255)) == 512
+    assert sum(1 for x in range(512) if image.getpixel((x, 511)) != (255, 255, 255)) == 512
 
     svg = client.get("/api/v1/kundali/svg", query_string=bengaluru_query)
     assert svg.status_code == 200

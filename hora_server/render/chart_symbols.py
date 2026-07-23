@@ -382,13 +382,22 @@ def _draw_centered_shaped_text(
     renderer.draw(image, text, origin_x, baseline_y, fill)
 
 
+def _png_line(line: tuple[int, int, int, int], width: int = 2) -> tuple[int, int, int, int]:
+    x1, y1, x2, y2 = line
+    if x1 == CHART_SIZE and x2 == CHART_SIZE:
+        x1 = x2 = CHART_SIZE - width
+    if y1 == CHART_SIZE and y2 == CHART_SIZE:
+        y1 = y2 = CHART_SIZE - width
+    return (x1, y1, x2, y2)
+
+
 def _render_unicode_grid_png(
     cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
 ) -> bytes:
     image = Image.new("RGB", (CHART_SIZE, CHART_SIZE), "white")
     draw = ImageDraw.Draw(image)
     for line in _grid_lines():
-        draw.line(line, fill=(17, 17, 17), width=2)
+        draw.line(_png_line(line), fill=(17, 17, 17), width=2)
 
     font_path = _unicode_font_path()
     if not font_path:
@@ -466,7 +475,7 @@ def _render_english_grid_png(
     image = Image.new("RGB", (CHART_SIZE, CHART_SIZE), "white")
     draw = ImageDraw.Draw(image)
     for line in _grid_lines():
-        draw.line(line, fill=(17, 17, 17), width=2)
+        draw.line(_png_line(line), fill=(17, 17, 17), width=2)
 
     top_font = _english_font(16)
     label_font = _english_font(20)
