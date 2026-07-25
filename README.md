@@ -191,6 +191,7 @@ civil date before sunrise.
 | `GET /api/v1/kundali/birth/chart` | Rendered Birth Chart PNG with optional `name` drawn in the center |
 | `GET /api/v1/kundali/birth/svg` | Rendered Birth Chart SVG with optional `name` drawn in the center |
 | `GET /api/v1/dasha` | Vimshottari Dasha cycles and timelines (Mahadashas, Antardashas, Pratyantardashas) starting from Moon's longitude; optional `depth=1|2|3` and `year_type=365.25|360` |
+| `GET /api/v1/dasha/birth` | Birth Vimshottari Dasha timeline starting from Moon's longitude at birth, with active dasha and balance resolved at the current time |
 | `GET /api/v1/locations` | List all saved locations |
 | `POST /api/v1/locations` | Save or update a custom location (payload: JSON with `name`, `latitude`, `longitude`, optional `timezone`, `description`) |
 | `DELETE /api/v1/locations/<name>` | Delete a saved location |

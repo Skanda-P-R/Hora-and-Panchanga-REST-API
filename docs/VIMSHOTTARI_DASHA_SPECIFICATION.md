@@ -168,6 +168,22 @@ Returns the Vimshottari Dasha timeline and details.
 
 ---
 
+### `GET /api/v1/dasha/birth`
+
+Returns the birth Vimshottari Dasha timeline starting from the Moon's longitude at birth, but with `"active_dasha"` and `"dasha_balance"` calculated for the **current time of the request** (now) in the resolved local timezone of the request context.
+
+It accepts the exact same query parameters as `GET /api/v1/dasha`.
+
+**Example Scenario:**
+If a person was born on `2004-03-18T17:30:00+05:30`:
+- The starting lord (at birth) is **Mars**.
+- The `"timeline"` contains the contiguous 120-year periods starting from 2004.
+- In **2026**, calling `GET /api/v1/dasha/birth` returns:
+  - `"active_dasha"`: `"mahadasha": "Jupiter"`, `"antardasha": "Saturn"` (which is the active cycle running in 2026).
+  - `"dasha_balance"`: Calculated for the active **Jupiter** Mahadasha at the current moment of request in 2026 (showing the elapsed/remaining years and fraction of the Jupiter Mahadasha *now*).
+
+---
+
 ## File Architecture Changes
 
 To implement this specification, the following files will be added or modified:

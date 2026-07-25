@@ -281,6 +281,7 @@ cache key:
 - GET /api/v1/kundali/chart
 - GET /api/v1/kundali/svg
 - GET /api/v1/dasha
+- GET /api/v1/dasha/birth
 
 The same endpoints are limited with Flask-Limiter to 60 requests per minute
 per client IP address. Requests above that limit return HTTP 429 using the
@@ -515,7 +516,13 @@ Returns the Vimshottari Dasha cycles and timelines starting from the Moon's long
 
 When `lang=kan` is requested, the Moon's Nakshatra, Rasi, Nakshatra Lord, and the dasha lords in the timeline are automatically localized to Kannada.
 
-### 7.18 Saved Locations API
+### 7.18 GET /api/v1/dasha/birth
+
+Returns the birth Vimshottari Dasha timeline starting from the Moon's longitude at birth, but with `"active_dasha"` and `"dasha_balance"` calculated for the **current time of the request** (now) in the resolved local timezone of the request context.
+
+It accepts the exact same query parameters as `GET /api/v1/dasha`.
+
+### 7.19 Saved Locations API
 
 Allows creating, listing, and deleting custom saved locations stored in `instance/locations.json`.
 
@@ -533,7 +540,7 @@ Allows creating, listing, and deleting custom saved locations stored in `instanc
   Returns `{"status": "saved", "name": "Home"}` with HTTP 201.
 - **DELETE /api/v1/locations/<name>**: Deletes the specified saved location. Returns `{"status": "deleted", "name": "<name>"}`.
 
-### 7.19 Favorite Cities API
+### 7.20 Favorite Cities API
 
 Allows creating, listing, and deleting favorite cities stored in `instance/locations.json`.
 
@@ -551,7 +558,7 @@ Allows creating, listing, and deleting favorite cities stored in `instance/locat
   Returns `{"status": "saved", "name": "Bengaluru"}` with HTTP 201.
 - **DELETE /api/v1/favorites/<name>**: Deletes the specified favorite city. Returns `{"status": "deleted", "name": "<name>"}`.
 
-### 7.20 Meta object
+### 7.21 Meta object
 
 | Field | Meaning |
 |---|---|
@@ -804,7 +811,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 88 passing tests;
+- 90 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;

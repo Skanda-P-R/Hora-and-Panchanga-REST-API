@@ -59,6 +59,7 @@ def calculate_dasha(
     start_time: datetime,
     year_days: float = 365.25,
     depth: int = 2,
+    active_at: datetime | None = None,
 ) -> tuple[MoonDetails, DashaBalance, tuple[DashaPeriod, ...], ActiveDasha]:
     # 1. Moon and Nakshatra
     long_360 = moon_longitude % 360
@@ -172,23 +173,53 @@ def calculate_dasha(
         )
         current_time = m_end
 
-    # 5. Determine active dasha at start_time
+    # 5. Determine active dasha at the target active_at time (or start_time if not provided)
+    target_time = active_at if active_at is not None else start_time
+
     active_mahadasha = ""
     active_antardasha = ""
     active_pratyantardasha = None
+    active_m_period = None
 
     for m in timeline:
-        if m.start <= start_time < m.end:
+        if m.start <= target_time < m.end:
             active_mahadasha = m.lord
+            active_m_period = m
             for a in m.sub_periods:
-                if a.start <= start_time < a.end:
+                if a.start <= target_time < a.end:
                     active_antardasha = a.lord
                     for p in a.sub_periods:
-                        if p.start <= start_time < p.end:
+                        if p.start <= target_time < p.end:
                             active_pratyantardasha = p.lord
                             break
                     break
             break
+
+    # If active_at was provided and we found an active mahadasha period, calculate dasha balance for that moment
+    if active_at is not None and active_m_period is not None:
+        m_start = active_m_period.start
+        m_end = active_m_period.end
+        m_lord = active_m_period.lord
+        m_years = active_m_period.duration_years
+
+        total_seconds = (m_end - m_start).total_seconds()
+        elapsed_seconds = (active_at - m_start).total_seconds()
+
+        elapsed_seconds = max(0.0, min(elapsed_seconds, total_seconds))
+        elapsed_frac = elapsed_seconds / total_seconds
+        remaining_frac = 1.0 - elapsed_frac
+
+        elapsed_years = elapsed_frac * m_years
+        remaining_years = remaining_frac * m_years
+
+        balance = DashaBalance(
+            lord=m_lord,
+            total_years=m_years,
+            elapsed_years=round(elapsed_years, 4),
+            remaining_years=round(remaining_years, 4),
+            elapsed_fraction=round(elapsed_frac, 6),
+            remaining_fraction=round(remaining_frac, 6),
+        )
 
     active = ActiveDasha(
         mahadasha=active_mahadasha,

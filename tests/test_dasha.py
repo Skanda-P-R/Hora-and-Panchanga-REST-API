@@ -146,3 +146,56 @@ def test_api_get_dasha_localization(client, bengaluru_query):
     assert data["dasha_balance"]["lord"] == "ಬುಧ"
     assert data["active_dasha"]["mahadasha"] == "ಬುಧ"
     assert data["timeline"][0]["lord"] == "ಬುಧ"
+
+
+def test_dasha_calculation_active_at():
+    # Born 2004-03-18T17:30:00 (Moon at Revati, lord Mercury)
+    birth_time = datetime(2004, 3, 18, 17, 30, 0, tzinfo=ZoneInfo("Asia/Kolkata"))
+    # Currently querying at 2026-07-25T13:23:58 (22.35 years later)
+    query_time = datetime(2026, 7, 25, 13, 23, 58, tzinfo=ZoneInfo("Asia/Kolkata"))
+
+    # Revati Moon longitude ~357.7
+    moon_details, balance, timeline, active = calculate_dasha(
+        moon_longitude=357.7080,
+        start_time=birth_time,
+        year_days=365.25,
+        depth=2,
+        active_at=query_time,
+    )
+
+    # Birth dasha was Mercury (17 years total, started before birth).
+    # Since birth was in 2004-03-18 and elapsed fraction was 0.8281 (14.077 years),
+    # Mercury Mahadasha ended ~2.92 years after birth, i.e. around 2007.
+    # Subsequent Mahadashas:
+    # - Ketu (7 years): ~2007 to ~2014
+    # - Venus (20 years): ~2014 to ~2034
+    # Therefore, in 2026, the active Mahadasha must be Venus!
+    assert active.mahadasha == "Venus"
+    assert balance.lord == "Venus"
+    assert balance.total_years == 20.0
+    # Let's verify start/end of Venus in timeline
+    venus_m = next(m for m in timeline if m.lord == "Venus")
+    assert venus_m.start <= query_time < venus_m.end
+
+
+def test_api_get_dasha_birth(client):
+    # Query for birth dasha at 2004-03-18
+    # Since the request datetime is 2004-03-18, the birth time is 2004.
+    # But the current request time (when executing the test, which is now in 2026)
+    # is 2026, so active_dasha should resolve to Venus.
+    query = {
+        "lat": "12.9716",
+        "lon": "77.5946",
+        "datetime": "2004-03-18T17:30:00+05:30",
+        "timezone": "Asia/Kolkata",
+    }
+    response = client.get("/api/v1/dasha/birth", query_string=query)
+    assert response.status_code == 200
+    data = response.get_json()
+
+    # Birth moon details should still be from 2004 Moon (Dhanishtha -> Mars lord)
+    assert data["moon"]["nakshatra_lord"] == "Mars"
+    # But active dasha and balance lord should be Jupiter because current time is 2026!
+    assert data["active_dasha"]["mahadasha"] == "Jupiter"
+    assert data["dasha_balance"]["lord"] == "Jupiter"
+
