@@ -811,7 +811,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 90 passing tests;
+- 91 passing tests;
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;

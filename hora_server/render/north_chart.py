@@ -35,7 +35,7 @@ def _cells(kundali: Kundali, language: str = "en") -> tuple[ChartCell, ...]:
         ChartCell(
             row=row,
             column=column,
-            top_label=str(house),
+            top_label=str(kundali.houses[house - 1].rasi_number),
             labels=labels[house],
         )
         for house, (row, column) in NORTH_HOUSE_CELLS.items()

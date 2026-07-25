@@ -32,7 +32,12 @@ SOUTH_RASI_CELLS = {
 def _cells(kundali: Kundali, language: str = "en") -> tuple[ChartCell, ...]:
     labels = labels_by_rasi(kundali, language)
     return tuple(
-        ChartCell(row=row, column=column, top_label=str(rasi), labels=labels[rasi])
+        ChartCell(
+            row=row,
+            column=column,
+            top_label=str(((rasi - kundali.lagna.number) % 12) + 1),
+            labels=labels[rasi],
+        )
         for rasi, (row, column) in SOUTH_RASI_CELLS.items()
     )
 

@@ -236,3 +236,23 @@ def test_kundali_is_not_added_to_existing_aggregate(client, bengaluru_query):
     assert "kundali" not in data
     assert "lagna" not in data
     assert "houses" not in data
+
+
+def test_kundali_chart_top_labels_are_dynamic(client, bengaluru_query):
+    # Fetch JSON to know lagna number
+    data = client.get("/api/v1/kundali", query_string=bengaluru_query).get_json()
+    lagna_num = data["lagna"]["number"]
+
+    # South chart: Lagna rasi cell must have top_label "1"
+    svg_south = client.get(
+        "/api/v1/kundali/svg",
+        query_string={**bengaluru_query, "chart_style": "south"},
+    ).data.decode()
+
+    # North chart: 1st house (top diamond) must have top_label equal to lagna_num
+    svg_north = client.get(
+        "/api/v1/kundali/svg",
+        query_string={**bengaluru_query, "chart_style": "north"},
+    ).data.decode()
+    assert f'>{lagna_num}</text>' in svg_north
+
