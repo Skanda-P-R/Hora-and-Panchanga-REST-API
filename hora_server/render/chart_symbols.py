@@ -53,6 +53,8 @@ class ChartCell:
     column: int
     top_label: str
     labels: tuple[str, ...]
+    top_label_pos: tuple[float, float] | None = None
+    center_pos: tuple[float, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -187,53 +189,94 @@ def _grid_lines() -> tuple[tuple[int, int, int, int], ...]:
 
 
 def render_grid_svg(
-    cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
+    cells: tuple[ChartCell, ...],
+    chart_info: ChartInfo | None = None,
+    lines: tuple[tuple[int, int, int, int], ...] | None = None,
+    info_box_rect: tuple[int, int, int, int] | None = None,
 ) -> str:
     elements = [
         f'<rect x="0" y="0" width="{CHART_SIZE}" height="{CHART_SIZE}" fill="white"/>'
     ]
-    for x1, y1, x2, y2 in _grid_lines():
+    grid_lines = lines if lines is not None else _grid_lines()
+    for x1, y1, x2, y2 in grid_lines:
         elements.append(
             f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
             'stroke="#111" stroke-width="2"/>'
         )
 
-    for cell in cells:
-        x = cell.column * CELL_SIZE
-        y = cell.row * CELL_SIZE
+    if info_box_rect and info_box_rect != (171, 171, 170, 170):
+        bx, by, bw, bh = info_box_rect
         elements.append(
-            f'<text x="{x + 8}" y="{y + 20}" font-family="{SVG_FONT_FAMILY}" '
-            f'font-size="16" fill="#222">{escape(cell.top_label, quote=False)}</text>'
+            f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" '
+            'fill="white" stroke="#111" stroke-width="1.5"/>'
+        )
+
+    for cell in cells:
+        if cell.top_label_pos:
+            top_x, top_y = cell.top_label_pos
+            anchor = 'text-anchor="middle" '
+        else:
+            top_x = cell.column * CELL_SIZE + 8
+            top_y = cell.row * CELL_SIZE + 20
+            anchor = ""
+        elements.append(
+            f'<text x="{top_x}" y="{top_y}" font-family="{SVG_FONT_FAMILY}" '
+            f'font-size="16" fill="#222" {anchor}>{escape(cell.top_label, quote=False)}</text>'
         )
         if not cell.labels:
             continue
         display_lines = _display_lines(cell.labels)
-        line_height = 19
-        start_y = y + (CELL_SIZE - (len(display_lines) - 1) * line_height) / 2
+        font_size = 15 if len(display_lines) >= 3 else 18
+        line_height = 16 if len(display_lines) >= 3 else 19
+        if cell.center_pos:
+            cx, cy = cell.center_pos
+            start_y = cy - ((len(display_lines) - 1) * line_height) / 2
+        else:
+            cx = cell.column * CELL_SIZE + CELL_SIZE / 2
+            y = cell.row * CELL_SIZE
+            start_y = y + (CELL_SIZE - (len(display_lines) - 1) * line_height) / 2
+
         for index, label in enumerate(display_lines):
             if not label:
                 continue
             elements.append(
-                f'<text x="{x + CELL_SIZE / 2}" y="{start_y + index * line_height}" '
-                f'font-family="{SVG_FONT_FAMILY}" font-size="18" fill="#111" '
+                f'<text x="{cx}" y="{start_y + index * line_height}" '
+                f'font-family="{SVG_FONT_FAMILY}" font-size="{font_size}" fill="#111" '
                 'text-anchor="middle" dominant-baseline="middle">'
                 f"{escape(label, quote=False)}</text>"
             )
 
     if chart_info:
         center_x = CHART_SIZE / 2
-        text_lines = (
-            (chart_info.title, 220, 20, "#111"),
-            (chart_info.date, 252, 15, "#333"),
-            (chart_info.time, 278, 15, "#333"),
-            (chart_info.location, 304, 14, "#333"),
-        )
-        for text, y, size, color in text_lines:
+        title_parts = chart_info.title.split(" - ", 1) if " - " in chart_info.title else [chart_info.title]
+        if info_box_rect:
+            _, by, _, bh = info_box_rect
+            box_cy = by + bh / 2
+            curr_y = box_cy - 40 if len(title_parts) > 1 else box_cy - 30
+        else:
+            curr_y = 216 if len(title_parts) > 1 else 226
+
+        for idx, t_text in enumerate(title_parts):
+            t_size = 15 if (len(t_text) > 14 or len(title_parts) > 1) else 18
             elements.append(
-                f'<text x="{center_x}" y="{y}" font-family="{SVG_FONT_FAMILY}" '
+                f'<text x="{center_x}" y="{curr_y}" font-family="{SVG_FONT_FAMILY}" '
+                f'font-size="{t_size}" fill="#111" text-anchor="middle" '
+                f'dominant-baseline="middle">{escape(t_text, quote=False)}</text>'
+            )
+            curr_y += 20 if len(title_parts) > 1 else 24
+
+        curr_y += 4
+        for text, size, color in (
+            (chart_info.date, 13, "#333"),
+            (chart_info.time, 13, "#333"),
+            (chart_info.location, 10.5, "#333"),
+        ):
+            elements.append(
+                f'<text x="{center_x}" y="{curr_y}" font-family="{SVG_FONT_FAMILY}" '
                 f'font-size="{size}" fill="{color}" text-anchor="middle" '
                 f'dominant-baseline="middle">{escape(text, quote=False)}</text>'
             )
+            curr_y += 20 if text == chart_info.date else 18
 
     body = "".join(elements)
     return (
@@ -262,7 +305,6 @@ def _english_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     if font_path:
         return ImageFont.truetype(str(font_path), size=size)
     return ImageFont.load_default()
-
 
 
 def _unicode_font_path() -> Path | None:
@@ -348,9 +390,10 @@ class ShapedTextRenderer:
                         continue
                     existing = pixels[target_x, target_y]
                     ratio = alpha / 255
-                    pixels[target_x, target_y] = tuple(
-                        round(existing[index] * (1 - ratio) + fill[index] * ratio)
-                        for index in range(3)
+                    pixels[target_x, target_y] = (
+                        round(existing[0] * (1 - ratio) + fill[0] * ratio),
+                        round(existing[1] * (1 - ratio) + fill[1] * ratio),
+                        round(existing[2] * (1 - ratio) + fill[2] * ratio),
                     )
             pen_x += position.x_advance / 64
             pen_y -= position.y_advance / 64
@@ -360,12 +403,14 @@ def _draw_centered_text(
     draw: ImageDraw.ImageDraw,
     text: str,
     center_x: float,
-    y: float,
+    center_y: float,
     font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
     fill: tuple[int, int, int] = (17, 17, 17),
 ) -> None:
     left, top, right, bottom = draw.textbbox((0, 0), text, font=font)
-    draw.text((center_x - (right - left) / 2, y - (bottom - top) / 2), text, font=font, fill=fill)
+    x = center_x - (right - left) / 2 - left
+    y = center_y - (bottom - top) / 2 - top
+    draw.text((x, y), text, font=font, fill=fill)
 
 
 def _draw_centered_shaped_text(
@@ -392,77 +437,105 @@ def _png_line(line: tuple[int, int, int, int], width: int = 2) -> tuple[int, int
 
 
 def _render_unicode_grid_png(
-    cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
+    cells: tuple[ChartCell, ...],
+    chart_info: ChartInfo | None = None,
+    lines: tuple[tuple[int, int, int, int], ...] | None = None,
+    info_box_rect: tuple[int, int, int, int] | None = None,
 ) -> bytes:
     image = Image.new("RGB", (CHART_SIZE, CHART_SIZE), "white")
     draw = ImageDraw.Draw(image)
-    for line in _grid_lines():
+    grid_lines = lines if lines is not None else _grid_lines()
+    for line in grid_lines:
         draw.line(_png_line(line), fill=(17, 17, 17), width=2)
+
+    if info_box_rect and info_box_rect != (171, 171, 170, 170):
+        bx, by, bw, bh = info_box_rect
+        draw.rectangle([bx, by, bx + bw, by + bh], fill=(255, 255, 255), outline=(17, 17, 17), width=1)
 
     font_path = _unicode_font_path()
     if not font_path:
         top_font = _unicode_font(16)
         label_font = _unicode_font(20)
-        compact_label_font = _unicode_font(16)
-        title_font = _unicode_font(20)
-        detail_font = _unicode_font(15)
-        location_font = _unicode_font(11)
+        compact_label_font = _unicode_font(15)
     else:
         top_text = ShapedTextRenderer(font_path, 16)
         label_text = ShapedTextRenderer(font_path, 20)
-        compact_label_text = ShapedTextRenderer(font_path, 16)
-        title_text = ShapedTextRenderer(font_path, 20)
-        detail_text = ShapedTextRenderer(font_path, 15)
-        location_text = ShapedTextRenderer(font_path, 11)
+        compact_label_text = ShapedTextRenderer(font_path, 15)
 
     for cell in cells:
-        x = cell.column * CELL_SIZE
-        y = cell.row * CELL_SIZE
-        if font_path:
-            top_text.draw(image, cell.top_label, x + 8, y + 20, (34, 34, 34))
+        if cell.top_label_pos:
+            top_x, top_y = cell.top_label_pos
+            if font_path:
+                _draw_centered_shaped_text(image, top_text, cell.top_label, top_x, top_y, (34, 34, 34))
+            else:
+                _draw_centered_text(draw, cell.top_label, top_x, top_y, top_font, (34, 34, 34))
         else:
-            draw.text((x + 8, y + 5), cell.top_label, font=top_font, fill=(34, 34, 34))
+            x = cell.column * CELL_SIZE
+            y = cell.row * CELL_SIZE
+            if font_path:
+                top_text.draw(image, cell.top_label, x + 8, y + 20, (34, 34, 34))
+            else:
+                draw.text((x + 8, y + 5), cell.top_label, font=top_font, fill=(34, 34, 34))
+
         display_lines = _display_lines(cell.labels)
         if not display_lines:
             continue
         if font_path:
-            shaped_font = (
-                label_text if len(display_lines) <= 4 else compact_label_text
-            )
+            shaped_font = label_text if len(display_lines) < 3 else compact_label_text
         else:
-            font = label_font if len(display_lines) <= 4 else compact_label_font
-        line_height = 24 if len(display_lines) <= 4 else 20
+            font = label_font if len(display_lines) < 3 else compact_label_font
+        line_height = 24 if len(display_lines) < 3 else 18
         total_height = len(display_lines) * line_height
-        start_y = y + max(28, (CELL_SIZE - total_height) / 2 + line_height / 2)
+
+        if cell.center_pos:
+            cx, cy = cell.center_pos
+            start_y = cy - total_height / 2 + line_height / 2
+        else:
+            cx = cell.column * CELL_SIZE + CELL_SIZE / 2
+            y = cell.row * CELL_SIZE
+            start_y = y + max(28, (CELL_SIZE - total_height) / 2 + line_height / 2)
+
         for index, label in enumerate(display_lines):
             if not label:
                 continue
             center_y = start_y + index * line_height
             if font_path:
-                _draw_centered_shaped_text(
-                    image, shaped_font, label, x + CELL_SIZE / 2, center_y
-                )
+                _draw_centered_shaped_text(image, shaped_font, label, cx, center_y)
             else:
-                _draw_centered_text(draw, label, x + CELL_SIZE / 2, center_y, font)
+                _draw_centered_text(draw, label, cx, center_y, font)
 
     if chart_info:
-        if font_path:
-            center_lines = (
-                (chart_info.title, 198, title_text, (17, 17, 17)),
-                (chart_info.date, 236, detail_text, (51, 51, 51)),
-                (chart_info.time, 264, detail_text, (51, 51, 51)),
-                (chart_info.location, 296, location_text, (51, 51, 51)),
-            )
-            for text, y, renderer, color in center_lines:
-                _draw_centered_shaped_text(image, renderer, text, CHART_SIZE / 2, y, color)
+        title_parts = chart_info.title.split(" - ", 1) if " - " in chart_info.title else [chart_info.title]
+        if info_box_rect:
+            _, by, _, bh = info_box_rect
+            box_cy = by + bh / 2
+            curr_y = box_cy - 40 if len(title_parts) > 1 else box_cy - 30
         else:
-            for text, y, font, color in (
-                (chart_info.title, 198, title_font, (17, 17, 17)),
-                (chart_info.date, 236, detail_font, (51, 51, 51)),
-                (chart_info.time, 264, detail_font, (51, 51, 51)),
-                (chart_info.location, 296, location_font, (51, 51, 51)),
-            ):
-                _draw_centered_text(draw, text, CHART_SIZE / 2, y, font, color)
+            curr_y = 216 if len(title_parts) > 1 else 226
+
+        for idx, t_text in enumerate(title_parts):
+            t_size = 15 if (len(t_text) > 14 or len(title_parts) > 1) else 18
+            if font_path:
+                t_renderer = ShapedTextRenderer(font_path, t_size)
+                _draw_centered_shaped_text(image, t_renderer, t_text, CHART_SIZE / 2, curr_y, (17, 17, 17))
+            else:
+                t_font = _unicode_font(t_size)
+                _draw_centered_text(draw, t_text, CHART_SIZE / 2, curr_y, t_font, (17, 17, 17))
+            curr_y += 22 if len(title_parts) > 1 else 26
+
+        curr_y += 2
+        for text, size, color in (
+            (chart_info.date, 13, (51, 51, 51)),
+            (chart_info.time, 13, (51, 51, 51)),
+            (chart_info.location, 10, (51, 51, 51)),
+        ):
+            if font_path:
+                d_renderer = ShapedTextRenderer(font_path, size)
+                _draw_centered_shaped_text(image, d_renderer, text, CHART_SIZE / 2, curr_y, color)
+            else:
+                d_font = _unicode_font(size)
+                _draw_centered_text(draw, text, CHART_SIZE / 2, curr_y, d_font, color)
+            curr_y += 22 if text == chart_info.date else 20
 
     output = io.BytesIO()
     image.save(output, format="PNG")
@@ -470,45 +543,77 @@ def _render_unicode_grid_png(
 
 
 def _render_english_grid_png(
-    cells: tuple[ChartCell, ...], chart_info: ChartInfo | None = None
+    cells: tuple[ChartCell, ...],
+    chart_info: ChartInfo | None = None,
+    lines: tuple[tuple[int, int, int, int], ...] | None = None,
+    info_box_rect: tuple[int, int, int, int] | None = None,
 ) -> bytes:
     image = Image.new("RGB", (CHART_SIZE, CHART_SIZE), "white")
     draw = ImageDraw.Draw(image)
-    for line in _grid_lines():
+    grid_lines = lines if lines is not None else _grid_lines()
+    for line in grid_lines:
         draw.line(_png_line(line), fill=(17, 17, 17), width=2)
 
+    if info_box_rect and info_box_rect != (171, 171, 170, 170):
+        bx, by, bw, bh = info_box_rect
+        draw.rectangle([bx, by, bx + bw, by + bh], fill=(255, 255, 255), outline=(17, 17, 17), width=1)
+
     top_font = _english_font(16)
-    label_font = _english_font(20)
-    compact_label_font = _english_font(16)
-    title_font = _english_font(20)
-    detail_font = _english_font(15)
-    location_font = _english_font(11)
 
     for cell in cells:
-        x = cell.column * CELL_SIZE
-        y = cell.row * CELL_SIZE
-        draw.text((x + 8, y + 5), cell.top_label, font=top_font, fill=(34, 34, 34))
+        if cell.top_label_pos:
+            top_x, top_y = cell.top_label_pos
+            _draw_centered_text(draw, cell.top_label, top_x, top_y, top_font, (34, 34, 34))
+        else:
+            x = cell.column * CELL_SIZE
+            y = cell.row * CELL_SIZE
+            draw.text((x + 8, y + 5), cell.top_label, font=top_font, fill=(34, 34, 34))
+
         display_lines = _display_lines(cell.labels)
         if not display_lines:
             continue
-        font = label_font if len(display_lines) <= 4 else compact_label_font
-        line_height = 24 if len(display_lines) <= 4 else 20
+        font = _english_font(20) if len(display_lines) < 3 else _english_font(15)
+        line_height = 24 if len(display_lines) < 3 else 18
         total_height = len(display_lines) * line_height
-        start_y = y + max(28, (CELL_SIZE - total_height) / 2 + line_height / 2)
+
+        if cell.center_pos:
+            cx, cy = cell.center_pos
+            start_y = cy - total_height / 2 + line_height / 2
+        else:
+            cx = cell.column * CELL_SIZE + CELL_SIZE / 2
+            y = cell.row * CELL_SIZE
+            start_y = y + max(28, (CELL_SIZE - total_height) / 2 + line_height / 2)
+
         for index, label in enumerate(display_lines):
             if not label:
                 continue
             center_y = start_y + index * line_height
-            _draw_centered_text(draw, label, x + CELL_SIZE / 2, center_y, font)
+            _draw_centered_text(draw, label, cx, center_y, font)
 
     if chart_info:
-        for text, y, font, color in (
-            (chart_info.title, 198, title_font, (17, 17, 17)),
-            (chart_info.date, 236, detail_font, (51, 51, 51)),
-            (chart_info.time, 264, detail_font, (51, 51, 51)),
-            (chart_info.location, 296, location_font, (51, 51, 51)),
+        title_parts = chart_info.title.split(" - ", 1) if " - " in chart_info.title else [chart_info.title]
+        if info_box_rect:
+            _, by, _, bh = info_box_rect
+            box_cy = by + bh / 2
+            curr_y = box_cy - 40 if len(title_parts) > 1 else box_cy - 30
+        else:
+            curr_y = 216 if len(title_parts) > 1 else 226
+
+        for idx, t_text in enumerate(title_parts):
+            t_size = 15 if (len(t_text) > 14 or len(title_parts) > 1) else 18
+            t_font = _english_font(t_size)
+            _draw_centered_text(draw, t_text, CHART_SIZE / 2, curr_y, t_font, (17, 17, 17))
+            curr_y += 22 if len(title_parts) > 1 else 26
+
+        curr_y += 2
+        for text, size, color in (
+            (chart_info.date, 13, (51, 51, 51)),
+            (chart_info.time, 13, (51, 51, 51)),
+            (chart_info.location, 10, (51, 51, 51)),
         ):
-            _draw_centered_text(draw, text, CHART_SIZE / 2, y, font, color)
+            d_font = _english_font(size)
+            _draw_centered_text(draw, text, CHART_SIZE / 2, curr_y, d_font, color)
+            curr_y += 22 if text == chart_info.date else 20
 
     output = io.BytesIO()
     image.save(output, format="PNG")
@@ -519,7 +624,9 @@ def render_grid_png(
     cells: tuple[ChartCell, ...],
     chart_info: ChartInfo | None = None,
     language: str = "en",
+    lines: tuple[tuple[int, int, int, int], ...] | None = None,
+    info_box_rect: tuple[int, int, int, int] | None = None,
 ) -> bytes:
     if language != "en":
-        return _render_unicode_grid_png(cells, chart_info)
-    return _render_english_grid_png(cells, chart_info)
+        return _render_unicode_grid_png(cells, chart_info, lines, info_box_rect)
+    return _render_english_grid_png(cells, chart_info, lines, info_box_rect)

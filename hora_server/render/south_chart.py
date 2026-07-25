@@ -14,18 +14,18 @@ from .chart_symbols import (
 
 
 SOUTH_RASI_CELLS = {
-    12: (0, 0),
-    1: (0, 1),
-    2: (0, 2),
-    3: (0, 3),
-    11: (1, 0),
-    4: (1, 3),
-    10: (2, 0),
-    5: (2, 3),
-    9: (3, 0),
-    8: (3, 1),
-    7: (3, 2),
-    6: (3, 3),
+    1: (0, 1),   # Mesha / Aries (Row 0, Col 1)
+    2: (0, 2),   # Vrishabha / Taurus (Row 0, Col 2)
+    3: (0, 3),   # Mithuna / Gemini (Row 0, Col 3)
+    4: (1, 3),   # Karka / Cancer (Row 1, Col 3)
+    5: (2, 3),   # Simha / Leo (Row 2, Col 3)
+    6: (3, 3),   # Kanya / Virgo (Row 3, Col 3)
+    7: (3, 2),   # Tula / Libra (Row 3, Col 2)
+    8: (3, 1),   # Vrischika / Scorpio (Row 3, Col 1)
+    9: (3, 0),   # Dhanus / Sagittarius (Row 3, Col 0)
+    10: (2, 0),  # Makara / Capricorn (Row 2, Col 0)
+    11: (1, 0),  # Kumbha / Aquarius (Row 1, Col 0)
+    12: (0, 0),  # Meena / Pisces (Row 0, Col 0)
 }
 
 
