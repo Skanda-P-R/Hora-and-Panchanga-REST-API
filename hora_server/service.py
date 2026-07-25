@@ -466,6 +466,7 @@ class PanchangaService:
         context: RequestContext,
         depth: int = 2,
         year_type: str = "365.25",
+        active_at: datetime | None = None,
     ) -> dict[str, Any]:
         try:
             year_days = float(year_type)
@@ -483,6 +484,7 @@ class PanchangaService:
             context.instant,
             year_days=year_days,
             depth=depth,
+            active_at=active_at,
         )
 
         payload = {

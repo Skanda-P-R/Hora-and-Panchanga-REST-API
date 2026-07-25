@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from flask import Blueprint, Response, jsonify, request
 
 from hora_server.auth import require_session
@@ -171,4 +172,32 @@ def get_dasha():
     year_type = request.args.get("year_type", "365.25")
 
     return jsonify(service().dasha(context(), depth=depth, year_type=year_type))
+
+
+@blueprint.get("/dasha/birth")
+@require_session
+@limiter.limit("60 per minute")
+@cache.cached(timeout=60, query_string=True)
+def get_dasha_birth():
+    depth_str = request.args.get("depth", "2")
+    try:
+        depth = int(depth_str)
+        if depth not in (1, 2, 3):
+            depth = 2
+    except ValueError:
+        depth = 2
+
+    year_type = request.args.get("year_type", "365.25")
+    request_context = context()
+    now_in_tz = datetime.now(request_context.timezone)
+
+    return jsonify(
+        service().dasha(
+            request_context,
+            depth=depth,
+            year_type=year_type,
+            active_at=now_in_tz,
+        )
+    )
+
 
