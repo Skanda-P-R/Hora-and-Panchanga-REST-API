@@ -470,22 +470,18 @@ retrograde flag.
 
 ### 7.12 GET /api/v1/kundali/chart
 
-Returns a rendered Kundali chart as image/png. The default chart_style is
-south, and the default lang is en. The renderer uses the same Kundali model as
-the JSON endpoint and does not perform astrology calculations.
+Returns a rendered Kundali chart as `image/png`. The default `chart_style` is `south`, and the default `lang` is `en`. The renderer consumes the same Kundali model as the JSON endpoint and performs no astrology calculations.
 
-The canvas is 512 by 512 pixels with a white background, black borders, and
-dark text. The South Indian chart uses a static-rashi outer layout. The four
-middle cells are merged into one empty information panel containing the title,
-local date, local time, and the latitude/longitude label. In English the title
-is "Transit Kundali". With lang=kan, the title is "ಗೋಚಾರ ಕುಂಡಲಿ", and planet
-labels use Kannada names.
+The canvas is 512 by 512 pixels with a white background, black borders, and dark text. Three authentic chart styles are supported:
+- **South Indian (`chart_style=south`)**: Uses a static-rashi $4 \times 4$ grid layout starting with Aries at Top Row, 2nd Column proceeding clockwise. House numbers ($1..12$) are dynamically computed relative to Lagna (`1` at Lagna's sign box). The four middle cells are merged into a central info panel displaying title, date, time, and location.
+- **North Indian (`chart_style=north`)**: Uses a traditional Diamond Chart layout ($512 \times 512$ canvas with 12 central/corner diamonds and triangles). Houses are fixed with House 1 (Lagna) at the Top Center Diamond proceeding counter-clockwise. Dynamic Zodiac Sign numbers ($1..12$) are printed inside each diamond, and planet text is centered at exact geometric centroids away from diagonal lines.
+- **East Indian (`chart_style=east`)**: Uses a traditional Bengali/Odia $3 \times 3$ grid layout where the 4 outer corner cells are split diagonally into 8 triangles. Zodiac Signs are fixed starting with Aries at the Top-Middle cell proceeding counter-clockwise. Dynamic house numbers ($1..12$) are printed relative to Lagna.
+
+In English, default titles are "Transit Kundali" or "[Name] - Birth Kundali". With `lang=kan`, titles translate to "ಗೋಚಾರ ಕುಂಡಲಿ" or "[Name] - ಜನನ ಕುಂಡಲಿ", and planet names are localized into Kannada (e.g. `ಸೂರ್ಯ`, `ಚಂದ್ರ`, `ಲಗ್ನ`). Multi-part titles wrap automatically into 2 lines with dynamic font scaling.
 
 ### 7.13 GET /api/v1/kundali/svg
 
-Returns the same rendered Kundali chart model as image/svg+xml. The SVG uses a
-512 by 512 viewBox and the same chart_style and lang values as the PNG
-endpoint.
+Returns the exact same rendered Kundali chart model as `image/svg+xml`. The SVG uses a $512 \times 512$ viewBox and supports the same `chart_style` (`south`, `north`, `east`), `lang` (`en`, `kan`), and layout conventions as the PNG endpoint.
 
 ### 7.14 GET /api/v1/kundali/birth
 
@@ -493,11 +489,11 @@ Returns Birth Chart (Janma Kundali) JSON. It accepts the same query parameters a
 
 ### 7.15 GET /api/v1/kundali/birth/chart
 
-Returns a rendered Birth Chart as image/png. It accepts `chart_style`, `lang`, and `name`. If `name` is supplied (e.g. `?name=Rama`), the center panel is updated to display `[Name] - Birth Chart` (or translated `[Name] - ಜನನ ಕುಂಡಲಿ` in Kannada) instead of the default "Transit Kundali" title.
+Returns a rendered Birth Chart as `image/png`. It accepts `chart_style`, `lang`, and `name`. If `name` is supplied (e.g. `?name=Rama`), the center panel is updated to display `[Name] - Birth Kundali` (or translated `[Name] - ಜನನ ಕುಂಡಲಿ` in Kannada) instead of the default "Transit Kundali" title, automatically wrapped into 2 centered lines.
 
 ### 7.16 GET /api/v1/kundali/birth/svg
 
-Returns the rendered Birth Chart as image/svg+xml, accepting the same parameters as the PNG birth chart endpoint.
+Returns the rendered Birth Chart as `image/svg+xml`, accepting the same parameters (`chart_style`, `lang`, `name`) as the PNG birth chart endpoint.
 
 ### 7.17 GET /api/v1/dasha
 

@@ -473,3 +473,26 @@ Unified Kundali Model
 
 This guarantees that JSON and rendered charts can never diverge and makes
 future renderers (PDF, HTML, Android, Web) trivial to add.
+
+
+# Multi-Style Chart Rendering Specifications
+
+All chart renderers share a unified $512 \times 512$ canvas, HarfBuzz + FreeType Kannada text shaping, automatic title wrapping, and dynamic font scaling.
+
+## 1. South Indian Chart Renderer (`south_chart.py`)
+- **Format**: Static Sign $4 \times 4$ Grid with merged 4-cell center info panel.
+- **Sign Convention**: Fixed Zodiac Signs starting with Aries at Top Row, 2nd Column, proceeding clockwise.
+- **House Numbering**: Dynamic Lagna-relative numbers ($1..12$), where Lagna's sign box is marked `1`.
+
+## 2. North Indian Chart Renderer (`north_chart.py`)
+- **Format**: Traditional Diamond Chart layout ($512 \times 512$ canvas with 12 central/corner diamonds and triangles).
+- **House Convention**: Fixed Houses starting with House 1 (Lagna) at Top Center Diamond, proceeding counter-clockwise.
+- **Sign Numbering**: Dynamic Zodiac Sign numbers ($1..12$) printed inside each diamond/triangle, starting with Lagna's Rasi in House 1.
+- **Text Positioning**: Planet labels centered at exact geometric centroids away from diagonal lines, with house numbers anchored to outer corner tips.
+
+## 3. East Indian Chart Renderer (`east_chart.py`)
+- **Format**: Traditional Bengali/Odia $3 \times 3$ Grid with outer 4 corner cells split diagonally into 8 triangles.
+- **Sign Convention**: Fixed Zodiac Signs starting with Aries at Top-Middle cell, proceeding counter-clockwise.
+- **House Numbering**: Dynamic Lagna-relative numbers ($1..12$), where Lagna's sign box is marked `1`.
+- **Text Positioning**: Planet labels centered within square side cells and corner triangles, with central info text centered vertically inside the 3x3 middle cell.
+
