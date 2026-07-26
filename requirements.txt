@@ -8,3 +8,4 @@ gunicorn==26.0.0
 Pillow==12.3.0
 uharfbuzz==0.55.0
 freetype-py==2.5.1
+google-auth==2.56.2

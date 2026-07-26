@@ -12,7 +12,7 @@ from flask import Flask, g, jsonify, request
 
 from hora_server.api import register_api
 from hora_server.astronomy import EphemerisEngine, SolarCalculator
-from hora_server.auth import init_auth_store, add_user, reset_device, remove_user
+from hora_server.auth import init_auth_store, add_user, reset_device, remove_user, list_users
 from hora_server.config import Config
 from hora_server.extensions import cache, limiter
 from hora_server.registry import LocationRegistry
@@ -122,33 +122,45 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
         )
 
     @app.cli.command("add-user")
-    @click.argument("username")
-    def add_user_command(username):
-        """Pre-register a new username for passwordless login."""
-        success = add_user(username)
+    @click.argument("identifier")
+    def add_user_command(identifier):
+        """Pre-register a new email address or username for access whitelist."""
+        success = add_user(identifier)
         if success:
-            click.echo(f"User '{username}' pre-registered successfully.")
+            click.echo(f"User '{identifier}' pre-registered successfully.")
         else:
-            click.echo(f"Error: User '{username}' already exists.")
+            click.echo(f"Error: User '{identifier}' already exists.")
 
     @app.cli.command("reset-device")
-    @click.argument("username")
-    def reset_device_command(username):
-        """Reset the bound device UUID for a username."""
-        success = reset_device(username)
+    @click.argument("identifier")
+    def reset_device_command(identifier):
+        """Reset the device binding and clear sessions for a user."""
+        success = reset_device(identifier)
         if success:
-            click.echo(f"Device binding for user '{username}' reset successfully.")
+            click.echo(f"Device binding for user '{identifier}' reset successfully.")
         else:
-            click.echo(f"Error: User '{username}' not found.")
+            click.echo(f"Error: User '{identifier}' not found.")
 
     @app.cli.command("remove-user")
-    @click.argument("username")
-    def remove_user_command(username):
-        """Remove a username from pre-registration and invalidate their session."""
-        success = remove_user(username)
+    @click.argument("identifier")
+    def remove_user_command(identifier):
+        """Remove a user from pre-registration whitelist and invalidate their session."""
+        success = remove_user(identifier)
         if success:
-            click.echo(f"User '{username}' removed successfully.")
+            click.echo(f"User '{identifier}' removed successfully.")
         else:
-            click.echo(f"Error: User '{username}' not found.")
+            click.echo(f"Error: User '{identifier}' not found.")
+
+    @app.cli.command("list-users")
+    def list_users_command():
+        """List all pre-registered users in the whitelist."""
+        users = list_users()
+        if not users:
+            click.echo("No users pre-registered.")
+            return
+        click.echo(f"Found {len(users)} pre-registered user(s):")
+        for u in users:
+            click.echo(f" - {u['email']} (Google Sub: {u['google_sub'] or 'Not activated'}, Active sessions: {u['active_sessions']})")
 
     return app
+
