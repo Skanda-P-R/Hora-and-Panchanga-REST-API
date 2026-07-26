@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import json
 import pytest
-from hora_server.auth import add_user, reset_device, verify_token, login_user
+from hora_server.auth import add_user, reset_device, verify_token
+
 from hora_server.extensions import cache
 
 
@@ -62,53 +63,6 @@ def test_unauthenticated_requests(client):
     assert data["error"]["code"] == "unauthorized"
 
 
-def test_session_lifecycle_and_uuid_binding(client, clean_users_store, bengaluru_query):
-    # 1. Pre-register the username
-    assert add_user("skanda") is True
-
-    # 2. Attempt login with non-existent user
-    login_payload = {"username": "unknown", "device_uuid": "device-123"}
-    response = client.post("/api/v1/auth/login", json=login_payload)
-    assert response.status_code == 404
-    assert response.get_json()["error"]["code"] == "username_not_registered"
-
-    # 3. First login (device binding activation)
-    login_payload = {"username": "skanda", "device_uuid": "uuid-phone-a"}
-    response = client.post("/api/v1/auth/login", json=login_payload)
-    assert response.status_code == 200
-    token = response.get_json()["token"]
-    assert len(token) == 64
-
-    # 4. Make authenticated request with correct token
-    headers = {"Authorization": f"Bearer {token}"}
-    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers)
-    assert response.status_code == 200
-
-    # 5. Make request with invalid token
-    headers_invalid = {"Authorization": "Bearer badtoken"}
-    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_invalid)
-    assert response.status_code == 401
-    assert response.get_json()["error"]["code"] == "session_expired"
-
-    # 6. Attempt login from another device (should be rejected due to UUID mismatch)
-    login_payload_b = {"username": "skanda", "device_uuid": "uuid-phone-b"}
-    response = client.post("/api/v1/auth/login", json=login_payload_b)
-    assert response.status_code == 403
-    assert response.get_json()["error"]["code"] == "device_mismatch"
-
-    # 7. Reset the device binding
-    assert reset_device("skanda") is True
-
-    # 8. Log in from Phone B (should succeed now and bind Phone B)
-    response = client.post("/api/v1/auth/login", json=login_payload_b)
-    assert response.status_code == 200
-    token_b = response.get_json()["token"]
-    assert token_b != token
-
-    # 9. Verify Phone A's token is now invalidated (Single Active Session check)
-    headers_a = {"Authorization": f"Bearer {token}"}
-    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
-    assert response.status_code == 401
 
 
 def test_api_key_fallback(client, monkeypatch, bengaluru_query):
@@ -120,6 +74,55 @@ def test_api_key_fallback(client, monkeypatch, bengaluru_query):
     assert response.status_code == 200
 
 
+def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
+    # 1. Pre-register allowed email
+    assert add_user("skanda@gmail.com") is True
+
+    # 2. Attempt Google login with un-whitelisted email -> 403 Forbidden
+    response = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_unauthorized@gmail.com"})
+    assert response.status_code == 403
+    assert response.get_json()["error"]["code"] == "email_not_authorized"
+
+    # 3. Google login with whitelisted email on Device A -> 200 OK
+    response = client.post("/api/v1/auth/google-login", json={
+        "idToken": "mock_token_skanda@gmail.com",
+        "device_uuid": "device-uuid-phone-a"
+    })
+    assert response.status_code == 200
+    res_data = response.get_json()
+    token_a = res_data["token"]
+    assert res_data["user"]["email"] == "skanda@gmail.com"
+    assert len(token_a) == 64
+
+    # 4. Make authenticated request using Google session token via existing @require_session
+    headers_a = {"Authorization": f"Bearer {token_a}"}
+    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
+    assert response.status_code == 200
+
+    # 5. Google login with same whitelisted email on Device B (Multi-device support, no UUID mismatch lock)
+    response_b = client.post("/api/v1/auth/google-login", json={
+        "idToken": "mock_token_skanda@gmail.com",
+        "device_uuid": "device-uuid-tablet-b"
+    })
+    assert response_b.status_code == 200
+    token_b = response_b.get_json()["token"]
+
+    # Both tokens (Device A & Device B) should be valid!
+    headers_b = {"Authorization": f"Bearer {token_b}"}
+    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_b)
+    assert response.status_code == 200
+
+    response_a_again = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
+    assert response_a_again.status_code == 200
+
+
+def test_cli_list_users(app, clean_users_store):
+    runner = app.test_cli_runner()
+    runner.invoke(args=["add-user", "skanda@gmail.com"])
+    result = runner.invoke(args=["list-users"])
+    assert "skanda@gmail.com" in result.output
+
+
 def begaluru_query_str(query):
     # Helper to construct clean query string parameters for panchanga
     # avoiding caching issues with mock request contexts
@@ -128,3 +131,4 @@ def begaluru_query_str(query):
         del q["datetime"]
     q["date"] = "2026-07-20"
     return q
+

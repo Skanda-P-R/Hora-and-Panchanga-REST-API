@@ -109,6 +109,8 @@ The direct dependencies are pinned:
 | Pillow | 12.3.0 | Unicode-capable PNG chart rendering |
 | uharfbuzz | 0.55.0 | Kannada text shaping for PNG charts |
 | freetype-py | 2.5.1 | Glyph rasterization for shaped PNG text |
+| google-auth | 2.56.2 | Google OAuth ID Token verification |
+
 
 The supported runtime is Python 3.11. Later Python versions can require a C
 compiler for PySwissEph and are not claimed as supported without additional
@@ -213,25 +215,32 @@ Calculation endpoints are read-only GET resources. Registry management (location
 
 All calculation and registry endpoints require session-based authentication.
 
-- **Login Endpoint**: `POST /api/v1/auth/login`
-  - Request Payload:
+- **Google Login Endpoint**: `POST /api/v1/auth/google-login`
+  - **Rate Limit**: 10 requests per minute (per IP)
+  - **Request Payload**:
     ```json
     {
-      "username": "username-string",
-      "device_uuid": "device-uuid-string"
+      "idToken": "your-google-id-token-jwt",
+      "device_uuid": "optional-device-uuid"
     }
     ```
-  - Response (Success):
+  - **Response (Success - HTTP 200)**:
     ```json
     {
-      "token": "session-token-string"
+      "token": "session-token-string",
+      "user": {
+        "email": "skanda@gmail.com",
+        "name": "Skanda",
+        "picture": "https://lh3.googleusercontent.com/a/..."
+      }
     }
     ```
-    *Note: The first login with a pre-registered username binds it to that device's UUID. Subsequent logins from a different UUID are rejected with a 403 Forbidden error.*
+    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. Access is granted only if the verified email address exists in the pre-approved whitelist (`instance/users.json`). Authorized users can log in across multiple personal devices.*
 - **Header Authentication**: Authenticated requests must supply the session token in the authorization header:
   ```http
   Authorization: Bearer <token>
   ```
+
 
 ### 6.2 Common query parameters
 
@@ -763,6 +772,7 @@ exposing internals.
 | OBSERVER_ELEVATION_METERS | 0 | Observer height |
 | ATMOSPHERIC_PRESSURE_HPA | 0 | Retained; Hindu rising ignores refraction |
 | ATMOSPHERIC_TEMPERATURE_C | 15 | Retained; Hindu rising ignores refraction |
+| GOOGLE_WEB_CLIENT_ID | "" | Google Web Application Client ID for ID Token audience verification |
 | CACHE_TYPE | SimpleCache | Flask-Caching backend |
 | CACHE_DEFAULT_TIMEOUT | 60 | Default cache lifetime in seconds |
 | RATELIMIT_STORAGE_URI | memory:// | Flask-Limiter storage backend |
@@ -807,7 +817,8 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 91 passing tests;
+- 92 passing tests;
+
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;
 - all six ephemeris files present in the wheel;

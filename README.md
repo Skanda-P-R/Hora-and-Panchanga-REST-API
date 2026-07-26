@@ -87,53 +87,65 @@ certificate paths for the deployment environment.
 
 ## User administration
 
-When session security is enabled, you must pre-register usernames before they can connect. Usernames and device bindings are stored in `instance/users.json`.
+When session security is enabled, you pre-register allowed email addresses before users can connect via Google Sign-In. Pre-approved emails and active sessions are stored in `instance/users.json`.
 
-### Pre-register a user
-Pre-register a new username so they can log in and bind their device UUID on first access:
+### Pre-register an allowed email
+Pre-register an email address so the user can log in via Google Sign-In:
 ```bash
-flask add-user <username>
+flask add-user <email>
 ```
 
-### Reset a user's bound device
-If a user changes their phone or gets locked out, reset their bound device UUID and active token:
+### List all pre-registered users
+View all pre-registered email addresses, Google Subject IDs, and active session counts:
 ```bash
-flask reset-device <username>
+flask list-users
+```
+
+### Reset a user's active sessions
+If a user needs to revoke active device sessions:
+```bash
+flask reset-device <email>
 ```
 
 ### Remove a user
-To delete a user entirely and revoke their session:
+To delete an email from the whitelist and instantly invalidate all active sessions:
 ```bash
-flask remove-user <username>
+flask remove-user <email>
 ```
 
 
 ## Authentication
 
-Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/login`) requires session authentication.
+Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/google-login`) requires session authentication.
 
-### Login
-- **Endpoint**: `POST /api/v1/auth/login`
+### Google Sign-In Login
+- **Endpoint**: `POST /api/v1/auth/google-login`
+- **Rate Limit**: 10 requests per minute (per IP)
 - **Request Payload**:
   ```json
   {
-    "username": "your-username",
-    "device_uuid": "your-device-uuid"
+    "idToken": "your-google-id-token-jwt",
+    "device_uuid": "optional-device-uuid"
   }
   ```
 - **Response**:
   ```json
   {
-    "token": "session-token-string"
+    "token": "session-token-string",
+    "user": {
+      "email": "skanda@gmail.com",
+      "name": "Skanda",
+      "picture": "https://lh3.googleusercontent.com/a/..."
+    }
   }
   ```
-  *Note: The first time a username is used to log in, it binds to the provided `device_uuid`. Subsequent logins from a different `device_uuid` will be rejected.*
 
 ### Authenticating Requests
 Pass the session token in the `Authorization` header of all subsequent API calls:
 ```http
 Authorization: Bearer <token>
 ```
+
 
 ## Request parameters
 
@@ -236,7 +248,9 @@ muhurtas. No fixed 90-minute approximation is used.
 | `OBSERVER_ELEVATION_METERS` | `0` |
 | `ATMOSPHERIC_PRESSURE_HPA` | `0` (unused by Hindu rising) |
 | `ATMOSPHERIC_TEMPERATURE_C` | `15` (unused by Hindu rising) |
+| `GOOGLE_WEB_CLIENT_ID` | `""` (Google Web Application Client ID for ID Token audience verification) |
 | `WEB_CONCURRENCY` | `2` synchronous workers |
+
 
 Solar-dependent endpoints return `422 solar_event_unavailable` during polar
 day/night instead of inventing a twilight substitute. The bundled data range
