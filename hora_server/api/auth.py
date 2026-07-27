@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flask import Blueprint, jsonify, request
 
-from hora_server.auth import login_google_user
+from hora_server.auth import login_google_user, logout_user
 from hora_server.extensions import limiter
 from hora_server.utils.errors import ApiError
 
@@ -41,5 +41,16 @@ def google_login():
         "token": token,
         "user": user_info
     })
+
+
+@blueprint.post("/auth/logout")
+def logout():
+    """Revoke the active session token for the requesting device."""
+    auth_header = request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ")[1].strip()
+        logout_user(token)
+    return jsonify({"status": "logged_out"})
+
 
 

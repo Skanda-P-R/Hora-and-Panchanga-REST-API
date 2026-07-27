@@ -224,12 +224,14 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
     """
     Authenticate a user via Google ID Token.
     If the user does not exist in users.json, auto-creates their record.
-    Supports simultaneous multi-device active sessions.
+    Supports simultaneous multi-device active sessions using per-device token mapping.
+    Re-logging in on the same device replaces that device's old token instead of accumulating tokens.
     Returns (session_token, user_info).
     """
     claims = verify_google_id_token(id_token, web_client_id)
     email = claims["email"].strip()
     normalized_email = email.lower()
+    slot = device_uuid.strip() if (device_uuid and device_uuid.strip()) else "default_device"
 
     with _auth_lock:
         users = _load_users()
@@ -250,6 +252,7 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
                 "picture": claims.get("picture"),
                 "created_at": datetime.now(UTC).isoformat(),
                 "last_login": datetime.now(UTC).isoformat(),
+                "device_tokens": {},
                 "active_tokens": [],
                 "active_token": None
             }
@@ -266,12 +269,16 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
         if device_uuid:
             user_record["last_device_uuid"] = device_uuid
 
-        # Generate new session token and append to active_tokens
+        # Manage per-device token mapping
+        device_tokens = user_record.get("device_tokens")
+        if not isinstance(device_tokens, dict):
+            device_tokens = {}
+
         token = secrets.token_hex(32)
-        active_tokens = user_record.get("active_tokens", [])
-        if not isinstance(active_tokens, list):
-            active_tokens = []
-        active_tokens.append(token)
+        device_tokens[slot] = token  # Overwrite token for this specific device slot
+
+        active_tokens = list(device_tokens.values())
+        user_record["device_tokens"] = device_tokens
         user_record["active_tokens"] = active_tokens
         user_record["active_token"] = token
 
@@ -284,6 +291,45 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
             "picture": user_record.get("picture")
         }
         return token, user_info
+
+
+def logout_user(token: str) -> bool:
+    """Revoke a specific session token upon logout."""
+    if not token or not token.strip():
+        return False
+
+    token = token.strip()
+    with _auth_lock:
+        users = _load_users()
+        found = False
+        for user_key, user_record in users.items():
+            if not isinstance(user_record, dict):
+                continue
+
+            device_tokens = user_record.get("device_tokens", {})
+            if isinstance(device_tokens, dict):
+                slots_to_remove = [k for k, v in device_tokens.items() if v == token]
+                if slots_to_remove:
+                    for k in slots_to_remove:
+                        del device_tokens[k]
+                    found = True
+
+            active_tokens = user_record.get("active_tokens", [])
+            if isinstance(active_tokens, list) and token in active_tokens:
+                active_tokens = [t for t in active_tokens if t != token]
+                user_record["active_tokens"] = active_tokens
+                found = True
+
+            if user_record.get("active_token") == token:
+                user_record["active_token"] = active_tokens[-1] if active_tokens else None
+                found = True
+
+            if found:
+                user_record["device_tokens"] = device_tokens if isinstance(device_tokens, dict) else {}
+                users[user_key] = user_record
+                _save_users(users)
+                return True
+        return False
 
 
 def verify_token(token: str) -> bool:
@@ -302,6 +348,7 @@ def verify_token(token: str) -> bool:
             if user_record.get("active_token") == token:
                 return True
         return False
+
 
 
 
