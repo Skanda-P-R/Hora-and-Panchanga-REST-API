@@ -75,45 +75,40 @@ def test_api_key_fallback(client, monkeypatch, bengaluru_query):
 
 
 def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
-    # 1. Pre-register allowed email
-    assert add_user("skanda@gmail.com") is True
-
-    # 2. Attempt Google login with un-whitelisted email -> 403 Forbidden
-    response = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_unauthorized@gmail.com"})
-    assert response.status_code == 403
-    assert response.get_json()["error"]["code"] == "email_not_authorized"
-
-    # 3. Google login with whitelisted email on Device A -> 200 OK
+    # 1. Google login with new email (auto-registers account on the fly) -> 200 OK
     response = client.post("/api/v1/auth/google-login", json={
-        "idToken": "mock_token_skanda@gmail.com",
+        "idToken": "mock_token_new_user@gmail.com",
         "device_uuid": "device-uuid-phone-a"
     })
     assert response.status_code == 200
     res_data = response.get_json()
     token_a = res_data["token"]
-    assert res_data["user"]["email"] == "skanda@gmail.com"
+    assert res_data["user"]["email"] == "new_user@gmail.com"
     assert len(token_a) == 64
 
-    # 4. Make authenticated request using Google session token via existing @require_session
+    # 2. Make authenticated request using Device A token
     headers_a = {"Authorization": f"Bearer {token_a}"}
     response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
     assert response.status_code == 200
 
-    # 5. Google login with same whitelisted email on Device B (Multi-device support, no UUID mismatch lock)
+    # 3. Google login again on Device B with same account (Simultaneous Multi-Device support)
     response_b = client.post("/api/v1/auth/google-login", json={
-        "idToken": "mock_token_skanda@gmail.com",
+        "idToken": "mock_token_new_user@gmail.com",
         "device_uuid": "device-uuid-tablet-b"
     })
     assert response_b.status_code == 200
     token_b = response_b.get_json()["token"]
+    assert token_b != token_a
 
-    # Both tokens (Device A & Device B) should be valid!
+    # 4. Both Device A & Device B tokens should be valid simultaneously
     headers_b = {"Authorization": f"Bearer {token_b}"}
     response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_b)
     assert response.status_code == 200
 
     response_a_again = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
     assert response_a_again.status_code == 200
+
+
 
 
 def test_cli_list_users(app, clean_users_store):

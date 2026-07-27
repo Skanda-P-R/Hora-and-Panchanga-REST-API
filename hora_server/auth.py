@@ -56,7 +56,7 @@ def _save_users(data: dict) -> None:
 
 
 def add_user(identifier: str) -> bool:
-    """Pre-register a new user email or username in the whitelist. Returns True if created."""
+    """Register a new user email or identifier. Returns True if created."""
     if not identifier or not identifier.strip():
         raise ValueError("Identifier cannot be empty")
         
@@ -76,7 +76,6 @@ def add_user(identifier: str) -> bool:
             "created_at": datetime.now(UTC).isoformat(),
             "last_login": None,
             "active_tokens": [],
-            "bound_device_uuid": None,
             "active_token": None
         }
         _save_users(users)
@@ -84,7 +83,7 @@ def add_user(identifier: str) -> bool:
 
 
 def remove_user(identifier: str) -> bool:
-    """Remove a user from pre-registration. Returns True if found and removed."""
+    """Remove a user. Returns True if found and removed."""
     if not identifier:
         return False
         
@@ -107,7 +106,7 @@ def remove_user(identifier: str) -> bool:
 
 
 def reset_device(identifier: str) -> bool:
-    """Reset a user's bound device UUID and clear active tokens. Returns True if user found."""
+    """Clear active tokens for a user. Returns True if user found."""
     if not identifier:
         return False
         
@@ -122,7 +121,6 @@ def reset_device(identifier: str) -> bool:
                 break
                 
         if target_key is not None:
-            users[target_key]["bound_device_uuid"] = None
             users[target_key]["active_token"] = None
             users[target_key]["active_tokens"] = []
             _save_users(users)
@@ -132,13 +130,15 @@ def reset_device(identifier: str) -> bool:
 
 
 def list_users() -> list[dict]:
-    """Return a list of all pre-registered users and their status."""
+    """Return a list of all registered users and their session status."""
     with _auth_lock:
         users = _load_users()
         result = []
         for key, record in users.items():
             if isinstance(record, dict):
                 tokens = record.get("active_tokens", [])
+                if not isinstance(tokens, list):
+                    tokens = []
                 if record.get("active_token") and record.get("active_token") not in tokens:
                     tokens.append(record.get("active_token"))
                 result.append({
@@ -222,7 +222,9 @@ def verify_google_id_token(id_token: str, web_client_id: str | None = None) -> d
 
 def login_google_user(id_token: str, device_uuid: str | None = None, web_client_id: str | None = None) -> tuple[str, dict]:
     """
-    Authenticate a user via Google ID Token against the email whitelist.
+    Authenticate a user via Google ID Token.
+    If the user does not exist in users.json, auto-creates their record.
+    Supports simultaneous multi-device active sessions.
     Returns (session_token, user_info).
     """
     claims = verify_google_id_token(id_token, web_client_id)
@@ -239,34 +241,39 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
                 break
 
         if target_key is None:
-            raise ApiError(
-                "Email address not pre-approved. Contact administrator for access.",
-                code="email_not_authorized",
-                status_code=403,
-                details={"email": email}
-            )
+            # Auto-create user on first Google login
+            target_key = email
+            user_record = {
+                "google_sub": claims.get("sub"),
+                "email": email,
+                "name": claims.get("name"),
+                "picture": claims.get("picture"),
+                "created_at": datetime.now(UTC).isoformat(),
+                "last_login": datetime.now(UTC).isoformat(),
+                "active_tokens": [],
+                "active_token": None
+            }
+        else:
+            user_record = users[target_key]
+            if not isinstance(user_record, dict):
+                user_record = {}
+            user_record["google_sub"] = claims.get("sub") or user_record.get("google_sub")
+            user_record["email"] = email
+            user_record["name"] = claims.get("name") or user_record.get("name")
+            user_record["picture"] = claims.get("picture") or user_record.get("picture")
+            user_record["last_login"] = datetime.now(UTC).isoformat()
 
-        user_record = users[target_key]
-        if not isinstance(user_record, dict):
-            user_record = {}
-
-        # Update user profile metadata
-        user_record["google_sub"] = claims.get("sub") or user_record.get("google_sub")
-        user_record["email"] = email
-        user_record["name"] = claims.get("name") or user_record.get("name")
-        user_record["picture"] = claims.get("picture") or user_record.get("picture")
-        user_record["last_login"] = datetime.now(UTC).isoformat()
         if device_uuid:
             user_record["last_device_uuid"] = device_uuid
 
-        # Generate new session token
+        # Generate new session token and append to active_tokens
         token = secrets.token_hex(32)
         active_tokens = user_record.get("active_tokens", [])
         if not isinstance(active_tokens, list):
             active_tokens = []
         active_tokens.append(token)
         user_record["active_tokens"] = active_tokens
-        user_record["active_token"] = token  # Backwards compatibility
+        user_record["active_token"] = token
 
         users[target_key] = user_record
         _save_users(users)
@@ -277,7 +284,6 @@ def login_google_user(id_token: str, device_uuid: str | None = None, web_client_
             "picture": user_record.get("picture")
         }
         return token, user_info
-
 
 
 def verify_token(token: str) -> bool:
@@ -296,6 +302,8 @@ def verify_token(token: str) -> bool:
             if user_record.get("active_token") == token:
                 return True
         return False
+
+
 
 
 def require_session(f):

@@ -1,34 +1,35 @@
-# Backend Session Security Specification — Google Sign-In & Email Whitelist Authentication
+# Backend Session Security Specification — Google Sign-In & Single Active Session Authentication
 
-This document specifies the backend implementation details for enforcing pre-approved access using **Google Sign-In** (OAuth 2.0 / Jetpack Credential Manager) and **Email Whitelisting**. Traditional passwords, custom username registration, and strict single-device UUID locks are replaced by verified Google identity authentication and admin-managed email authorization.
+This document specifies the backend implementation details for authentication using **Google Sign-In** (OAuth 2.0 / Jetpack Credential Manager) with **Self-Service Registration** and **Single Active Session Enforcement**.
 
 ---
 
 ## 1. Authentication Lifecycle
 
 ```
-[ Admin (You) ] ──( Pre-register Email )──> [ Add email to Whitelist in users.json ]
-                                                          │
-                                                          ▼
-[ Mobile App ]  ──( User taps Google Sign-In )──> [ Obtains Google ID Token (JWT) ]
-                                                          │
-                                                          ▼
-[ Mobile App ]  ──( Send ID Token to Backend ) ──> [ POST /api/v1/auth/google-login ]
-                                                          │
-                                                          ▼
-[ Backend ]     ──( Verify Google ID Token )  ──> [ Verify Signature, Exp, & Web Client ID ]
-                                                          │
-                                                          ▼
-[ Backend ]     ──( Check Verified Email )    ──> [ Email in Whitelist? ]
-                                                    ├── YES ──> [ Issue Session Token (200 OK) ]
-                                                    └── NO  ──> [ Reject Access (403 Forbidden) ]
+[ Mobile App User ] ──( Taps Google Sign-In )──> [ Obtains Verified Google ID Token (JWT) ]
+                                                            │
+                                                            ▼
+[ Mobile App ]      ──( Send ID Token to Backend ) ──> [ POST /api/v1/auth/google-login ]
+                                                            │
+                                                            ▼
+[ Backend ]         ──( Verify Google ID Token )  ──> [ Verify Signature, Exp, & Web Client ID ]
+                                                            │
+                                                            ▼
+[ Backend ]         ──( Check User Record )       ──> [ User exists in users.json? ]
+                                                      ├── YES ──> [ Update Profile & Generate New Token ]
+                                                      └── NO  ──> [ Auto-Register & Generate New Token ]
+                                                                             │
+                                                                             ▼
+[ Backend ]         ──( Single Session Lock )     ──> [ Set user's active_token = token ]
+                                                      [ Returns Token (200 OK) ]
 ```
 
 ---
 
 ## 2. Storage Schema (`instance/users.json`)
 
-The storage file `instance/users.json` persists authorized user email addresses, their verified Google metadata, and active session tokens.
+The storage file `instance/users.json` persists registered user accounts, their verified Google metadata, and their active session tokens.
 
 ```json
 {
@@ -38,29 +39,20 @@ The storage file `instance/users.json` persists authorized user email addresses,
     "name": "Skanda",
     "picture": "https://lh3.googleusercontent.com/a/...",
     "created_at": "2026-07-26T12:00:00Z",
-    "last_login": "2026-07-26T12:38:00Z",
+    "last_login": "2026-07-27T11:20:00Z",
     "active_tokens": [
-      "session_token_1",
-      "session_token_2"
+      "session_token_phone_a",
+      "session_token_tablet_b"
     ]
-  },
-  "allowed_friend@gmail.com": {
-    "google_sub": null,
-    "email": "allowed_friend@gmail.com",
-    "name": null,
-    "picture": null,
-    "created_at": "2026-07-26T12:00:00Z",
-    "last_login": null,
-    "active_tokens": []
   }
 }
 ```
 
-### Key Changes from Legacy Spec:
-- **Email as Primary Identifier**: Replaces arbitrary `username`.
-- **Google Subject ID (`google_sub`)**: Immutable Google user ID populated on first login.
-- **Device UUID Lock Removed**: Users can log in from multiple devices using their pre-approved Google account without being restricted to a single hardware UUID.
-- **Multiple Active Tokens**: `active_tokens` list allows seamless simultaneous usage across multiple authorized personal devices.
+### Key Security & Session Features:
+- **Self-Service Registration**: Any user with a valid Google account can log in. If their email is not yet in `users.json`, their user record is automatically created upon first successful Google Sign-In.
+- **Simultaneous Multi-Device Sessions**: Each account maintains an `active_tokens` list. Users can log into their Google account across multiple devices (e.g. phone and tablet) simultaneously without logging each other out.
+- **Session Revocation**: If needed, `flask reset-device <email>` clears all active tokens for that account.
+
 
 ---
 
@@ -76,7 +68,7 @@ The storage file `instance/users.json` persists authorized user email addresses,
     "device_uuid": "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
   }
   ```
-  *(Note: `device_uuid` is optional and tracked solely for session metadata/logging, not for restricting device access).*
+  *(Note: `device_uuid` is optional and tracked solely for session metadata/logging).*
 
 - **Backend Login Validation Workflow**:
   1. Parse incoming `idToken`. If missing or blank, return **400 Bad Request** (*"Google ID Token is required"*).
@@ -86,11 +78,11 @@ The storage file `instance/users.json` persists authorized user email addresses,
      - Validate issuer (`iss`) is `https://accounts.google.com` or `accounts.google.com`.
      - Confirm token has not expired (`exp`).
   3. Extract verified claims: `email`, `sub` (Google Subject ID), `name`, and `picture`.
-  4. Normalize email address (lowercase). Check if `email` exists in `instance/users.json` whitelist.
-     - If email is **NOT** present: Return **403 Forbidden** (*"Email address not authorized. Contact administrator for access."*).
-  5. Update user record:
-     - Record `google_sub`, `name`, `picture`, and `last_login` timestamp.
-  6. Generate a cryptographically secure session token, append to `active_tokens`, save `users.json`, and return success.
+  4. Normalize email address (lowercase). Check if `email` exists in `instance/users.json`.
+     - If email is **NOT** present: Automatically create a new user record in `users.json`.
+     - If email **IS** present: Update `google_sub`, `name`, `picture`, and `last_login` timestamp.
+  5. Generate a new cryptographically secure session token and set `active_token = token`. (Overwrites any previous session token for this account).
+  6. Save `users.json` and return success.
 
 - **Response (Success - HTTP 200)**:
   ```json
@@ -107,7 +99,7 @@ The storage file `instance/users.json` persists authorized user email addresses,
 - **Error Responses**:
   - `400 Bad Request`: `{"error": "idToken is required", "code": "missing_parameter"}`
   - `401 Unauthorized`: `{"error": "Invalid or expired Google ID Token", "code": "invalid_google_token"}`
-  - `403 Forbidden`: `{"error": "Email address not pre-approved", "code": "email_not_authorized"}`
+
 
 ---
 

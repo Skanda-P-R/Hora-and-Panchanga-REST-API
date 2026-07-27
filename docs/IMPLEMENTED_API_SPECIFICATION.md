@@ -235,11 +235,13 @@ All calculation and registry endpoints require session-based authentication.
       }
     }
     ```
-    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. Access is granted only if the verified email address exists in the pre-approved whitelist (`instance/users.json`). Authorized users can log in across multiple personal devices.*
+    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. If the user does not exist, an account is auto-created in `instance/users.json`. Simultaneous login across multiple devices is fully supported.*
+
 - **Header Authentication**: Authenticated requests must supply the session token in the authorization header:
   ```http
   Authorization: Bearer <token>
   ```
+
 
 
 ### 6.2 Common query parameters

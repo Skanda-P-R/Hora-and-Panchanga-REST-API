@@ -87,28 +87,22 @@ certificate paths for the deployment environment.
 
 ## User administration
 
-When session security is enabled, you pre-register allowed email addresses before users can connect via Google Sign-In. Pre-approved emails and active sessions are stored in `instance/users.json`.
+Users register automatically upon their first successful Google Sign-In. User accounts and their active session token are stored in `instance/users.json`.
 
-### Pre-register an allowed email
-Pre-register an email address so the user can log in via Google Sign-In:
-```bash
-flask add-user <email>
-```
-
-### List all pre-registered users
-View all pre-registered email addresses, Google Subject IDs, and active session counts:
+### List registered users
+View all registered user accounts, Google Subject IDs, and active session status:
 ```bash
 flask list-users
 ```
 
-### Reset a user's active sessions
-If a user needs to revoke active device sessions:
+### Revoke a user's active session
+To invalidate a user's active session token:
 ```bash
 flask reset-device <email>
 ```
 
 ### Remove a user
-To delete an email from the whitelist and instantly invalidate all active sessions:
+To delete a user account and invalidate their session:
 ```bash
 flask remove-user <email>
 ```
@@ -139,12 +133,15 @@ Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/google
     }
   }
   ```
+  *Note: On first login, your account is automatically created. Simultaneous login across multiple personal devices is fully supported.*
+
 
 ### Authenticating Requests
 Pass the session token in the `Authorization` header of all subsequent API calls:
 ```http
 Authorization: Bearer <token>
 ```
+
 
 
 ## Request parameters
