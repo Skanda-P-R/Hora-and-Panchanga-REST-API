@@ -109,6 +109,33 @@ def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
     assert response_a_again.status_code == 200
 
 
+def test_same_device_relogin_and_logout(client, clean_users_store, bengaluru_query):
+    # 1. Login on Phone A -> gets token_a1
+    res1 = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_user@gmail.com", "device_uuid": "phone-a"})
+    assert res1.status_code == 200
+    token_a1 = res1.get_json()["token"]
+
+    # 2. Login AGAIN on Phone A -> gets token_a2 (replaces old token for phone-a)
+    res2 = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_user@gmail.com", "device_uuid": "phone-a"})
+    assert res2.status_code == 200
+    token_a2 = res2.get_json()["token"]
+    assert token_a2 != token_a1
+
+    # token_a2 works
+    headers_a2 = {"Authorization": f"Bearer {token_a2}"}
+    assert client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a2).status_code == 200
+
+    # Old token_a1 on same device was replaced and is no longer valid
+    headers_a1 = {"Authorization": f"Bearer {token_a1}"}
+    assert client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a1).status_code == 401
+
+    # 3. Explicit logout from token_a2
+    logout_res = client.post("/api/v1/auth/logout", headers=headers_a2)
+    assert logout_res.status_code == 200
+    assert client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a2).status_code == 401
+
+
+
 
 
 def test_cli_list_users(app, clean_users_store):

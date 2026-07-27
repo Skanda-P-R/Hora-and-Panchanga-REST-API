@@ -29,7 +29,7 @@ This document specifies the backend implementation details for authentication us
 
 ## 2. Storage Schema (`instance/users.json`)
 
-The storage file `instance/users.json` persists registered user accounts, their verified Google metadata, and their active session tokens.
+The storage file `instance/users.json` persists registered user accounts, their verified Google metadata, and their active device tokens.
 
 ```json
 {
@@ -39,7 +39,11 @@ The storage file `instance/users.json` persists registered user accounts, their 
     "name": "Skanda",
     "picture": "https://lh3.googleusercontent.com/a/...",
     "created_at": "2026-07-26T12:00:00Z",
-    "last_login": "2026-07-27T11:20:00Z",
+    "last_login": "2026-07-27T19:50:00Z",
+    "device_tokens": {
+      "device-uuid-phone-a": "session_token_phone_a",
+      "device-uuid-tablet-b": "session_token_tablet_b"
+    },
     "active_tokens": [
       "session_token_phone_a",
       "session_token_tablet_b"
@@ -50,8 +54,10 @@ The storage file `instance/users.json` persists registered user accounts, their 
 
 ### Key Security & Session Features:
 - **Self-Service Registration**: Any user with a valid Google account can log in. If their email is not yet in `users.json`, their user record is automatically created upon first successful Google Sign-In.
-- **Simultaneous Multi-Device Sessions**: Each account maintains an `active_tokens` list. Users can log into their Google account across multiple devices (e.g. phone and tablet) simultaneously without logging each other out.
-- **Session Revocation**: If needed, `flask reset-device <email>` clears all active tokens for that account.
+- **Per-Device Token Management**: Tokens are mapped by `device_uuid`. Re-logging in on the **same device** replaces that device's old token (preventing token accumulation), while other devices remain logged in simultaneously.
+- **Explicit Logout Endpoint**: `POST /api/v1/auth/logout` revokes the calling device's session token instantly.
+- **Session Revocation**: `flask reset-device <email>` clears all active tokens for an account if needed.
+
 
 
 ---
@@ -100,8 +106,26 @@ The storage file `instance/users.json` persists registered user accounts, their 
   - `400 Bad Request`: `{"error": "idToken is required", "code": "missing_parameter"}`
   - `401 Unauthorized`: `{"error": "Invalid or expired Google ID Token", "code": "invalid_google_token"}`
 
+### 3.2 Session Logout & Token Revocation
+- **Endpoint**: `POST /api/v1/auth/logout`
+- **HTTP Method**: `POST`
+- **Request Headers**:
+  ```http
+  Authorization: Bearer <session-token-to-revoke>
+  ```
+- **Request Payload**: None (or empty JSON object `{}`).
+- **Backend Workflow**: Extracts the active session token from the `Authorization: Bearer` header, removes it from the user's `device_tokens` map and `active_tokens` array in `instance/users.json`, and invalidates subsequent requests using that token.
+- **Response (Success - HTTP 200)**:
+  ```json
+  {
+    "status": "logged_out"
+  }
+  ```
+
+
 
 ---
+
 
 ## 4. Request Authentication & Validation
 

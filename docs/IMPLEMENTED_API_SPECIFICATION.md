@@ -235,12 +235,18 @@ All calculation and registry endpoints require session-based authentication.
       }
     }
     ```
-    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. If the user does not exist, an account is auto-created in `instance/users.json`. Simultaneous login across multiple devices is fully supported.*
+    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. If the user does not exist, an account is auto-created in `instance/users.json`. Per-device token mapping allows simultaneous multi-device logins while replacing older tokens when logging in repeatedly on the same device.*
+- **Logout Endpoint**: `POST /api/v1/auth/logout`
+  - **Request Headers**: `Authorization: Bearer <session-token>`
+  - **Request Body**: None (or empty JSON `{}`)
+  - **Response (Success - HTTP 200)**: `{"status": "logged_out"}`
+  - Revokes the requesting device's active session token from `device_tokens` and `active_tokens` in `instance/users.json`.
 
 - **Header Authentication**: Authenticated requests must supply the session token in the authorization header:
   ```http
   Authorization: Bearer <token>
   ```
+
 
 
 
@@ -819,7 +825,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 92 passing tests;
+- 93 passing tests;
 
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;

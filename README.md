@@ -133,7 +133,14 @@ Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/google
     }
   }
   ```
-  *Note: On first login, your account is automatically created. Simultaneous login across multiple personal devices is fully supported.*
+  *Note: On first login, your account is automatically created. Session tokens are mapped per device (`device_uuid`), so logging in repeatedly on the same device replaces that device's old token, while other devices remain logged in simultaneously.*
+
+### Logout
+- **Endpoint**: `POST /api/v1/auth/logout`
+- **Header**: `Authorization: Bearer <token>`
+- **Payload**: None (or empty JSON `{}`)
+- **Response**: `{"status": "logged_out"}`
+- Revokes the calling device's active session token.
 
 
 ### Authenticating Requests
@@ -141,6 +148,7 @@ Pass the session token in the `Authorization` header of all subsequent API calls
 ```http
 Authorization: Bearer <token>
 ```
+
 
 
 
