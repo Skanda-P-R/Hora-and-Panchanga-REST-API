@@ -376,9 +376,9 @@ mode, missing or unusable Swiss files produce a 503 response.
 
 ### 7.3 GET /api/v1/hora
 
-Returns the base fields, solar fields, current hora, and meta.
+Returns the base fields, solar fields, current hora, full-day `day_hora` and `night_hora` arrays, and meta.
 
-The hora object contains:
+The `hora` object contains:
 
 | Field | Meaning |
 |---|---|
@@ -392,6 +392,16 @@ The hora object contains:
 | remaining | Display minutes, rounded upward |
 | remaining_seconds | Non-negative integer elapsed seconds |
 | next | Next ruler |
+
+The `day_hora` and `night_hora` arrays each contain 12 objects detailing all daytime and nighttime planetary hours of the Vedic solar day:
+
+| Field | Meaning |
+|---|---|
+| planet | Hour ruler |
+| symbol | Unicode planetary symbol |
+| number | Period number, 1–12 |
+| starts / ends | Short display start and end times |
+| starts_at / ends_at | Exact start and end timestamps |
 
 ### 7.4 GET /api/v1/planetary-hours
 
@@ -825,7 +835,7 @@ template. The operator must supply the real hostname and certificates.
 
 The as-built validation baseline is:
 
-- 93 passing tests;
+- 94 passing tests;
 
 - 97 percent statement coverage;
 - successful wheel and source-distribution build;

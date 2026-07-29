@@ -102,6 +102,25 @@ def test_real_day_and_night_horas_tile_separate_unequal_spans(
     assert data["day_hora_seconds"] != data["night_hora_seconds"]
 
 
+def test_hora_endpoint_includes_day_and_night_hora(client, bengaluru_query):
+    data = client.get("/api/v1/hora", query_string=bengaluru_query).get_json()
+    assert "day_hora" in data
+    assert "night_hora" in data
+    assert len(data["day_hora"]) == 12
+    assert len(data["night_hora"]) == 12
+
+    expected_keys = {"planet", "symbol", "number", "starts", "ends", "starts_at", "ends_at"}
+
+    first_day = data["day_hora"][0]
+    assert expected_keys.issubset(first_day.keys())
+    assert first_day["number"] == 1
+
+    first_night = data["night_hora"][0]
+    assert expected_keys.issubset(first_night.keys())
+    assert first_night["number"] == 1
+
+
+
 def test_exact_sunrise_and_sunset_use_half_open_hora_boundaries(
     client, bengaluru_query
 ):

@@ -295,6 +295,19 @@ class PanchangaService:
         }
 
     @staticmethod
+    def _hora_schedule_item(hour: PlanetaryHour) -> dict[str, Any]:
+        return {
+            "planet": hour.planet,
+            "symbol": hour.symbol,
+            "number": hour.period_number,
+            "starts": time_text(hour.start),
+            "ends": time_text(hour.end),
+            "starts_at": isoformat(hour.start),
+            "ends_at": isoformat(hour.end),
+        }
+
+
+    @staticmethod
     def _planetary_hour_item(
         hour: PlanetaryHour, instant: datetime
     ) -> dict[str, Any]:
@@ -537,6 +550,12 @@ class PanchangaService:
         payload["hora"] = self._hour_payload(
             context.instant, current, next_planet
         )
+        payload["day_hora"] = [
+            self._hora_schedule_item(hour) for hour in hours[:12]
+        ]
+        payload["night_hora"] = [
+            self._hora_schedule_item(hour) for hour in hours[12:]
+        ]
         payload["meta"] = self._meta(positions)
         return localize_payload(payload, context.lang)
 
