@@ -193,7 +193,7 @@ civil date before sunrise.
 
 | Endpoint | Result |
 |---|---|
-| `GET /api/v1/hora` | Current unequal planetary hour, remaining time, and next ruler |
+| `GET /api/v1/hora` | Current unequal planetary hour, remaining time, next ruler, and full-day `day_hora` and `night_hora` schedules |
 | `GET /api/v1/planetary-hours` | All 12 day and 12 night horas for the containing Vedic day |
 | `GET /api/v1/panchanga` | Tithi, nakshatra/pada, nitya yoga, karana, vara, Sun/Moon rashi, samvatsara, ayana, rutu, masa, paksha, transitions |
 | `GET /api/v1/day` | Sunrise, sunset, next sunrise, solar noon, and elapsed durations |
@@ -262,3 +262,8 @@ day/night instead of inventing a twilight substitute. The bundled data range
 is enforced as 1800–2399. See [EPHEMERIS_DATA.md](EPHEMERIS_DATA.md) for data
 hashes, provenance, strict-mode behavior, and the Swiss Ephemeris licensing
 decision required before production deployment.
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)**. See the [LICENSE](LICENSE) file for full details and Swiss Ephemeris / `pyswisseph` copyright attributions.
+

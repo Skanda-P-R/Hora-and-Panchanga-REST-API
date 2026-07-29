@@ -7,6 +7,7 @@ name = "hora-panchanga-server"
 version = "1.0.0"
 description = "Offline Swiss Ephemeris-backed Hora and Panchanga REST API"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.11,<3.12"
 dependencies = [
   "Flask==3.1.3",
