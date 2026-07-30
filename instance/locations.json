@@ -1,4 +1,3161 @@
 {
-  "saved_locations": {},
+  "saved_locations": {
+    "Port Blair, South Andaman, Andaman and Nicobar Islands": {
+      "latitude": 11.6233774,
+      "longitude": 92.7264828,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Adoni, Kurnool, Andhra Pradesh": {
+      "latitude": 15.6322227,
+      "longitude": 77.2728368,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amaravati, Guntur, Andhra Pradesh": {
+      "latitude": 16.574517,
+      "longitude": 80.359012,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Anantapur, Anantapur, Andhra Pradesh": {
+      "latitude": 14.6818877,
+      "longitude": 77.6005911,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhimavaram, West, Andhra Pradesh": {
+      "latitude": 16.544709,
+      "longitude": 81.520593,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chilakaluripet, Guntur, Andhra Pradesh": {
+      "latitude": 16.0924301,
+      "longitude": 80.1623948,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chittoor, Chittoor, Andhra Pradesh": {
+      "latitude": 13.217176,
+      "longitude": 79.1003289,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dharmavaram, Anantapur, Andhra Pradesh": {
+      "latitude": 14.422733,
+      "longitude": 77.721472,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Eluru, West, Andhra Pradesh": {
+      "latitude": 16.7106604,
+      "longitude": 81.0952431,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gudivada, Krishna, Andhra Pradesh": {
+      "latitude": 16.4410255,
+      "longitude": 80.9926327,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Guntakal, Anantapur, Andhra Pradesh": {
+      "latitude": 15.1674091,
+      "longitude": 77.3736238,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Guntur, Guntur, Andhra Pradesh": {
+      "latitude": 16.3066525,
+      "longitude": 80.4365402,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hindupur, Anantapur, Andhra Pradesh": {
+      "latitude": 13.829069,
+      "longitude": 77.491835,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kadapa, Kadapa, Andhra Pradesh": {
+      "latitude": 14.4673541,
+      "longitude": 78.8241339,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kakinada, East, Andhra Pradesh": {
+      "latitude": 16.9890648,
+      "longitude": 82.2474648,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kurnool, Kurnool, Andhra Pradesh": {
+      "latitude": 15.8281257,
+      "longitude": 78.0372792,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Machilipatnam, Krishna, Andhra Pradesh": {
+      "latitude": 16.1905457,
+      "longitude": 81.1361543,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Madanapalle, Chittoor, Andhra Pradesh": {
+      "latitude": 13.5603491,
+      "longitude": 78.5036065,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nandyal, Kurnool, Andhra Pradesh": {
+      "latitude": 15.4785694,
+      "longitude": 78.4830934,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Narasaraopet, Guntur, Andhra Pradesh": {
+      "latitude": 16.2353506,
+      "longitude": 80.0479039,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nellore, Nellore, Andhra Pradesh": {
+      "latitude": 14.4425987,
+      "longitude": 79.986456,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ongole, Prakasam, Andhra Pradesh": {
+      "latitude": 15.5057232,
+      "longitude": 80.049922,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Proddatur, Kadapa, Andhra Pradesh": {
+      "latitude": 14.7491864,
+      "longitude": 78.5531577,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rajamahendravaram, East, Andhra Pradesh": {
+      "latitude": 17.0005383,
+      "longitude": 81.8040345,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Srikakulam, Srikakulam, Andhra Pradesh": {
+      "latitude": 18.2969747,
+      "longitude": 83.8967813,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tadepalligudem, West, Andhra Pradesh": {
+      "latitude": 16.8138415,
+      "longitude": 81.521241,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tadipatri, Anantapur, Andhra Pradesh": {
+      "latitude": 14.9070274,
+      "longitude": 78.0092703,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tenali, Guntur, Andhra Pradesh": {
+      "latitude": 16.2395313,
+      "longitude": 80.6493396,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tirupati, Chittoor, Andhra Pradesh": {
+      "latitude": 13.6287557,
+      "longitude": 79.4191795,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vijayawada, Krishna, Andhra Pradesh": {
+      "latitude": 16.5061743,
+      "longitude": 80.6480153,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Visakhapatnam, Visakhapatnam, Andhra Pradesh": {
+      "latitude": 17.6868159,
+      "longitude": 83.2184815,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vizianagaram, Vizianagaram, Andhra Pradesh": {
+      "latitude": 18.1066576,
+      "longitude": 83.3955506,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Itanagar, Papum Pare, Arunachal Pradesh": {
+      "latitude": 27.081581,
+      "longitude": 93.6027,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bongaigaon, Bongaigaon, Assam": {
+      "latitude": 26.5009992,
+      "longitude": 90.5352356,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhubri, Dhubri, Assam": {
+      "latitude": 26.0206982,
+      "longitude": 89.9743463,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dibrugarh, Dibrugarh, Assam": {
+      "latitude": 27.4728327,
+      "longitude": 94.9119621,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Guwahati, Kamrup, Assam": {
+      "latitude": 26.1445169,
+      "longitude": 91.7362365,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jorhat, Jorhat, Assam": {
+      "latitude": 26.7465203,
+      "longitude": 94.2025859,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagaon, Nagaon, Assam": {
+      "latitude": 26.3463713,
+      "longitude": 92.6840426,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Silchar, Cachar, Assam": {
+      "latitude": 24.8332708,
+      "longitude": 92.7789054,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tezpur, Sonitpur, Assam": {
+      "latitude": 26.6528495,
+      "longitude": 92.7925592,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tinsukia, Tinsukia, Assam": {
+      "latitude": 27.4921909,
+      "longitude": 95.346775,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Arrah, Bhojpur, Bihar": {
+      "latitude": 25.5560443,
+      "longitude": 84.6603307,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Aurangabad, Aurangabad, Bihar": {
+      "latitude": 24.7457189,
+      "longitude": 84.3804888,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bagaha, West Champaran, Bihar": {
+      "latitude": 27.128635,
+      "longitude": 84.062203,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Begusarai, Begusarai, Bihar": {
+      "latitude": 25.416675,
+      "longitude": 86.1293792,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bettiah, West Champaran, Bihar": {
+      "latitude": 26.8028048,
+      "longitude": 84.5169757,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhagalpur, Bhagalpur, Bihar": {
+      "latitude": 25.2414303,
+      "longitude": 86.9924358,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bihar Sharif, Nalanda, Bihar": {
+      "latitude": 25.1982147,
+      "longitude": 85.5148735,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Buxar, Buxar, Bihar": {
+      "latitude": 25.5647103,
+      "longitude": 83.9777482,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chhapra, Saran, Bihar": {
+      "latitude": 25.7795649,
+      "longitude": 84.7498886,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Darbhanga, Darbhanga, Bihar": {
+      "latitude": 26.111868,
+      "longitude": 85.896004,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dehri, Rohtas, Bihar": {
+      "latitude": 24.9277351,
+      "longitude": 84.1909841,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gaya, Gaya, Bihar": {
+      "latitude": 24.7954523,
+      "longitude": 84.999431,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hajipur, Vaishali, Bihar": {
+      "latitude": 25.692562,
+      "longitude": 85.208369,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jamalpur, Munger, Bihar": {
+      "latitude": 25.312717,
+      "longitude": 86.4906091,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jehanabad, Jehanabad, Bihar": {
+      "latitude": 25.2139287,
+      "longitude": 84.9895549,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Katihar, Katihar, Bihar": {
+      "latitude": 25.542424,
+      "longitude": 87.567953,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kishanganj, Kishanganj, Bihar": {
+      "latitude": 26.0917422,
+      "longitude": 87.9383822,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Lakhisarai, Lakhisarai, Bihar": {
+      "latitude": 25.1673614,
+      "longitude": 86.0988253,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Motihari, East Champaran, Bihar": {
+      "latitude": 26.6469624,
+      "longitude": 84.9088938,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Munger, Munger, Bihar": {
+      "latitude": 25.376505,
+      "longitude": 86.476588,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Muzaffarpur, Muzaffarpur, Bihar": {
+      "latitude": 26.1208876,
+      "longitude": 85.3647201,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nawada, Nawada, Bihar": {
+      "latitude": 24.877299,
+      "longitude": 85.538434,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Patna, Patna, Bihar": {
+      "latitude": 25.5940947,
+      "longitude": 85.1375645,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Purnia, Purnia, Bihar": {
+      "latitude": 25.7771391,
+      "longitude": 87.4752551,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Saharsa, Saharsa, Bihar": {
+      "latitude": 25.8834961,
+      "longitude": 86.6006249,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sasaram, Rohtas, Bihar": {
+      "latitude": 24.949036,
+      "longitude": 84.0314295,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sitamarhi, Sitamarhi, Bihar": {
+      "latitude": 26.5952476,
+      "longitude": 85.4808393,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Siwan, Siwan, Bihar": {
+      "latitude": 26.2196205,
+      "longitude": 84.3566593,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chandigarh, Chandigarh, Chandigarh": {
+      "latitude": 30.7399738,
+      "longitude": 76.7567368,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ambikapur, Surguja, Chhattisgarh": {
+      "latitude": 23.1354921,
+      "longitude": 83.1817856,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bilaspur, Bilaspur, Chhattisgarh": {
+      "latitude": 22.0796251,
+      "longitude": 82.1391412,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chirmiri, Koriya, Chhattisgarh": {
+      "latitude": 23.1879502,
+      "longitude": 82.354162,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhamtari, Dhamtari, Chhattisgarh": {
+      "latitude": 20.7014999,
+      "longitude": 81.5541579,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Durg, Durg, Chhattisgarh": {
+      "latitude": 21.1904494,
+      "longitude": 81.2849169,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jagdalpur, Bastar, Chhattisgarh": {
+      "latitude": 19.0740973,
+      "longitude": 82.008014,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Korba, Korba, Chhattisgarh": {
+      "latitude": 22.3594501,
+      "longitude": 82.7500595,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mahasamund, Mahasamund, Chhattisgarh": {
+      "latitude": 21.1091317,
+      "longitude": 82.0979023,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Naya Raipur, Raipur, Chhattisgarh": {
+      "latitude": 21.1649932,
+      "longitude": 81.7753055,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pakhanjore, kanker, Chhattisgarh": {
+      "latitude": 20.0399913,
+      "longitude": 80.6271415,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Raigarh, Raigarh, Chhattisgarh": {
+      "latitude": 21.8974003,
+      "longitude": 83.3949632,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Raipur, Raipur, Chhattisgarh": {
+      "latitude": 21.2513844,
+      "longitude": 81.6296413,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rajnandgaon, Rajnandgaon, Chhattisgarh": {
+      "latitude": 21.0971034,
+      "longitude": 81.0302222,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Daman, Daman, Dadra and Nagar Haveli and Daman and Diu": {
+      "latitude": 20.3973736,
+      "longitude": 72.8327991,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Silvassa, Dadra and Nagar Haveli, Dadra and Nagar Haveli and Daman and Diu": {
+      "latitude": 20.2762659,
+      "longitude": 73.0083061,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Delhi, Delhi, Delhi": {
+      "latitude": 28.6139391,
+      "longitude": 77.2090212,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Margao, South Goa, Goa": {
+      "latitude": 15.2832187,
+      "longitude": 73.986191,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mormugao, South Goa, Goa": {
+      "latitude": 15.3874352,
+      "longitude": 73.8154394,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Panaji, North Goa, Goa": {
+      "latitude": 15.4909301,
+      "longitude": 73.8278496,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vasco, South Goa, Goa": {
+      "latitude": 15.3860329,
+      "longitude": 73.8440398,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ahmedabad, Ahmedabad, Gujarat": {
+      "latitude": 23.022505,
+      "longitude": 72.5713621,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amreli, Amreli, Gujarat": {
+      "latitude": 21.6031774,
+      "longitude": 71.2220832,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Anand, Anand, Gujarat": {
+      "latitude": 22.5645175,
+      "longitude": 72.928871,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ankleshwar, Bharuch, Gujarat": {
+      "latitude": 21.6264236,
+      "longitude": 73.0151984,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bharuch, Bharuch, Gujarat": {
+      "latitude": 21.701963,
+      "longitude": 72.99996,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhavnagar, Bhavnagar, Gujarat": {
+      "latitude": 21.768064,
+      "longitude": 72.147388,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhuj, Kutch, Gujarat": {
+      "latitude": 23.2419997,
+      "longitude": 69.6669324,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Botad, Botad, Gujarat": {
+      "latitude": 22.1704232,
+      "longitude": 71.6684269,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dahod, Dahod, Gujarat": {
+      "latitude": 22.8379314,
+      "longitude": 74.2531465,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Deesa, Banaskantha, Gujarat": {
+      "latitude": 24.2585031,
+      "longitude": 72.1906721,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gandhidham, Kutch, Gujarat": {
+      "latitude": 23.075297,
+      "longitude": 70.133673,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gandhinagar, Gandhinagar, Gujarat": {
+      "latitude": 23.2156354,
+      "longitude": 72.6369415,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Godhra, Panchmahal, Gujarat": {
+      "latitude": 22.7788044,
+      "longitude": 73.6142795,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gondal, Rajkot, Gujarat": {
+      "latitude": 21.9619463,
+      "longitude": 70.792297,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jamnagar, Jamnagar, Gujarat": {
+      "latitude": 22.4707019,
+      "longitude": 70.05773,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jetpur, Rajkot, Gujarat": {
+      "latitude": 21.761778,
+      "longitude": 70.621101,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Junagadh, Junagadh, Gujarat": {
+      "latitude": 21.522184,
+      "longitude": 70.4578768,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kalol, Gandhinagar, Gujarat": {
+      "latitude": 23.2463895,
+      "longitude": 72.5086513,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khambhat, Anand, Gujarat": {
+      "latitude": 22.316748,
+      "longitude": 72.624144,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mahuva, Bhavnagar, Gujarat": {
+      "latitude": 21.0902193,
+      "longitude": 71.7563169,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mehsana, Mehsana, Gujarat": {
+      "latitude": 23.5879607,
+      "longitude": 72.3693252,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Morbi, Morbi, Gujarat": {
+      "latitude": 22.8119895,
+      "longitude": 70.8236195,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nadiad, Kheda, Gujarat": {
+      "latitude": 22.6915853,
+      "longitude": 72.8633635,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Navsari, Navsari, Gujarat": {
+      "latitude": 20.9467019,
+      "longitude": 72.9520348,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Palanpur, Palanpur, Gujarat": {
+      "latitude": 24.174051,
+      "longitude": 72.4330989,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Patan, Patan, Gujarat": {
+      "latitude": 23.8493246,
+      "longitude": 72.1266255,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Porbandar, Porbandar, Gujarat": {
+      "latitude": 21.6417069,
+      "longitude": 69.6292654,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rajkot, Rajkot, Gujarat": {
+      "latitude": 22.3038945,
+      "longitude": 70.8021599,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Surat, Surat, Gujarat": {
+      "latitude": 21.1702401,
+      "longitude": 72.8310607,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Surendranagar, Surendranagar, Gujarat": {
+      "latitude": 22.7201319,
+      "longitude": 71.649536,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vadodara, Vadodara, Gujarat": {
+      "latitude": 22.3071588,
+      "longitude": 73.1812187,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Valsad, Valsad, Gujarat": {
+      "latitude": 20.5992349,
+      "longitude": 72.9342451,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vapi, Valsad, Gujarat": {
+      "latitude": 20.3893155,
+      "longitude": 72.9106202,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Veraval, Gir Somnath, Gujarat": {
+      "latitude": 20.91424,
+      "longitude": 70.3611,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ambala, Ambala, Haryana": {
+      "latitude": 30.3781788,
+      "longitude": 76.7766974,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bahadurgarh, Jhajjar, Haryana": {
+      "latitude": 28.6924464,
+      "longitude": 76.9239727,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhiwani, Bhiwani, Haryana": {
+      "latitude": 28.7990445,
+      "longitude": 76.1335112,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Faridabad, Faridabad, Haryana": {
+      "latitude": 28.4089123,
+      "longitude": 77.3177894,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gurgaon, Gurgaon, Haryana": {
+      "latitude": 28.4594965,
+      "longitude": 77.0266383,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hisar, Hisar, Haryana": {
+      "latitude": 29.1491875,
+      "longitude": 75.7216527,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jind, Jind, Haryana": {
+      "latitude": 29.3211153,
+      "longitude": 76.3058328,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kaithal, Kaithal, Haryana": {
+      "latitude": 29.7856734,
+      "longitude": 76.3984537,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Karnal, Karnal, Haryana": {
+      "latitude": 29.6856929,
+      "longitude": 76.9904825,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Palwal, Palwal, Haryana": {
+      "latitude": 28.1487362,
+      "longitude": 77.3320262,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Panchkula, Panchkula, Haryana": {
+      "latitude": 30.6942091,
+      "longitude": 76.860565,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Panipat, Panipat, Haryana": {
+      "latitude": 29.3909464,
+      "longitude": 76.9635023,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rewari, Rewari, Haryana": {
+      "latitude": 28.1927631,
+      "longitude": 76.6239423,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rohtak, Rohtak, Haryana": {
+      "latitude": 28.8955152,
+      "longitude": 76.606611,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sirsa, Sirsa, Haryana": {
+      "latitude": 29.5335931,
+      "longitude": 75.0177029,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sonipat, Sonipat, Haryana": {
+      "latitude": 28.9287735,
+      "longitude": 77.091281,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Thanesar, Kurukshetra, Haryana": {
+      "latitude": 29.9696148,
+      "longitude": 76.8197522,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Yamunanagar, Yamunanagar, Haryana": {
+      "latitude": 30.1290485,
+      "longitude": 77.2673901,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shimla, Shimla, Himachal Pradesh": {
+      "latitude": 31.1048145,
+      "longitude": 77.1734033,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Anantnag, Anantnag, Jammu and Kashmir": {
+      "latitude": 33.704949,
+      "longitude": 75.247874,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jammu, Jammu, Jammu and Kashmir": {
+      "latitude": 32.726601,
+      "longitude": 74.857031,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Srinagar, Srinagar, Jammu and Kashmir": {
+      "latitude": 34.081413,
+      "longitude": 74.807591,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bokaro Steel City, Bokaro, Jharkhand": {
+      "latitude": 23.6692956,
+      "longitude": 86.151112,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chirkunda, Dhanbad, Jharkhand": {
+      "latitude": 23.747887,
+      "longitude": 86.7868768,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Deoghar, Deoghar, Jharkhand": {
+      "latitude": 24.4763201,
+      "longitude": 86.6913222,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhanbad, Dhanbad, Jharkhand": {
+      "latitude": 23.7956531,
+      "longitude": 86.4303859,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Giridih, Giridih, Jharkhand": {
+      "latitude": 24.1821391,
+      "longitude": 86.2869507,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hazaribagh, Hazaribag, Jharkhand": {
+      "latitude": 23.9966213,
+      "longitude": 85.3691068,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jamshedpur, East Singhbhum, Jharkhand": {
+      "latitude": 22.8045665,
+      "longitude": 86.2028754,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jhumri Telaiya, Koderma, Jharkhand": {
+      "latitude": 24.4289365,
+      "longitude": 85.5354724,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Medininagar, Palamu, Jharkhand": {
+      "latitude": 24.0420432,
+      "longitude": 84.0907246,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Phusro, Bokaro, Jharkhand": {
+      "latitude": 23.7622641,
+      "longitude": 86.0020693,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ramgarh, Ramgarh, Jharkhand": {
+      "latitude": 23.6332243,
+      "longitude": 85.5148735,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ranchi, Ranchi, Jharkhand": {
+      "latitude": 23.349649,
+      "longitude": 85.334521,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sahibganj, Sahibganj, Jharkhand": {
+      "latitude": 25.2381216,
+      "longitude": 87.6453592,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bagalkot, Bagalkot, Karnataka": {
+      "latitude": 16.1725355,
+      "longitude": 75.6557206,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Belgaum, Belagavi, Karnataka": {
+      "latitude": 15.8496953,
+      "longitude": 74.4976741,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bellary, Ballari, Karnataka": {
+      "latitude": 15.1393932,
+      "longitude": 76.9214428,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bengaluru, Bengaluru Urban, Karnataka": {
+      "latitude": 12.9715987,
+      "longitude": 77.5945627,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhadravati, Shimoga, Karnataka": {
+      "latitude": 13.8329901,
+      "longitude": 75.7080727,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bidar, Bidar, Karnataka": {
+      "latitude": 17.9148799,
+      "longitude": 77.5046101,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bijapur, Vijayapur, Karnataka": {
+      "latitude": 16.8301708,
+      "longitude": 75.710031,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chikkamagallooru, Chikkamagallooru, Karnataka": {
+      "latitude": 13.315258,
+      "longitude": 75.7754018,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chikmagalur, Chikkamagaluru, Karnataka": {
+      "latitude": 13.315258,
+      "longitude": 75.7754018,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chitradurga, Chitradurga, Karnataka": {
+      "latitude": 14.2305594,
+      "longitude": 76.3984537,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Davangere, Davangere, Karnataka": {
+      "latitude": 14.4663438,
+      "longitude": 75.9238397,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gadag, Gadag, Karnataka": {
+      "latitude": 15.4324651,
+      "longitude": 75.6380337,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gangawati, Koppal, Karnataka": {
+      "latitude": 15.431874,
+      "longitude": 76.5314817,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gulbarga, Kalburgi, Karnataka": {
+      "latitude": 17.329731,
+      "longitude": 76.8342957,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Harihar, Davanagere, Karnataka": {
+      "latitude": 14.5304566,
+      "longitude": 75.8010962,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hassan, Hassan, Karnataka": {
+      "latitude": 13.0068142,
+      "longitude": 76.0995519,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hospet, Bellary, Karnataka": {
+      "latitude": 15.2688542,
+      "longitude": 76.3909241,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hubli, Dharwad, Karnataka": {
+      "latitude": 15.3647083,
+      "longitude": 75.1239547,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kolar, Kolar, Karnataka": {
+      "latitude": 13.1357446,
+      "longitude": 78.1325611,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mandya, Mandya, Karnataka": {
+      "latitude": 12.5221567,
+      "longitude": 76.9009191,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mangalore, South Canara, Karnataka": {
+      "latitude": 12.9141417,
+      "longitude": 74.8559568,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mysore, Mysuru, Karnataka": {
+      "latitude": 12.2958104,
+      "longitude": 76.6393805,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Raichur, Raichur, Karnataka": {
+      "latitude": 16.2120031,
+      "longitude": 77.3439283,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ramanagara, Ramnagar, Karnataka": {
+      "latitude": 12.7094487,
+      "longitude": 77.2807423,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ranebennuru, Haveri, Karnataka": {
+      "latitude": 14.6113428,
+      "longitude": 75.6382657,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Robertsonpet, Kolar, Karnataka": {
+      "latitude": 12.9551189,
+      "longitude": 78.2698622,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shimoga, Shivamogga, Karnataka": {
+      "latitude": 13.9299299,
+      "longitude": 75.568101,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tumkur, Tumakuru, Karnataka": {
+      "latitude": 13.345018,
+      "longitude": 77.101945,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Udupi, Udupi, Karnataka": {
+      "latitude": 13.3371151,
+      "longitude": 74.746596,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Alappuzha, Alappuzha, Kerala": {
+      "latitude": 9.4980667,
+      "longitude": 76.3388484,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Calicut, Kozhikode, Kerala": {
+      "latitude": 11.2587531,
+      "longitude": 75.78041,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kannur, Kannur, Kerala": {
+      "latitude": 11.8744775,
+      "longitude": 75.3703662,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kasaragod, Kasaragod, Kerala": {
+      "latitude": 12.5102239,
+      "longitude": 74.9851678,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kochi, Ernakulam, Kerala": {
+      "latitude": 9.9312328,
+      "longitude": 76.2673041,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kollam, Kollam, Kerala": {
+      "latitude": 8.8932118,
+      "longitude": 76.6141396,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kothamangalam, Ernakulam, Kerala": {
+      "latitude": 10.0601903,
+      "longitude": 76.6350827,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kottayam, Kottayam, Kerala": {
+      "latitude": 9.5915668,
+      "longitude": 76.5221531,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Malappuram, Malappuram, Kerala": {
+      "latitude": 11.0731819,
+      "longitude": 76.0739999,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Manjeri, Malappuram, Kerala": {
+      "latitude": 11.1202984,
+      "longitude": 76.1199677,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Palakkad, Palakkad, Kerala": {
+      "latitude": 10.7867303,
+      "longitude": 76.6547932,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ponnani, Malappuram, Kerala": {
+      "latitude": 10.7677201,
+      "longitude": 75.9259013,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Thalassery, Kannur, Kerala": {
+      "latitude": 11.7532878,
+      "longitude": 75.4928777,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Thiruvananthapuram, Thiruvananthapuram, Kerala": {
+      "latitude": 8.5241391,
+      "longitude": 76.9366376,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Thrissur, Thrissur, Kerala": {
+      "latitude": 10.5276416,
+      "longitude": 76.2144349,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kavaratti, Lakshadweep, Lakshadweep": {
+      "latitude": 10.5593204,
+      "longitude": 72.6358134,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Balaghat, Balaghat, Madhya Pradesh": {
+      "latitude": 21.812876,
+      "longitude": 80.1838293,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Betul, Betul, Madhya Pradesh": {
+      "latitude": 21.9108031,
+      "longitude": 77.9011842,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhind, Bhind, Madhya Pradesh": {
+      "latitude": 26.5587354,
+      "longitude": 78.7872876,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhopal, Bhopal, Madhya Pradesh": {
+      "latitude": 23.2599333,
+      "longitude": 77.412615,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Burhanpur, Burhanpur, Madhya Pradesh": {
+      "latitude": 21.3193875,
+      "longitude": 76.2224273,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chhatarpur, Chhatarpur, Madhya Pradesh": {
+      "latitude": 24.9163562,
+      "longitude": 79.5811827,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chhindwara, Chhindwara, Madhya Pradesh": {
+      "latitude": 22.057437,
+      "longitude": 78.9381729,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Damoh, Damoh, Madhya Pradesh": {
+      "latitude": 23.8380986,
+      "longitude": 79.4421731,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Datia, Datia, Madhya Pradesh": {
+      "latitude": 25.6653262,
+      "longitude": 78.4609393,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dewas, Dewas, Madhya Pradesh": {
+      "latitude": 22.9622672,
+      "longitude": 76.0507949,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhanpuri, Shahdol, Madhya Pradesh": {
+      "latitude": 23.2307927,
+      "longitude": 81.4690932,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhar, Dhar, Madhya Pradesh": {
+      "latitude": 22.6012922,
+      "longitude": 75.3024655,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Guna, Guna, Madhya Pradesh": {
+      "latitude": 24.6348197,
+      "longitude": 77.2979782,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gwalior, Gwalior, Madhya Pradesh": {
+      "latitude": 26.2182871,
+      "longitude": 78.1828308,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hoshangabad, Hoshangabad, Madhya Pradesh": {
+      "latitude": 22.744108,
+      "longitude": 77.736967,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Indore, Indore, Madhya Pradesh": {
+      "latitude": 22.7195687,
+      "longitude": 75.8577258,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Itarsi, Hoshangabad, Madhya Pradesh": {
+      "latitude": 22.6054858,
+      "longitude": 77.753544,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jabalpur, Jabalpur, Madhya Pradesh": {
+      "latitude": 23.181467,
+      "longitude": 79.9864071,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Katni, Katni, Madhya Pradesh": {
+      "latitude": 23.8308453,
+      "longitude": 80.4072255,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khandwa, Khandwa, Madhya Pradesh": {
+      "latitude": 21.8257334,
+      "longitude": 76.352571,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khargone, Khargone, Madhya Pradesh": {
+      "latitude": 21.8335244,
+      "longitude": 75.6149893,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mandsaur, Mandsaur, Madhya Pradesh": {
+      "latitude": 24.076836,
+      "longitude": 75.0692952,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Morena, Morena, Madhya Pradesh": {
+      "latitude": 26.4933562,
+      "longitude": 77.9909949,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagda, Ujjain, Madhya Pradesh": {
+      "latitude": 23.4454599,
+      "longitude": 75.4169918,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Neemuch, Neemuch, Madhya Pradesh": {
+      "latitude": 24.4763852,
+      "longitude": 74.8624092,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pithampur, Dhar, Madhya Pradesh": {
+      "latitude": 22.613252,
+      "longitude": 75.6822899,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ratlam, Ratlam, Madhya Pradesh": {
+      "latitude": 23.3341696,
+      "longitude": 75.0376325,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rewa, Rewa, Madhya Pradesh": {
+      "latitude": 24.5372927,
+      "longitude": 81.30418,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sagar, Sagar, Madhya Pradesh": {
+      "latitude": 23.838805,
+      "longitude": 78.7378068,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Satna, Satna, Madhya Pradesh": {
+      "latitude": 24.6005075,
+      "longitude": 80.8322428,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sehore, Sehore, Madhya Pradesh": {
+      "latitude": 23.205012,
+      "longitude": 77.0850781,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Seoni, Seoni, Madhya Pradesh": {
+      "latitude": 22.0868691,
+      "longitude": 79.5434841,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shivpuri, Shivpuri, Madhya Pradesh": {
+      "latitude": 25.4357869,
+      "longitude": 77.665066,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Singrauli, Singrauli, Madhya Pradesh": {
+      "latitude": 24.200261,
+      "longitude": 82.663989,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ujjain, Ujjain, Madhya Pradesh": {
+      "latitude": 23.1793013,
+      "longitude": 75.7849097,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vidisha, Vidisha, Madhya Pradesh": {
+      "latitude": 23.5251102,
+      "longitude": 77.8081363,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Achalpur, Amravati, Maharashtra": {
+      "latitude": 21.257584,
+      "longitude": 77.5086754,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ahmednagar, Ahmednagar, Maharashtra": {
+      "latitude": 19.0952075,
+      "longitude": 74.7495916,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Akola, Akola, Maharashtra": {
+      "latitude": 20.7059345,
+      "longitude": 77.0219019,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Akot, Akola, Maharashtra": {
+      "latitude": 21.0973361,
+      "longitude": 77.053568,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amalner, Jalgaon, Maharashtra": {
+      "latitude": 21.0419208,
+      "longitude": 75.0581943,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amravati, Amravati, Maharashtra": {
+      "latitude": 20.9374238,
+      "longitude": 77.7795513,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Aurangabad, Aurangabad, Maharashtra": {
+      "latitude": 19.8761653,
+      "longitude": 75.3433139,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Barshi, Solapur, Maharashtra": {
+      "latitude": 18.2333856,
+      "longitude": 75.6941478,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Beed, Beed, Maharashtra": {
+      "latitude": 18.9890893,
+      "longitude": 75.7600785,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhandara, Bhandara, Maharashtra": {
+      "latitude": 21.1750113,
+      "longitude": 79.6558242,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhiwandi, Thane, Maharashtra": {
+      "latitude": 19.2812547,
+      "longitude": 73.0482912,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhusawal, Jalgaon, Maharashtra": {
+      "latitude": 21.0455204,
+      "longitude": 75.8010962,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chalisgaon, Jalgaon, Maharashtra": {
+      "latitude": 20.4640778,
+      "longitude": 74.9968543,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chandrapur, Chandrapur, Maharashtra": {
+      "latitude": 19.9704597,
+      "longitude": 79.3014845,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhule, Dhule, Maharashtra": {
+      "latitude": 20.9042201,
+      "longitude": 74.7748979,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gondia, Gondia, Maharashtra": {
+      "latitude": 21.4624491,
+      "longitude": 80.2209773,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hinganghat, Wardha, Maharashtra": {
+      "latitude": 20.5505728,
+      "longitude": 78.8411405,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ichalkaranji, Kolhapur, Maharashtra": {
+      "latitude": 16.7090008,
+      "longitude": 74.4560807,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jalgaon, Jalgaon, Maharashtra": {
+      "latitude": 21.0076578,
+      "longitude": 75.5626039,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jalna, Jalna, Maharashtra": {
+      "latitude": 19.842614,
+      "longitude": 75.894805,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kamptee, Nagpur, Maharashtra": {
+      "latitude": 21.2275312,
+      "longitude": 79.1900834,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khamgaon, Buldhana, Maharashtra": {
+      "latitude": 20.707117,
+      "longitude": 76.571995,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kolhapur, Kolhapur, Maharashtra": {
+      "latitude": 16.7049873,
+      "longitude": 74.2432527,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Latur, Latur, Maharashtra": {
+      "latitude": 18.4087934,
+      "longitude": 76.5603828,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Malegaon, Malegaon, Maharashtra": {
+      "latitude": 20.554554,
+      "longitude": 74.525989,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mumbai, Mumbai, Maharashtra": {
+      "latitude": 19.0759837,
+      "longitude": 72.8776559,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagpur, Nagpur, Maharashtra": {
+      "latitude": 21.1458004,
+      "longitude": 79.0881546,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nanded, Nanded, Maharashtra": {
+      "latitude": 19.1382514,
+      "longitude": 77.3209555,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nandurbar, Nandurbar, Maharashtra": {
+      "latitude": 21.3755507,
+      "longitude": 74.2427644,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nashik, Nashik, Maharashtra": {
+      "latitude": 19.9974533,
+      "longitude": 73.7898023,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Osmanabad, Osmanabad, Maharashtra": {
+      "latitude": 18.1860659,
+      "longitude": 76.0419409,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pandharpur, Solapur, Maharashtra": {
+      "latitude": 17.6745535,
+      "longitude": 75.3237262,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Parbhani, Parbhani, Maharashtra": {
+      "latitude": 19.2609958,
+      "longitude": 76.776665,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Parli, Beed, Maharashtra": {
+      "latitude": 18.8453169,
+      "longitude": 76.5198462,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pimpri-Chinchwad, Pune, Maharashtra": {
+      "latitude": 18.62354,
+      "longitude": 73.807873,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pune, Pune, Maharashtra": {
+      "latitude": 18.5204303,
+      "longitude": 73.8567437,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sangli-Miraj-Kupwad, Sangli, Maharashtra": {
+      "latitude": 16.8541887,
+      "longitude": 74.6049061,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Satara, Satara, Maharashtra": {
+      "latitude": 17.6804639,
+      "longitude": 74.018261,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Solapur, Solapur, Maharashtra": {
+      "latitude": 17.6599188,
+      "longitude": 75.9063906,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Udgir, Latur, Maharashtra": {
+      "latitude": 18.3942882,
+      "longitude": 77.1126009,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Wardha, Wardha, Maharashtra": {
+      "latitude": 20.745319,
+      "longitude": 78.6021946,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Yavatmal, Yavatmal, Maharashtra": {
+      "latitude": 20.3887937,
+      "longitude": 78.1204073,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Imphal, Imphal West; Imphal East, Manipur": {
+      "latitude": 24.8170111,
+      "longitude": 93.9368439,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shillong, East Khassi Hills, Meghalaya": {
+      "latitude": 25.578765,
+      "longitude": 91.893187,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Aizawl, Aizwal, Mizoram": {
+      "latitude": 23.727107,
+      "longitude": 92.7176389,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dimapur, Dimapur, Nagaland": {
+      "latitude": 25.8629885,
+      "longitude": 93.7536663,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kohima, Kohima, Nagaland": {
+      "latitude": 25.6585963,
+      "longitude": 94.1053307,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Balangir, Balangir, Odisha": {
+      "latitude": 20.7074234,
+      "longitude": 83.4842725,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Balasore, Balasore, Odisha": {
+      "latitude": 21.504467,
+      "longitude": 86.922227,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Baripada, Mayurbhanj, Odisha": {
+      "latitude": 21.9322338,
+      "longitude": 86.7516942,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Berhampur, Ganjam, Odisha": {
+      "latitude": 19.314914,
+      "longitude": 84.794244,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhadrak, Bhadrak, Odisha": {
+      "latitude": 21.0582737,
+      "longitude": 86.4958396,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhubaneswar, Khurda, Odisha": {
+      "latitude": 20.295515,
+      "longitude": 85.824797,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Cuttack, Cuttack, Odisha": {
+      "latitude": 20.462521,
+      "longitude": 85.8829895,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jeypore, Koraput, Odisha": {
+      "latitude": 18.8606126,
+      "longitude": 82.5510469,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jharsuguda, Jharsuguda, Odisha": {
+      "latitude": 21.8554375,
+      "longitude": 84.0061661,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Puri, Puri, Odisha": {
+      "latitude": 19.8133822,
+      "longitude": 85.8314655,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rourkela, Sundargarh, Odisha": {
+      "latitude": 22.260423,
+      "longitude": 84.8535844,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sambalpur, Sambalpur, Odisha": {
+      "latitude": 21.4668716,
+      "longitude": 83.9811665,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Karaikal, Karaikal, Puducherry": {
+      "latitude": 10.9254398,
+      "longitude": 79.8380056,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ozhukarai, Puducherry, Puducherry": {
+      "latitude": 11.94888,
+      "longitude": 79.712141,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Puducherry, Puducherry, Puducherry": {
+      "latitude": 11.9138598,
+      "longitude": 79.8144722,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Abohar, Fazilka, Punjab": {
+      "latitude": 30.1452928,
+      "longitude": 74.1993043,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amritsar, Amritsar, Punjab": {
+      "latitude": 31.6339793,
+      "longitude": 74.8722642,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Barnala, Barnala, Punjab": {
+      "latitude": 30.3819446,
+      "longitude": 75.5467979,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Batala, Gurdaspur, Punjab": {
+      "latitude": 31.8183238,
+      "longitude": 75.2070644,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bathinda, Bathinda, Punjab": {
+      "latitude": 30.210994,
+      "longitude": 74.9454745,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Firozpur, Firozpur, Punjab": {
+      "latitude": 30.9331348,
+      "longitude": 74.6224755,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hoshiarpur, Hoshiarpur, Punjab": {
+      "latitude": 31.5143178,
+      "longitude": 75.911483,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jalandhar, Jalandhar, Punjab": {
+      "latitude": 31.3260152,
+      "longitude": 75.5761829,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kapurthala, Kapurthala, Punjab": {
+      "latitude": 31.367197,
+      "longitude": 75.374504,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khanna, Ludhiana, Punjab": {
+      "latitude": 30.697852,
+      "longitude": 76.2112286,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ludhiana, Ludhiana, Punjab": {
+      "latitude": 30.900965,
+      "longitude": 75.8572758,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Malerkotla, Sangrur, Punjab": {
+      "latitude": 30.5232076,
+      "longitude": 75.8882508,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Moga, Moga, Punjab": {
+      "latitude": 30.8164603,
+      "longitude": 75.1717093,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mohali, Mohali, Punjab": {
+      "latitude": 30.7046486,
+      "longitude": 76.7178726,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Muktasar, Muktsar, Punjab": {
+      "latitude": 30.476681,
+      "longitude": 74.511289,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pathankot, Pathankot, Punjab": {
+      "latitude": 32.2643375,
+      "longitude": 75.6421121,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Patiala, Patiala, Punjab": {
+      "latitude": 30.3397809,
+      "longitude": 76.3868797,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Phagwara, Kapurthala, Punjab": {
+      "latitude": 31.2240198,
+      "longitude": 75.7708013,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rajpura, Patiala, Punjab": {
+      "latitude": 30.483997,
+      "longitude": 76.5939516,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Zirakpur, Mohali, Punjab": {
+      "latitude": 30.6425496,
+      "longitude": 76.8173359,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ajmer, Ajmer, Rajasthan": {
+      "latitude": 26.4498954,
+      "longitude": 74.6399163,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Alwar, Alwar, Rajasthan": {
+      "latitude": 27.5529907,
+      "longitude": 76.6345735,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Banswara, Banswara, Rajasthan": {
+      "latitude": 23.5461394,
+      "longitude": 74.4349761,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Baran, Baran, Rajasthan": {
+      "latitude": 25.1011438,
+      "longitude": 76.5131637,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Barmer, Barmer, Rajasthan": {
+      "latitude": 25.7531537,
+      "longitude": 71.4180622,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Beawar, Beawar, Rajasthan": {
+      "latitude": 26.1007337,
+      "longitude": 74.3190747,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bharatpur, Bharatpur, Rajasthan": {
+      "latitude": 27.216981,
+      "longitude": 77.489515,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhilwara, Bhilwara, Rajasthan": {
+      "latitude": 25.321377,
+      "longitude": 74.586953,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhiwadi, Alwar, Rajasthan": {
+      "latitude": 28.2088218,
+      "longitude": 76.8445999,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bikaner, Bikaner, Rajasthan": {
+      "latitude": 28.0229348,
+      "longitude": 73.3119159,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bundi, Bundi, Rajasthan": {
+      "latitude": 25.4305144,
+      "longitude": 75.6499025,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chittorgarh, Chittorgarh, Rajasthan": {
+      "latitude": 24.8887435,
+      "longitude": 74.6269216,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Churu, Churu, Rajasthan": {
+      "latitude": 28.2920484,
+      "longitude": 74.9617924,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dausa, Dausa, Rajasthan": {
+      "latitude": 26.8931931,
+      "longitude": 76.3375284,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dholpur, Dholpur, Rajasthan": {
+      "latitude": 26.7025181,
+      "longitude": 77.893391,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Fatehpur, Sikar, Rajasthan": {
+      "latitude": 27.9950204,
+      "longitude": 74.9617924,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gangapur, Sawai Madhopur, Rajasthan": {
+      "latitude": 26.478446,
+      "longitude": 76.732222,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hanumangarh, Hanumangarh, Rajasthan": {
+      "latitude": 29.614436,
+      "longitude": 74.2858121,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hindaun, Karauli, Rajasthan": {
+      "latitude": 26.7454967,
+      "longitude": 77.0330481,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jaipur, Jaipur, Rajasthan": {
+      "latitude": 26.9124336,
+      "longitude": 75.7872709,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jhunjhunu, Jhunjhunu, Rajasthan": {
+      "latitude": 28.1288747,
+      "longitude": 75.3995089,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jodhpur, Jodhpur, Rajasthan": {
+      "latitude": 26.2389469,
+      "longitude": 73.0243094,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Karauli, Karauli, Rajasthan": {
+      "latitude": 26.488323,
+      "longitude": 77.0161436,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kishangarh, Ajmer, Rajasthan": {
+      "latitude": 26.5870344,
+      "longitude": 74.856397,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kota, Kota, Rajasthan": {
+      "latitude": 25.2138156,
+      "longitude": 75.8647527,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Makrana, Nagaur, Rajasthan": {
+      "latitude": 27.0285581,
+      "longitude": 74.714621,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagaur, Nagaur, Rajasthan": {
+      "latitude": 27.1991222,
+      "longitude": 73.740924,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pali, Pali, Rajasthan": {
+      "latitude": 25.7710893,
+      "longitude": 73.3234478,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sardarshahar, Churu, Rajasthan": {
+      "latitude": 28.440419,
+      "longitude": 74.493705,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sawai Madhopur, Sawai Madhopur, Rajasthan": {
+      "latitude": 26.0377772,
+      "longitude": 76.3521514,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sikar, Sikar, Rajasthan": {
+      "latitude": 27.6094,
+      "longitude": 75.139911,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sri Ganganagar, Sri Ganganagar, Rajasthan": {
+      "latitude": 29.912527,
+      "longitude": 73.875212,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sujangarh, Churu, Rajasthan": {
+      "latitude": 27.7044756,
+      "longitude": 74.4642861,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tonk, Tonk, Rajasthan": {
+      "latitude": 26.1620402,
+      "longitude": 75.7894716,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Udaipur, Udaipur, Rajasthan": {
+      "latitude": 24.595745,
+      "longitude": 73.694395,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gangtok, East Sikkim, Sikkim": {
+      "latitude": 27.3389356,
+      "longitude": 88.6065035,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ambur, Vellore, Tamil Nadu": {
+      "latitude": 12.7903613,
+      "longitude": 78.7166084,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chennai, Chennai, Tamil Nadu": {
+      "latitude": 13.0826802,
+      "longitude": 80.2707184,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Coimbatore, Coimbatore, Tamil Nadu": {
+      "latitude": 11.0168445,
+      "longitude": 76.9558321,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Cuddalore, Cuddalore, Tamil Nadu": {
+      "latitude": 11.744699,
+      "longitude": 79.7680243,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dindigul, Dindigul, Tamil Nadu": {
+      "latitude": 10.3673123,
+      "longitude": 77.9802906,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Erode, Erode, Tamil Nadu": {
+      "latitude": 11.3410364,
+      "longitude": 77.7171642,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gudiyatham, Vellore, Tamil Nadu": {
+      "latitude": 12.9447361,
+      "longitude": 78.8709019,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hosur, Krishnagiri, Tamil Nadu": {
+      "latitude": 12.7409127,
+      "longitude": 77.8252923,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kadayanallur, Tirunelveli, Tamil Nadu": {
+      "latitude": 9.0778543,
+      "longitude": 77.3451861,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kanchipuram, Kanchipuram, Tamil Nadu": {
+      "latitude": 12.8341735,
+      "longitude": 79.7036402,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Karaikudi, Sivaganga, Tamil Nadu": {
+      "latitude": 10.0731315,
+      "longitude": 78.7801544,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Komarapalayam, Namakkal, Tamil Nadu": {
+      "latitude": 11.4466642,
+      "longitude": 77.6943353,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kovilpatti, Thoothukudi, Tamil Nadu": {
+      "latitude": 9.1674144,
+      "longitude": 77.8767442,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kumbakonam, Thanjavur, Tamil Nadu": {
+      "latitude": 10.9616945,
+      "longitude": 79.3881132,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Madurai, Madurai, Tamil Nadu": {
+      "latitude": 9.9252007,
+      "longitude": 78.1197754,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagapattinam, Nagapattinam, Tamil Nadu": {
+      "latitude": 10.7656082,
+      "longitude": 79.8423888,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagercoil, Kanyakumari, Tamil Nadu": {
+      "latitude": 8.1832857,
+      "longitude": 77.4118996,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Neyveli, Cuddalore, Tamil Nadu": {
+      "latitude": 11.5432364,
+      "longitude": 79.4760133,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ooty, Nilgiri, Tamil Nadu": {
+      "latitude": 11.4064138,
+      "longitude": 76.6932438,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Paramakudi, Ramanathapuram, Tamil Nadu": {
+      "latitude": 9.5483949,
+      "longitude": 78.5916335,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pollachi, Coimbatore, Tamil Nadu": {
+      "latitude": 10.6572737,
+      "longitude": 77.0106693,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pudukkottai, Pudukkottai, Tamil Nadu": {
+      "latitude": 10.379663,
+      "longitude": 78.8208454,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rajapalayam, Virudhunagar, Tamil Nadu": {
+      "latitude": 9.451559,
+      "longitude": 77.554355,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Salem, Salem, Tamil Nadu": {
+      "latitude": 11.664325,
+      "longitude": 78.1460142,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Thanjavur, Thanjavur, Tamil Nadu": {
+      "latitude": 10.7869994,
+      "longitude": 79.1378274,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Theni-Allinagaram, Theni, Tamil Nadu": {
+      "latitude": 10.010262,
+      "longitude": 77.476819,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tiruchengode, Namakkal, Tamil Nadu": {
+      "latitude": 11.378665,
+      "longitude": 77.894975,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tiruchirappalli, Tiruchirappalli, Tamil Nadu": {
+      "latitude": 10.7904833,
+      "longitude": 78.7046725,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tirunelveli, Tirunelveli, Tamil Nadu": {
+      "latitude": 8.7139126,
+      "longitude": 77.7566523,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tirupur, Tiruppur, Tamil Nadu": {
+      "latitude": 11.1085242,
+      "longitude": 77.3410656,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tiruvannamalai, Tiruvannamalai, Tamil Nadu": {
+      "latitude": 12.2252841,
+      "longitude": 79.0746957,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tuticorin, Thoothukkudi, Tamil Nadu": {
+      "latitude": 8.7641661,
+      "longitude": 78.1348361,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vaniyambadi, Vellore, Tamil Nadu": {
+      "latitude": 12.6950325,
+      "longitude": 78.6218853,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Vellore, Vellore, Tamil Nadu": {
+      "latitude": 12.9165167,
+      "longitude": 79.1324986,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Viluppuram, Viluppuram, Tamil Nadu": {
+      "latitude": 11.9368897,
+      "longitude": 79.4872619,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Adilabad, Adilabad, Telangana": {
+      "latitude": 19.676527,
+      "longitude": 78.532194,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hyderabad, Hyderabad, Telangana": {
+      "latitude": 17.384934,
+      "longitude": 78.486616,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jagtial, Karimnagar, Telangana": {
+      "latitude": 18.788321,
+      "longitude": 78.913899,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Karimnagar, Karimnagar, Telangana": {
+      "latitude": 18.438485,
+      "longitude": 79.128931,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khammam, Khammam, Telangana": {
+      "latitude": 17.247318,
+      "longitude": 80.151443,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kothagudem, Khammam, Telangana": {
+      "latitude": 17.6335295,
+      "longitude": 81.0395821,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mahbubnagar, Mahbubnagar, Telangana": {
+      "latitude": 16.748788,
+      "longitude": 78.003626,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mancherial, Adilabad, Telangana": {
+      "latitude": 18.868797,
+      "longitude": 79.446944,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Miryalaguda, Nalgonda, Telangana": {
+      "latitude": 16.862087,
+      "longitude": 79.554051,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nalgonda, Nalgonda, Telangana": {
+      "latitude": 17.057358,
+      "longitude": 79.268649,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nizamabad, Nizamabad, Telangana": {
+      "latitude": 18.673421,
+      "longitude": 78.092593,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ramagundam, Karimnagar, Telangana": {
+      "latitude": 18.762412,
+      "longitude": 79.473362,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Siddipet, Medak, Telangana": {
+      "latitude": 18.101864,
+      "longitude": 78.851948,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Suryapet, Nalgonda, Telangana": {
+      "latitude": 17.143132,
+      "longitude": 79.630418,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Warangal, Warangal, Telangana": {
+      "latitude": 17.975762,
+      "longitude": 79.601212,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Agartala, West Tripura, Tripura": {
+      "latitude": 23.831457,
+      "longitude": 91.2867777,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Agra, Agra, Uttar Pradesh": {
+      "latitude": 27.1766701,
+      "longitude": 78.0080745,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Akbarpur, Ambedkar Nagar, Uttar Pradesh": {
+      "latitude": 26.4407468,
+      "longitude": 82.5537514,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Aligarh, Aligarh, Uttar Pradesh": {
+      "latitude": 27.8973944,
+      "longitude": 78.0880129,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Allahabad, Allahabad, Uttar Pradesh": {
+      "latitude": 25.4358011,
+      "longitude": 81.846311,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Amroha, Amroha, Uttar Pradesh": {
+      "latitude": 28.9043537,
+      "longitude": 78.4673426,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Auraiya, Auraiya, Uttar Pradesh": {
+      "latitude": 26.4625957,
+      "longitude": 79.5097549,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Azamgarh, Azamgarh, Uttar Pradesh": {
+      "latitude": 26.0737044,
+      "longitude": 83.1859458,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bahraich, Bahraich, Uttar Pradesh": {
+      "latitude": 27.5708377,
+      "longitude": 81.5980246,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ballia, Ballia, Uttar Pradesh": {
+      "latitude": 25.7584381,
+      "longitude": 84.1487319,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Banda, Banda, Uttar Pradesh": {
+      "latitude": 25.4796224,
+      "longitude": 80.3380213,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Barabanki, Barabanki, Uttar Pradesh": {
+      "latitude": 26.9400001,
+      "longitude": 81.19,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Baraut, Baghput, Uttar Pradesh": {
+      "latitude": 29.099112,
+      "longitude": 77.256551,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bareilly, Bareilly, Uttar Pradesh": {
+      "latitude": 28.3670355,
+      "longitude": 79.4304381,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Basti, Basti, Uttar Pradesh": {
+      "latitude": 26.8176796,
+      "longitude": 82.7633133,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bhadohi, Sant Ravidas Nagar, Uttar Pradesh": {
+      "latitude": 25.38727,
+      "longitude": 82.5680309,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bijnor, Bijnor, Uttar Pradesh": {
+      "latitude": 29.3724422,
+      "longitude": 78.1358472,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Budaun, Budaun, Uttar Pradesh": {
+      "latitude": 28.0337088,
+      "longitude": 79.1205419,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bulandshahr, Bulandshahr, Uttar Pradesh": {
+      "latitude": 28.406963,
+      "longitude": 77.8498292,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chandausi, Sambhal, Uttar Pradesh": {
+      "latitude": 28.4480507,
+      "longitude": 78.7796105,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dadri, Gautam Buddha Nagar, Uttar Pradesh": {
+      "latitude": 28.5461902,
+      "longitude": 77.55621,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Deoband, Saharanpur, Uttar Pradesh": {
+      "latitude": 29.6910213,
+      "longitude": 77.6822442,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Deoria, Deoria, Uttar Pradesh": {
+      "latitude": 26.505358,
+      "longitude": 83.784454,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Etah, Etah, Uttar Pradesh": {
+      "latitude": 27.5587505,
+      "longitude": 78.662567,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Etawah, Etawah, Uttar Pradesh": {
+      "latitude": 26.784784,
+      "longitude": 79.021451,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Faizabad, Faizabad, Uttar Pradesh": {
+      "latitude": 26.7732476,
+      "longitude": 82.1441643,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Farrukhabad, Farrukhabad, Uttar Pradesh": {
+      "latitude": 27.3826126,
+      "longitude": 79.5940544,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Fatehpur, Fatehpur, Uttar Pradesh": {
+      "latitude": 25.9200736,
+      "longitude": 80.8099941,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Firozabad, Firozabad, Uttar Pradesh": {
+      "latitude": 27.1591006,
+      "longitude": 78.3957574,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ghaziabad, Ghaziabad, Uttar Pradesh": {
+      "latitude": 28.6691565,
+      "longitude": 77.4537578,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ghazipur, Ghazipur, Uttar Pradesh": {
+      "latitude": 25.5840419,
+      "longitude": 83.5770202,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gonda, Gonda, Uttar Pradesh": {
+      "latitude": 27.1339913,
+      "longitude": 81.9618968,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Gorakhpur, Gorakhpur, Uttar Pradesh": {
+      "latitude": 26.7605545,
+      "longitude": 83.3731675,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Greater Noida, Gautam Budh Nagar, Uttar Pradesh": {
+      "latitude": 28.4743879,
+      "longitude": 77.5039904,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hapur, Hapur, Uttar Pradesh": {
+      "latitude": 28.7305798,
+      "longitude": 77.7758825,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hardoi, Hardoi, Uttar Pradesh": {
+      "latitude": 27.3986345,
+      "longitude": 80.1316927,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Hathras, Hathras, Uttar Pradesh": {
+      "latitude": 27.6056212,
+      "longitude": 78.0537813,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jaunpur, Jaunpur, Uttar Pradesh": {
+      "latitude": 25.7490034,
+      "longitude": 82.6987002,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jhansi, Jhansi, Uttar Pradesh": {
+      "latitude": 25.4484257,
+      "longitude": 78.5684594,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kanpur, Kanpur, Uttar Pradesh": {
+      "latitude": 26.447965,
+      "longitude": 80.330572,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kasganj, Kasganj, Uttar Pradesh": {
+      "latitude": 27.8129344,
+      "longitude": 78.649785,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khair, Aligarh, Uttar Pradesh": {
+      "latitude": 27.9391956,
+      "longitude": 77.8424456,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khatauli, Muzaffarnagar, Uttar Pradesh": {
+      "latitude": 29.2758596,
+      "longitude": 77.7309012,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Khurja, Bulandshahr, Uttar Pradesh": {
+      "latitude": 28.2513538,
+      "longitude": 77.8538797,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Lakhimpur, Lakhimpur Kheri, Uttar Pradesh": {
+      "latitude": 27.9490794,
+      "longitude": 80.7824012,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Lalitpur, Lalitpur, Uttar Pradesh": {
+      "latitude": 24.6878597,
+      "longitude": 78.4120206,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Lucknow, Lucknow, Uttar Pradesh": {
+      "latitude": 26.8466937,
+      "longitude": 80.946166,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mahoba, Mahoba, Uttar Pradesh": {
+      "latitude": 25.2920964,
+      "longitude": 79.8724168,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mainpuri, Mainpuri, Uttar Pradesh": {
+      "latitude": 27.2284986,
+      "longitude": 79.0249516,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mathura, Mathura, Uttar Pradesh": {
+      "latitude": 27.4924134,
+      "longitude": 77.673673,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mau, Mau, Uttar Pradesh": {
+      "latitude": 25.9496379,
+      "longitude": 83.5586445,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Meerut, Meerut, Uttar Pradesh": {
+      "latitude": 28.9844618,
+      "longitude": 77.7064137,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mirzapur, Mirzapur, Uttar Pradesh": {
+      "latitude": 25.1336987,
+      "longitude": 82.5644344,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Modinagar, Ghaziabad, Uttar Pradesh": {
+      "latitude": 28.8316307,
+      "longitude": 77.5779592,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Moradabad, Moradabad, Uttar Pradesh": {
+      "latitude": 28.8386481,
+      "longitude": 78.7733286,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mubarakpur, Azamgarh, Uttar Pradesh": {
+      "latitude": 26.0809431,
+      "longitude": 83.2987576,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Mughalsarai, Chandauli, Uttar Pradesh": {
+      "latitude": 25.2814947,
+      "longitude": 83.1198203,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Muradnagar, Ghaziabad, Uttar Pradesh": {
+      "latitude": 28.7703752,
+      "longitude": 77.4988753,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Muzaffarnagar, Muzaffarnagar, Uttar Pradesh": {
+      "latitude": 29.4726817,
+      "longitude": 77.7085091,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nagina, Bijnor, Uttar Pradesh": {
+      "latitude": 29.4426409,
+      "longitude": 78.4326638,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Najibabad, Bijnor, Uttar Pradesh": {
+      "latitude": 29.6127789,
+      "longitude": 78.3446003,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Noida, Noida, Uttar Pradesh": {
+      "latitude": 28.600032,
+      "longitude": 77.351504,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Orai, Jalaun, Uttar Pradesh": {
+      "latitude": 26.00864,
+      "longitude": 79.4478858,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pilibhit, Pilibhit, Uttar Pradesh": {
+      "latitude": 28.6207939,
+      "longitude": 79.8128649,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Pratapgarh, Pratapgarh, Uttar Pradesh": {
+      "latitude": 25.8973038,
+      "longitude": 81.9452981,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Raebareli, Raebareli, Uttar Pradesh": {
+      "latitude": 26.2345298,
+      "longitude": 81.2408689,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rampur, Rampur, Uttar Pradesh": {
+      "latitude": 28.7893041,
+      "longitude": 79.0249516,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Saharanpur, Saharanpur, Uttar Pradesh": {
+      "latitude": 29.967079,
+      "longitude": 77.5510172,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sahaswan, Budaun, Uttar Pradesh": {
+      "latitude": 28.0724712,
+      "longitude": 78.7561222,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sambhal, Sambhal, Uttar Pradesh": {
+      "latitude": 28.5903614,
+      "longitude": 78.5717631,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shahjahanpur, Shahjahanpur, Uttar Pradesh": {
+      "latitude": 27.883744,
+      "longitude": 79.9122455,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shamli, Shamli, Uttar Pradesh": {
+      "latitude": 29.4507575,
+      "longitude": 77.3152116,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shikohabad, Firozabad, Uttar Pradesh": {
+      "latitude": 27.110254,
+      "longitude": 78.573784,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sitapur, Sitapur, Uttar Pradesh": {
+      "latitude": 27.561892,
+      "longitude": 80.688511,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Sultanpur, Sultanpur, Uttar Pradesh": {
+      "latitude": 26.2647757,
+      "longitude": 82.0727061,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Tanda, Ambedkar Nagar, Uttar Pradesh": {
+      "latitude": 26.5432647,
+      "longitude": 82.6645469,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ujhani, Budaun, Uttar Pradesh": {
+      "latitude": 28.0003235,
+      "longitude": 79.0051685,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Unnao, Unnao, Uttar Pradesh": {
+      "latitude": 26.5393449,
+      "longitude": 80.4878195,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Varanasi, Varanasi, Uttar Pradesh": {
+      "latitude": 25.3176452,
+      "longitude": 82.9739144,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dehradun, Dehradun, Uttarakhand": {
+      "latitude": 30.3164945,
+      "longitude": 78.0321918,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Haldwani, Nainital, Uttarakhand": {
+      "latitude": 29.2182644,
+      "longitude": 79.5129767,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Haridwar, Haridwar, Uttarakhand": {
+      "latitude": 29.9456906,
+      "longitude": 78.1642478,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kashipur, Udham Singh Nagar, Uttarakhand": {
+      "latitude": 29.2104232,
+      "longitude": 78.9618845,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rishikesh, Dehradun, Uttarakhand": {
+      "latitude": 30.0869281,
+      "longitude": 78.2676116,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Roorkee, Haridwar, Uttarakhand": {
+      "latitude": 29.8542626,
+      "longitude": 77.8880002,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Rudrapur, Udham Singh Nagar, Uttarakhand": {
+      "latitude": 28.9875082,
+      "longitude": 79.4141214,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Alipurduar, Alipurduar, West Bengal": {
+      "latitude": 26.4918891,
+      "longitude": 89.5271026,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Asansol, Bardhaman, West Bengal": {
+      "latitude": 23.6739452,
+      "longitude": 86.9523954,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Baharampur, Murshidabad, West Bengal": {
+      "latitude": 24.164895,
+      "longitude": 88.274906,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Balurghat, Dakshin Dinajpur, West Bengal": {
+      "latitude": 25.2372834,
+      "longitude": 88.7830612,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bangaon, North 24 Parganas, West Bengal": {
+      "latitude": 23.0440381,
+      "longitude": 88.827703,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bankura, Bankura, West Bengal": {
+      "latitude": 23.2324146,
+      "longitude": 87.0786044,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bardhaman, Bardhaman, West Bengal": {
+      "latitude": 23.2324214,
+      "longitude": 87.8614793,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Basirhat, North 24 Parganas, West Bengal": {
+      "latitude": 22.6574017,
+      "longitude": 88.8671766,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Bolpur, Birbhum, West Bengal": {
+      "latitude": 23.6686892,
+      "longitude": 87.6827676,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Chakdaha, Nadia, West Bengal": {
+      "latitude": 23.047858,
+      "longitude": 88.5130144,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Cooch Behar, Cooch Behar, West Bengal": {
+      "latitude": 26.3356861,
+      "longitude": 89.445851,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dankuni, Hooghly, West Bengal": {
+      "latitude": 22.6808348,
+      "longitude": 88.2929313,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Darjeeling, Darjeeling, West Bengal": {
+      "latitude": 27.0360066,
+      "longitude": 88.2626751,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Dhulian, Murshidabad, West Bengal": {
+      "latitude": 24.6706654,
+      "longitude": 87.9481846,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Durgapur, Bardhaman, West Bengal": {
+      "latitude": 23.5204443,
+      "longitude": 87.3119227,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Habra, North 24 Parganas, West Bengal": {
+      "latitude": 22.8488542,
+      "longitude": 88.6639591,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Haldia, Purba Medinipur, West Bengal": {
+      "latitude": 22.0666742,
+      "longitude": 88.0698118,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jalpaiguri, Jalpaiguri, West Bengal": {
+      "latitude": 26.5434772,
+      "longitude": 88.7205256,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Jangipur, Murshidabad, West Bengal": {
+      "latitude": 24.4589833,
+      "longitude": 88.1047287,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kanthi, Midnapore East, West Bengal": {
+      "latitude": 21.7811343,
+      "longitude": 87.7450379,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kharagpur, Paschim Medinipur, West Bengal": {
+      "latitude": 22.34601,
+      "longitude": 87.2319753,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Kolkata, Kolkata, West Bengal": {
+      "latitude": 22.572646,
+      "longitude": 88.363895,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Krishnanagar, Nadia, West Bengal": {
+      "latitude": 23.4008744,
+      "longitude": 88.5013962,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Malda, Malda, West Bengal": {
+      "latitude": 25.0108408,
+      "longitude": 88.1410967,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Midnapore, Paschim Medinipur, West Bengal": {
+      "latitude": 22.4308892,
+      "longitude": 87.3214908,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Nabadwip, Nadia, West Bengal": {
+      "latitude": 23.4036446,
+      "longitude": 88.3676393,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Purulia, Purulia, West Bengal": {
+      "latitude": 23.3320779,
+      "longitude": 86.365208,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Raiganj, Uttar Dinajpur, West Bengal": {
+      "latitude": 25.6185295,
+      "longitude": 88.1255837,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Ranaghat, Nadia, West Bengal": {
+      "latitude": 23.17405,
+      "longitude": 88.5639352,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Shantipur, Nadia, West Bengal": {
+      "latitude": 23.2645399,
+      "longitude": 88.4380966,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    },
+    "Siliguri, Darjeeling; Jalpaiguri, West Bengal": {
+      "latitude": 26.7083818,
+      "longitude": 88.4268741,
+      "timezone": "Asia/Kolkata",
+      "description": ""
+    }
+  },
   "favorite_cities": {}
 }
