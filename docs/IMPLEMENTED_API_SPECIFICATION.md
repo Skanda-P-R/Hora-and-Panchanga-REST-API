@@ -109,8 +109,6 @@ The direct dependencies are pinned:
 | Pillow | 12.3.0 | Unicode-capable PNG chart rendering |
 | uharfbuzz | 0.55.0 | Kannada text shaping for PNG charts |
 | freetype-py | 2.5.1 | Glyph rasterization for shaped PNG text |
-| google-auth | 2.56.2 | Google OAuth ID Token verification |
-
 
 The supported runtime is Python 3.11. Later Python versions can require a C
 compiler for PySwissEph and are not claimed as supported without additional
@@ -215,32 +213,27 @@ Calculation endpoints are read-only GET resources. Registry management (location
 
 All calculation and registry endpoints require session-based authentication.
 
-- **Google Login Endpoint**: `POST /api/v1/auth/google-login`
+- **Login Endpoint**: `POST /api/v1/auth/login`
   - **Rate Limit**: 10 requests per minute (per IP)
   - **Request Payload**:
     ```json
     {
-      "idToken": "your-google-id-token-jwt",
-      "device_uuid": "optional-device-uuid"
+      "device_uuid": "device-uuid-string"
     }
     ```
   - **Response (Success - HTTP 200)**:
     ```json
     {
       "token": "session-token-string",
-      "user": {
-        "email": "skanda@gmail.com",
-        "name": "Skanda",
-        "picture": "https://lh3.googleusercontent.com/a/..."
-      }
+      "device_uuid": "device-uuid-string"
     }
     ```
-    *Note: The backend verifies the Google ID Token (JWT) signature and validates audience (`aud`) against `GOOGLE_WEB_CLIENT_ID`. If the user does not exist, an account is auto-created in `instance/users.json`. Per-device token mapping allows simultaneous multi-device logins while replacing older tokens when logging in repeatedly on the same device.*
+    *Note: The backend authenticates the device using its `device_uuid`. Active tokens are persisted in `instance/users.json` mapped by `device_uuid`. Simultaneous multi-device logins are supported using unique device UUIDs. Re-logging in on the same `device_uuid` updates its active token.*
 - **Logout Endpoint**: `POST /api/v1/auth/logout`
   - **Request Headers**: `Authorization: Bearer <session-token>`
   - **Request Body**: None (or empty JSON `{}`)
   - **Response (Success - HTTP 200)**: `{"status": "logged_out"}`
-  - Revokes the requesting device's active session token from `device_tokens` and `active_tokens` in `instance/users.json`.
+  - Revokes the requesting device's session token and deletes the device entry from `instance/users.json`.
 
 - **Header Authentication**: Authenticated requests must supply the session token in the authorization header:
   ```http
@@ -790,7 +783,6 @@ exposing internals.
 | OBSERVER_ELEVATION_METERS | 0 | Observer height |
 | ATMOSPHERIC_PRESSURE_HPA | 0 | Retained; Hindu rising ignores refraction |
 | ATMOSPHERIC_TEMPERATURE_C | 15 | Retained; Hindu rising ignores refraction |
-| GOOGLE_WEB_CLIENT_ID | "" | Google Web Application Client ID for ID Token audience verification |
 | CACHE_TYPE | SimpleCache | Flask-Caching backend |
 | CACHE_DEFAULT_TIMEOUT | 60 | Default cache lifetime in seconds |
 | RATELIMIT_STORAGE_URI | memory:// | Flask-Limiter storage backend |

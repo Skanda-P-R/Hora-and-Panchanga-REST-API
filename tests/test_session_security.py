@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import json
 import pytest
-from hora_server.auth import add_user, reset_device, verify_token
-
+from hora_server.auth import verify_token, get_active_users_count
 from hora_server.extensions import cache
 
 
@@ -18,8 +17,6 @@ def enable_auth(app):
 @pytest.fixture()
 def clean_users_store(app):
     """Reset the users.json store before each test."""
-    auth_store = app.extensions.get("location_registry")  # Not actual auth, let's get registry path
-    # Actually, let's use the private auth store lock
     from hora_server.auth import _auth_lock, _save_users
     with _auth_lock:
         _save_users({})
@@ -27,63 +24,23 @@ def clean_users_store(app):
     yield
 
 
-def test_cli_add_user_and_reset(app, clean_users_store):
-    runner = app.test_cli_runner()
-    
-    # 1. Add user via CLI
-    result = runner.invoke(args=["add-user", "test_skanda"])
-    assert "pre-registered successfully" in result.output
-    
-    # 2. Add duplicate user
-    result = runner.invoke(args=["add-user", "test_skanda"])
-    assert "already exists" in result.output
-
-    # 3. Reset device via CLI
-    result = runner.invoke(args=["reset-device", "test_skanda"])
-    assert "reset successfully" in result.output
-
-    # 4. Reset non-existing user
-    result = runner.invoke(args=["reset-device", "unknown_user"])
-    assert "not found" in result.output
-
-    # 5. Remove user via CLI
-    result = runner.invoke(args=["remove-user", "test_skanda"])
-    assert "removed successfully" in result.output
-
-    # 6. Remove non-existing user
-    result = runner.invoke(args=["remove-user", "unknown_user"])
-    assert "not found" in result.output
-
-
-def test_unauthenticated_requests(client):
-    # Requests without headers should return 401
-    response = client.get("/api/v1/panchanga")
-    assert response.status_code == 401
+def test_device_login_missing_uuid(client):
+    # Request without device_uuid should return 400
+    response = client.post("/api/v1/auth/login", json={})
+    assert response.status_code == 400
     data = response.get_json()
-    assert data["error"]["code"] == "unauthorized"
+    assert data["error"]["code"] == "missing_parameter"
 
 
-
-
-def test_api_key_fallback(client, monkeypatch, bengaluru_query):
-    # Mock HORA_API_KEY environment variable
-    monkeypatch.setenv("HORA_API_KEY", "super-secret-key")
-    
-    headers = {"X-API-Key": "super-secret-key"}
-    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers)
-    assert response.status_code == 200
-
-
-def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
-    # 1. Google login with new email (auto-registers account on the fly) -> 200 OK
-    response = client.post("/api/v1/auth/google-login", json={
-        "idToken": "mock_token_new_user@gmail.com",
+def test_device_login_lifecycle(client, clean_users_store, bengaluru_query):
+    # 1. Login with Device A -> 200 OK
+    response = client.post("/api/v1/auth/login", json={
         "device_uuid": "device-uuid-phone-a"
     })
     assert response.status_code == 200
     res_data = response.get_json()
     token_a = res_data["token"]
-    assert res_data["user"]["email"] == "new_user@gmail.com"
+    assert res_data["device_uuid"] == "device-uuid-phone-a"
     assert len(token_a) == 64
 
     # 2. Make authenticated request using Device A token
@@ -91,9 +48,8 @@ def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
     response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a)
     assert response.status_code == 200
 
-    # 3. Google login again on Device B with same account (Simultaneous Multi-Device support)
-    response_b = client.post("/api/v1/auth/google-login", json={
-        "idToken": "mock_token_new_user@gmail.com",
+    # 3. Login on Device B (Multi-device support)
+    response_b = client.post("/api/v1/auth/login", json={
         "device_uuid": "device-uuid-tablet-b"
     })
     assert response_b.status_code == 200
@@ -111,12 +67,12 @@ def test_google_login_lifecycle(client, clean_users_store, bengaluru_query):
 
 def test_same_device_relogin_and_logout(client, clean_users_store, bengaluru_query):
     # 1. Login on Phone A -> gets token_a1
-    res1 = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_user@gmail.com", "device_uuid": "phone-a"})
+    res1 = client.post("/api/v1/auth/login", json={"device_uuid": "phone-a"})
     assert res1.status_code == 200
     token_a1 = res1.get_json()["token"]
 
     # 2. Login AGAIN on Phone A -> gets token_a2 (replaces old token for phone-a)
-    res2 = client.post("/api/v1/auth/google-login", json={"idToken": "mock_token_user@gmail.com", "device_uuid": "phone-a"})
+    res2 = client.post("/api/v1/auth/login", json={"device_uuid": "phone-a"})
     assert res2.status_code == 200
     token_a2 = res2.get_json()["token"]
     assert token_a2 != token_a1
@@ -129,28 +85,49 @@ def test_same_device_relogin_and_logout(client, clean_users_store, bengaluru_que
     headers_a1 = {"Authorization": f"Bearer {token_a1}"}
     assert client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a1).status_code == 401
 
-    # 3. Explicit logout from token_a2
+    # 3. Explicit logout from token_a2 -> deletes device entry from users.json
     logout_res = client.post("/api/v1/auth/logout", headers=headers_a2)
     assert logout_res.status_code == 200
     assert client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers_a2).status_code == 401
 
+    # Verify device record is deleted from users.json store
+    assert get_active_users_count() == 0
 
 
+def test_unauthenticated_requests(client):
+    # Requests without headers should return 401
+    response = client.get("/api/v1/panchanga")
+    assert response.status_code == 401
+    data = response.get_json()
+    assert data["error"]["code"] == "unauthorized"
 
 
-def test_cli_list_users(app, clean_users_store):
+def test_api_key_fallback(client, monkeypatch, bengaluru_query):
+    # Mock HORA_API_KEY environment variable
+    monkeypatch.setenv("HORA_API_KEY", "super-secret-key")
+
+    headers = {"X-API-Key": "super-secret-key"}
+    response = client.get("/api/v1/panchanga", query_string=begaluru_query_str(bengaluru_query), headers=headers)
+    assert response.status_code == 200
+
+
+def test_cli_list_users(app, client, clean_users_store):
     runner = app.test_cli_runner()
-    runner.invoke(args=["add-user", "skanda@gmail.com"])
-    result = runner.invoke(args=["list-users"])
-    assert "skanda@gmail.com" in result.output
+    # Before login
+    res_before = runner.invoke(args=["list-users"])
+    assert "Total active users: 0" in res_before.output
+
+    # Login two devices
+    client.post("/api/v1/auth/login", json={"device_uuid": "device-1"})
+    client.post("/api/v1/auth/login", json={"device_uuid": "device-2"})
+
+    res_after = runner.invoke(args=["list-users"])
+    assert "Total active users: 2" in res_after.output
 
 
 def begaluru_query_str(query):
-    # Helper to construct clean query string parameters for panchanga
-    # avoiding caching issues with mock request contexts
     q = query.copy()
     if "datetime" in q:
         del q["datetime"]
     q["date"] = "2026-07-20"
     return q
-

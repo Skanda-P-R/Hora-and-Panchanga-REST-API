@@ -87,60 +87,42 @@ certificate paths for the deployment environment.
 
 ## User administration
 
-Users register automatically upon their first successful Google Sign-In. User accounts and their active session token are stored in `instance/users.json`.
+User devices authenticate via their unique `device_uuid`. Active session tokens are stored in `instance/users.json`.
 
-### List registered users
-View all registered user accounts, Google Subject IDs, and active session status:
+### List active users count
+View the total number of active users:
 ```bash
 flask list-users
 ```
 
-### Revoke a user's active session
-To invalidate a user's active session token:
-```bash
-flask reset-device <email>
-```
-
-### Remove a user
-To delete a user account and invalidate their session:
-```bash
-flask remove-user <email>
-```
-
-
 ## Authentication
 
-Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/google-login`) requires session authentication.
+Every endpoint under `/api/v1/*` (except the login endpoint `/api/v1/auth/login`) requires session authentication.
 
-### Google Sign-In Login
-- **Endpoint**: `POST /api/v1/auth/google-login`
+### Device Login
+- **Endpoint**: `POST /api/v1/auth/login`
 - **Rate Limit**: 10 requests per minute (per IP)
 - **Request Payload**:
   ```json
   {
-    "idToken": "your-google-id-token-jwt",
-    "device_uuid": "optional-device-uuid"
+    "device_uuid": "device-uuid-string"
   }
   ```
 - **Response**:
   ```json
   {
     "token": "session-token-string",
-    "user": {
-      "email": "skanda@gmail.com",
-      "name": "Skanda",
-      "picture": "https://lh3.googleusercontent.com/a/..."
-    }
+    "device_uuid": "device-uuid-string"
   }
   ```
-  *Note: On first login, your account is automatically created. Session tokens are mapped per device (`device_uuid`), so logging in repeatedly on the same device replaces that device's old token, while other devices remain logged in simultaneously.*
+  *Note: Session tokens are stored per device (`device_uuid`). Re-logging in on the same device updates its active token, while other devices remain logged in simultaneously.*
 
 ### Logout
 - **Endpoint**: `POST /api/v1/auth/logout`
 - **Header**: `Authorization: Bearer <token>`
 - **Payload**: None (or empty JSON `{}`)
 - **Response**: `{"status": "logged_out"}`
-- Revokes the calling device's active session token.
+- Revokes the calling device's session token and deletes the device entry from `users.json`.
 
 
 ### Authenticating Requests
@@ -253,7 +235,6 @@ muhurtas. No fixed 90-minute approximation is used.
 | `OBSERVER_ELEVATION_METERS` | `0` |
 | `ATMOSPHERIC_PRESSURE_HPA` | `0` (unused by Hindu rising) |
 | `ATMOSPHERIC_TEMPERATURE_C` | `15` (unused by Hindu rising) |
-| `GOOGLE_WEB_CLIENT_ID` | `""` (Google Web Application Client ID for ID Token audience verification) |
 | `WEB_CONCURRENCY` | `2` synchronous workers |
 
 
