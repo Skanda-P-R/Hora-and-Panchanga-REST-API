@@ -26,5 +26,5 @@ class Config:
     CACHE_DEFAULT_TIMEOUT = 60
     RATELIMIT_STORAGE_URI = "memory://"
     JSON_SORT_KEYS = False
-    GOOGLE_WEB_CLIENT_ID = os.getenv("GOOGLE_WEB_CLIENT_ID", "191782211549-ai1b8fbs3m4r2lc3ahhuhmjucg9n7di6.apps.googleusercontent.com")
+    GOOGLE_WEB_CLIENT_ID = os.getenv("GOOGLE_WEB_CLIENT_ID", "747373461741-ljjkujthicdvq3eeti6hcgt9j8eh939i.apps.googleusercontent.com")
 
